@@ -102,13 +102,13 @@ function New-RelativityArmArchiveJob
     [CmdletBinding(SupportsShouldProcess)]
     Param 
     (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Int32] $WorkspaceId,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $JobPriority = "Medium",
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $ArchiveDirectory,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
             $date = "1970-01-01"
             [DateTime]::TryParse($_, [ref]$date)
@@ -117,56 +117,58 @@ function New-RelativityArmArchiveJob
             $true
         })]
         [String] $ScheduledStartTime,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeDatabaseBackup,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeDtSearch,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeConceptualAnalytics,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeStructuredAnalytics,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeDataGrid,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeRepositoryFiles,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeLinkedFiles,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $MissingFileBehavior = "SkipFile",
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeProcessing,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeProcessingFiles,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $ProcessingMissingFileBehavior = "SkipFile",
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $IncludeExtendedWorkspaceData,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $ApplicationErrorExportBehavior = "SkipApplication",
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $NotifyJobCreator,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $NotifyJobExecutor,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $UiJobActionsLocked,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $UseDefaultArchiveDirectory
     )
+    Process
+    {
+        $MigratorOptions = [RelativityArmArchiveJobMigratorOptions]::New($IncludeDatabaseBackup, $IncludeDtSearch, $IncludeConceptualAnalytics, $IncludeStructuredAnalytics, $IncludeDataGrid)
+        $FileOptions = [RelativityArmArchiveJobFileOptions]::New($IncludeRepositoryFiles, $IncludeLinkedFiles, $MissingFileBehavior)
+        $ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New($IncludeProcessing, $IncludeProcessingFiles, $ProcessingMissingFileBehavior)
+        $ExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New($IncludeExtendedWorkspaceData, $ApplicationErrorExportBehavior)
+        $NotificationOptions = [RelativityArmArchiveJobNotificationOptions]::New($NotifyJobCreator, $NotifyJobExecutor)
 
-    $MigratorOptions = [RelativityArmArchiveJobMigratorOptions]::New($IncludeDatabaseBackup, $IncludeDtSearch, $IncludeConceptualAnalytics, $IncludeStructuredAnalytics, $IncludeDataGrid)
-    $FileOptions = [RelativityArmArchiveJobFileOptions]::New($IncludeRepositoryFiles, $IncludeLinkedFiles, $MissingFileBehavior)
-    $ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New($IncludeProcessing, $IncludeProcessingFiles, $ProcessingMissingFileBehavior)
-    $ExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New($IncludeExtendedWorkspaceData, $ApplicationErrorExportBehavior)
-    $NotificationOptions = [RelativityArmArchiveJobNotificationOptions]::New($NotifyJobCreator, $NotifyJobExecutor)
+        $RelativityArmArchiveJobCreateRequest = [RelativityArmArchiveJobCreateRequest]::New($WorkspaceId, $JobPriority, $ArchiveDirectory, $ScheduledStartTime, $MigratorOptions, $FileOptions, $ProcessingOptions, $ExtendedWorkspaceDataOptions, $NotificationOptions, $UiJobActionsLocked, $UseDefaultArchiveDirectory)
 
-    $RelativityArmArchiveJobCreateRequest = [RelativityArmArchiveJobCreateRequest]::New($WorkspaceId, $JobPriority, $ArchiveDirectory, $ScheduledStartTime, $MigratorOptions, $FileOptions, $ProcessingOptions, $ExtendedWorkspaceDataOptions, $NotificationOptions, $UiJobActionsLocked, $UseDefaultArchiveDirectory)
+        $RelativityApiRequestBody =
+        @{
+            request = $RelativityArmArchiveJobCreateRequest.ToHashTable()
+        }
 
-    $RelativityApiRequestBody =
-    @{
-        request = $RelativityArmArchiveJobCreateRequest.ToHashTable()
+        $RelativityApiEndpointExtended = "archive-jobs"
+
+        Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
     }
-
-    $RelativityApiEndpointExtended = "archive-jobs"
-
-    Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
 }
