@@ -11,21 +11,12 @@ function Get-RelativityApiEndpointBase
         throw "RelativityBaseUri is not set - make sure to run Set-RelativityBaseUri to a valid value before continuing."
     }
 
-    if ($script:RelativityHttpSecure -eq $true)
-    {
-        $RelativityHttpProtocol = "https"
-    }
-    else
-    {
-        $RelativityHttpProtocol = "http"
-    }
-
     switch ($RelativityBusinessDomain)
     {
         "ARM" { $RelativityBusinessDomainEndpoint = "relativity-arm/v1" }
     }
 
-    return "$($RelativityHttpProtocol)://$($RelativityBaseUri)/Relativity.REST/api/$($RelativityBusinessDomainEndpoint)/"
+    return "$($RelativityBaseUri)/Relativity.REST/api/$($RelativityBusinessDomainEndpoint)/"
 }
 
 function Get-RelativityApiRequestHeader

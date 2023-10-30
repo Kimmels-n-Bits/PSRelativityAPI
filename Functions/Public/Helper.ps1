@@ -1,39 +1,15 @@
 function Set-RelativityBaseUri
 {
-    [CmdletBinding(SupportsShouldProcess)]
     Param 
     (
         [Parameter(Mandatory = $true, Position = 0)]
+        [ValidateNotNullOrEmpty()]
         [String] $RelativityBaseUri
     )
 
-    $RelativityBaseUri = $RelativityBaseUri -replace '^.*?(\/{1,}|\\{1,})', ''
-    $RelativityBaseUri = $RelativityBaseUri -replace '(\/|\\).*?$', ''
+    [System.Uri]$ParsedRelativityBaseUri = [System.Uri]::new($RelativityBaseUri)
 
-    if ((Test-NetConnection $RelativityBaseUri -Port 443).TcpTestSucceeded)
-    {
-        $script:RelativityHttpSecure = $true
-    }
-    elseif ((Test-NetConnection $RelativityBaseUri -Port 80).TcpTestSucceeded)
-    {
-        $script:RelativityHttpSecure = $false
-    }
-    else
-    {
-        throw "Relativity base uri ($($RelativityBaseUri) could not be reached."
-    }
-
-    $script:RelativityBaseUri = $RelativityBaseUri
-}
-
-function Get-RelativityBaseUri
-{
-    return $script:RelativityBaseUri
-}
-
-function Get-RelativityHttpSecure
-{
-    return $script:RelativityHttpSecure
+    $script:RelativityBaseUri = "$($ParsedRelativityBaseUri.Scheme)://$($ParsedRelativityBaseUri.Host)"
 }
 
 function Set-RelativityCredential
@@ -42,6 +18,18 @@ function Set-RelativityCredential
     Param
     (
         [Parameter(Mandatory = $false, Position = 0)]
+        [ValidateScript({
+            if (-not $_.UserName) {
+                throw "The PSCredential object must have a UserName."
+            }
+            
+            $password = $_.GetNetworkCredential().Password
+            if (-not $password) {
+                throw "The PSCredential object must have a Password."
+            }
+            
+            return $true
+        })]
         [PSCredential] $RelativityCredential
     )
 
