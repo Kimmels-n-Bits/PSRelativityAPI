@@ -19,6 +19,17 @@ class RelativityArmArchiveJobMigratorOptions
         $this.IncludeStructuredAnalytics = $includeStructuredAnalytics
         $this.IncludeDataGrid = $includeDataGrid
     }
+
+    [Hashtable] ToHashTable()
+    {
+        return @{
+            IncludeDatabaseBackup = $this.IncludeDatabaseBackup
+            IncludeDtSearch = $this.IncludeDtSearch
+            IncludeConceptualAnalytics = $this.IncludeConceptualAnalytics
+            IncludeStructuredAnalytics = $this.IncludeStructuredAnalytics
+            IncludeDataGrid = $this.IncludeDataGrid
+        }
+    }
 }
 
 class RelativityArmArchiveJobFileOptions
@@ -35,6 +46,15 @@ class RelativityArmArchiveJobFileOptions
         $this.IncludeRepositoryFiles = $includeRepositoryFiles
         $this.IncludeLinkedFiles = $includeLinkedFiles
         $this.MissingFileBehavior = $missingFileBehavior
+    }
+
+    [Hashtable] ToHashTable()
+    {
+        return @{
+            IncludeRepositoryFiles = $this.IncludeRepositoryFiles
+            IncludeLinkedFiles = $this.IncludeLinkedFiles
+            MissingFileBehavior = $this.MissingFileBehavior
+        }
     }
 }
 
@@ -53,6 +73,15 @@ class RelativityArmArchiveJobProcessingOptions
         $this.IncludeProcessingFiles = $includeProcessingFiles
         $this.ProcessingMissingFileBehavior = $processingMissingFileBehavior
     }
+
+    [Hashtable] ToHashTable()
+    {
+        return @{
+            IncludeProcessing = $this.IncludeProcessing
+            IncludeProcessingFiles = $this.IncludeProcessingFiles
+            ProcessingMissingFileBehavior = $this.ProcessingMissingFileBehavior
+        }
+    }
 }
 
 class RelativityArmArchiveJobExtendedWorkspaceDataOptions
@@ -66,6 +95,14 @@ class RelativityArmArchiveJobExtendedWorkspaceDataOptions
     {
         $this.IncludeExtendedWorkspaceData = $includeExtendedWorkspaceData
         $this.ApplicationErrorExportBehavior = $applicationErrorExportBehavior
+    }
+
+    [Hashtable] ToHashTable()
+    {
+        return @{
+            IncludeExtendedWorkspaceData = $this.IncludeExtendedWorkspaceData
+            ApplicationErrorExportBehavior = $this.ApplicationErrorExportBehavior
+        }
     }
 }
 
@@ -81,9 +118,17 @@ class RelativityArmArchiveJobNotificationOptions
         $this.NotifyJobCreator = $notifyJobCreator
         $this.NotifyJobExecutor = $notifyJobExecutor
     }
+
+    [Hashtable] ToHashTable()
+    {
+        return @{
+            NotifyJobCreator = $this.NotifyJobCreator
+            NotifyJobExecutor = $this.NotifyJobExecutor
+        }
+    }
 }
 
-class RelativityArmArchiveJob
+class RelativityArmArchiveJobCreateRequest
 {
     [ValidateNotNull()]
     [Int32] $WorkspaceId
@@ -108,7 +153,7 @@ class RelativityArmArchiveJob
     [ValidateNotNull()]
     [Boolean] $UseDefaultArchiveDirectory
 
-    RelativityArmArchiveJob([Int32] $workspaceId, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)
+    RelativityArmArchiveJobCreateRequest([Int32] $workspaceId, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)
     {
         $this.WorkspaceId = $workspaceId
         $this.JobPriority = $jobPriority
@@ -121,5 +166,22 @@ class RelativityArmArchiveJob
         $this.NotificationOptions = $notificationOptions
         $this.UiJobActionsLocked = $uiJobActionsLocked
         $this.UseDefaultArchiveDirectory = $useDefaultArchiveDirectory
+    }
+
+    [Hashtable] ToHashTable()
+    {
+        return @{
+            WorkspaceID = $this.WorkspaceId
+            ArchiveDirectory = $this.ArchiveDirectory
+            JobPriority = $this.JobPriority
+            ScheduledStartTime = $this.ScheduledStartTime
+            MigratorOptions = $this.MigratorOptions.ToHashTable()
+            FileOptions = $this.FileOptions.ToHashTable()
+            ProcessingOptions = $this.ProcessingOptions.ToHashTable()
+            ExtendedWorkspaceDataOptions = $this.ExtendedWorkspaceDataOptions.ToHashTable()
+            NotificationOptions = $this.NotificationOptions.ToHashTable()
+            UIJobActionsLocked = $this.UiJobActionsLocked
+            UseDefaultArchiveDirectory = $this.UseDefaultArchiveDirectory
+        }
     }
 }
