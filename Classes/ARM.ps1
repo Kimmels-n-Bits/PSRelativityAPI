@@ -1,9 +1,14 @@
 class RelativityArmArchiveJobMigratorOptions
 {
+    [ValidateNotNull()]
     [Boolean] $IncludeDatabaseBackup
+    [ValidateNotNull()]
     [Boolean] $IncludeDtSearch
+    [ValidateNotNull()]
     [Boolean] $IncludeConceptualAnalytics
+    [ValidateNotNull()]
     [Boolean] $IncludeStructuredAnalytics
+    [ValidateNotNull()]
     [Boolean] $IncludeDataGrid
 
     RelativityArmArchiveJobMigratorOptions([Boolean] $includeDatabaseBackup, [Boolean] $includeDtSearch, [Boolean] $includeConceptualAnalytics, [Boolean] $includeStructuredAnalytics, [Boolean] $includeDataGrid)
@@ -18,8 +23,11 @@ class RelativityArmArchiveJobMigratorOptions
 
 class RelativityArmArchiveJobFileOptions
 {
+    [ValidateNotNull()]
     [Boolean] $IncludeRepositoryFiles
+    [ValidateNotNull()]
     [Boolean] $IncludeLinkedFiles
+    [ValidateSet("SkipFile", "StopJob")]
     [String] $MissingFileBehavior
 
     RelativityArmArchiveJobFileOptions([Boolean] $includeRepositoryFiles, [Boolean] $includeLinkedFiles, [String] $missingFileBehavior)
@@ -32,8 +40,11 @@ class RelativityArmArchiveJobFileOptions
 
 class RelativityArmArchiveJobProcessingOptions
 {
+    [ValidateNotNull()]
     [Boolean] $IncludeProcessing
+    [ValidateNotNull()]
     [Boolean] $IncludeProcessingFiles
+    [ValidateSet("SkipFile", "StopJob")]
     [String] $ProcessingMissingFileBehavior
 
     RelativityArmArchiveJobProcessingOptions([Boolean] $includeProcessing, [Boolean] $includeProcessingFiles, [String] $processingMissingFileBehavior)
@@ -46,7 +57,9 @@ class RelativityArmArchiveJobProcessingOptions
 
 class RelativityArmArchiveJobExtendedWorkspaceDataOptions
 {
+    [ValidateNotNull()]
     [Boolean] $IncludeExtendedWorkspaceData
+    [ValidateSet("SkipApplication", "StopJob")]
     [String] $ApplicationErrorExportBehavior
 
     RelativityArmArchiveJobExtendedWorkspaceDataOptions([Boolean] $includeExtendedWorkspaceData, [String] $applicationErrorExportBehavior)
@@ -58,7 +71,9 @@ class RelativityArmArchiveJobExtendedWorkspaceDataOptions
 
 class RelativityArmArchiveJobNotificationOptions
 {
+    [ValidateNotNull()]
     [Boolean] $NotifyJobCreator
+    [ValidateNotNull()]
     [Boolean] $NotifyJobExecutor
 
     RelativityArmArchiveJobNotificationOptions([Boolean] $notifyJobCreator, [Boolean] $notifyJobExecutor)
@@ -70,16 +85,27 @@ class RelativityArmArchiveJobNotificationOptions
 
 class RelativityArmArchiveJob
 {
+    [ValidateNotNull()]
     [Int32] $WorkspaceId
+    [ValidateSet("Low", "Medium", "High")]
     [String] $JobPriority
+    [ValidateNotNull()]
     [String] $ArchiveDirectory
+    [ValidateNotNull()]
     [String] $ScheduledStartTime
+    [ValidateNotNull()]
     [RelativityArmArchiveJobMigratorOptions] $MigratorOptions
+    [ValidateNotNull()]
     [RelativityArmArchiveJobFileOptions] $FileOptions
+    [ValidateNotNull()]
     [RelativityArmArchiveJobProcessingOptions] $ProcessingOptions
+    [ValidateNotNull()]
     [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $ExtendedWorkspaceDataOptions
+    [ValidateNotNull()]
     [RelativityArmArchiveJobNotificationOptions] $NotificationOptions
+    [ValidateNotNull()]
     [Boolean] $UiJobActionsLocked
+    [ValidateNotNull()]
     [Boolean] $UseDefaultArchiveDirectory
 
     RelativityArmArchiveJob([Int32] $workspaceId, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)

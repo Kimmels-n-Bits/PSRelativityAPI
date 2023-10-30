@@ -1,13 +1,11 @@
 function New-RelativityArmArchiveJob 
 {
-    [CmdletBinding()]
-    <#[OutputType([RelativityArmArchiveJob])]#>
+    [CmdletBinding(SupportsShouldProcess)]
     Param 
     (
         [Parameter(Mandatory = $true)]
         [Int32] $WorkspaceId,
         [Parameter(Mandatory = $false)]
-        [ValidateSet("Low", "Medium", "High")]
         [String] $JobPriority = "Medium",
         [Parameter(Mandatory = $false)]
         [String] $ArchiveDirectory,
@@ -15,7 +13,7 @@ function New-RelativityArmArchiveJob
         [ValidateScript({
             $date = "1970-01-01"
             [DateTime]::TryParse($_, [ref]$date)
-            if($_ -eq $null -or $_ -eq "") { return $true }
+            if($_ -eq "") { return $true }
             elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)."}
             $true
         })]
@@ -35,19 +33,16 @@ function New-RelativityArmArchiveJob
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeLinkedFiles,
         [Parameter(Mandatory = $false)]
-        [ValidateSet("SkipFile", "StopJob")]
         [String] $MissingFileBehavior = "SkipFile",
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeProcessing,
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeProcessingFiles,
         [Parameter(Mandatory = $false)]
-        [ValidateSet("SkipFile", "StopJob")]
         [String] $ProcessingMissingFileBehavior = "SkipFile",
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeExtendedWorkspaceData,
         [Parameter(Mandatory = $false)]
-        [ValidateSet("SkipApplication", "StopJob")]
         [String] $ApplicationErrorExportBehavior = "SkipApplication",
         [Parameter(Mandatory = $false)]
         [Switch] $NotifyJobCreator,
@@ -64,6 +59,53 @@ function New-RelativityArmArchiveJob
     $ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New($IncludeProcessing, $IncludeProcessingFiles, $ProcessingMissingFileBehavior)
     $ExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New($IncludeExtendedWorkspaceData, $ApplicationErrorExportBehavior)
     $NotificationOptions = [RelativityArmArchiveJobNotificationOptions]::New($NotifyJobCreator, $NotifyJobExecutor)
-    
-    return [RelativityArmArchiveJob]::New($WorkspaceId, $JobPriority, $ArchiveDirectory, $ScheduledStartTime, $MigratorOptions, $FileOptions, $ProcessingOptions, $ExtendedWorkspaceDataOptions, $NotificationOptions, $UiJobActionsLocked, $UseDefaultArchiveDirectory) | ConvertTo-Json
+
+    $RelativityArmArchiveJob = [RelativityArmArchiveJob]::New($WorkspaceId, $JobPriority, $ArchiveDirectory, $ScheduledStartTime, $MigratorOptions, $FileOptions, $ProcessingOptions, $ExtendedWorkspaceDataOptions, $NotificationOptions, $UiJobActionsLocked, $UseDefaultArchiveDirectory)
+
+    $RelativityApiRequestBody =
+    @{
+        request =
+        @{
+            WorkspaceID = $RelativityArmArchiveJob.WorkspaceId
+            ArchiveDirectory = $RelativityArmArchiveJob.ArchiveDirectory
+            JobPriority = $RelativityArmArchiveJob.JobPriority
+            ScheduledStartTime = $RelativityArmArchiveJob.ScheduledStartTime
+            MigratorOptions =
+            @{
+                IncludeDatabaseBackup = $RelativityArmArchiveJob.MigratorOptions.IncludeDatabaseBackup
+                IncludeDtSearch = $RelativityArmArchiveJob.MigratorOptions.IncludeDtSearch
+                IncludeConceptualAnalytics = $RelativityArmArchiveJob.MigratorOptions.IncludeConceptualAnalytics
+                IncludeStructuredAnalytics = $RelativityArmArchiveJob.MigratorOptions.IncludeStructuredAnalytics
+                IncludeDataGrid = $RelativityArmArchiveJob.MigratorOptions.IncludeDataGrid
+            }
+            FileOptions =
+            @{
+                IncludeRepositoryFiles = $RelativityArmArchiveJob.FileOptions.IncludeRepositoryFiles
+                IncludeLinkedFiles = $RelativityArmArchiveJob.FileOptions.IncludeLinkedFiles
+                MissingFileBehavior = $RelativityArmArchiveJob.FileOptions.MissingFileBehavior
+            }
+            ProcessingOptions =
+            @{
+                IncludeProcessing = $RelativityArmArchiveJob.ProcessingOptions.IncludeProcessing
+                IncludeProcessingFiles = $RelativityArmArchiveJob.ProcessingOptions.IncludeProcessingFiles
+                ProcessingMissingFileBehavior = $RelativityArmArchiveJob.ProcessingOptions.ProcessingMissingFileBehavior
+            }
+            ExtendedWorkspaceDataOptions =
+            @{
+                IncludeExtendedWorkspaceData = $RelativityArmArchiveJob.ExtendedWorkspaceDataOptions.IncludeExtendedWorkspaceData
+                ApplicationErrorExportBehavior = $RelativityArmArchiveJob.ExtendedWorkspaceDataOptions.ApplicationErrorExportBehavior
+            }
+            NotificationOptions =
+            @{
+                NotifyJobCreator = $RelativityArmArchiveJob.NotificationOptions.NotifyJobCreator
+                NotifyJobExecutor = $RelativityArmArchiveJob.NotificationOptions.NotifyJobExecutor
+            }
+            UIJobActionsLocked = $RelativityArmArchiveJob.UiJobActionsLocked
+            UseDefaultArchiveDirectory = $RelativityArmArchiveJob.UseDefaultArchiveDirectory
+        }
+    }
+
+    $RelativityApiEndpointExtended = "archive-jobs"
+
+    Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
 }

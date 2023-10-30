@@ -1,4 +1,8 @@
 
+[String] $script:RelativityBaseUri = $null
+[Boolean] $script:RelativityHttpSecure = $false
+[PSCredential] $script:RelativityCredential = $null
+
 # SIG # Begin signature block
 # MIIFlAYJKoZIhvcNAQcCoIIFhTCCBYECAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
