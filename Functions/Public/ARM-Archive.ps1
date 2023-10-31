@@ -3,8 +3,8 @@
 Creates a new Relativity ARM Archive Job.
 
 .DESCRIPTION
-The function constructs a request to create a new ARM archive job in Relativity. 
-It allows for extensive configuration through various parameters, enabling users to specify 
+The function constructs a request to create a new ARM archive job in Relativity.
+It allows for extensive configuration through various parameters, enabling users to specify
 details like the workspace ArtifactId, job priority, file options, and more.
 If job creation is successful the response will be the Id of the newly created job.
 If the job creation could not be completed the response will contain validation errors with more detailed information.
@@ -14,7 +14,8 @@ The ArtifactId of the workspace to archive for the archive job. This is a mandat
 This Workspace must not be in the process of upgrading or currently in use by another ARM job.
 
 .PARAMETER JobPriority
-Priority of execution for the job. Possible options include "Low", "Medium", and "High". Default is "Medium".
+Priority of execution for the job. Possible options include "Low", "Medium", and "High".
+Default is "Medium".
 
 .PARAMETER ArchiveDirectory
 File path of the configured archive directory to save the archive to.
@@ -46,7 +47,7 @@ Indicates whether all linked files that do not exist in the workspace file repos
 
 .PARAMETER MissingFileBehavior
 Indicates whether to skip ("SkipFile") or stop ("StopJob") when missing files are detected during the archiving process.
-If there is potential for any files to not be found while the job is running, skipping them will result in compiling a downloadable list of the files that were missing and allow the job to complete without error. 
+If there is potential for any files to not be found while the job is running, skipping them will result in compiling a downloadable list of the files that were missing and allow the job to complete without error.
 Setting this to stop will immediately stop on the first missing file and cannot resume until the file is placed in the expected location.
 Default is "SkipFile".
 
@@ -63,7 +64,7 @@ Setting this to stop will immediately stop on the first missing file and cannot 
 Default is "SkipFile".
 
 .PARAMETER IncludeExtendedWorkspaceData
- Indicates whether extended workspace information is included in the archive. 
+ Indicates whether extended workspace information is included in the archive.
  This includes installed applications, linked relativity scripts, and non-application event handlers.
 
 .PARAMETER ApplicationErrorExportBehavior
@@ -85,7 +86,7 @@ When this option is set to true leave ArchiveDirectory empty.
 ARM will select the fist valid one from configuration.
 
 .EXAMPLE
-New-RelativityArmArchiveJob -WorkspaceId 1234567 -ArchiveDirectory "\\uncpath\to\archive\directory" -IncludeDatabaseBackup
+New-RelativityArmArchiveJob -WorkspaceId 1234567 -ArchiveDirectory "\\server\path" -IncludeDatabaseBackup
 
 This example creates a new archive job for workspace with the ArtifactId 1234567 in the specified directory and includes a database backup.
 
@@ -95,12 +96,12 @@ New-RelativityArmArchiveJob -WorkspaceId 1234567 -IncludeDatabaseBackup -Include
 This example creates a new archive job for workspace with the ArtifactId 1234567 using the default archive directory and includes a database backup and repository files.
 
 .NOTES
-Ensure you have connectivity and appropriate permissions in Relativity before running this function. 
+Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function New-RelativityArmArchiveJob 
+function New-RelativityArmArchiveJob
 {
     [CmdletBinding(SupportsShouldProcess)]
-    Param 
+    Param
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Int32] $WorkspaceId,

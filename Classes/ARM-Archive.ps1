@@ -185,3 +185,14 @@ class RelativityArmArchiveJobCreateRequest
         }
     }
 }
+
+class RelativityArmArchiveJobCreateResponse
+{
+    [ValidateNotNull()]
+    [Int32] $JobId
+
+    RelativityArmArchiveJobCreateResponse([Int32] $jobId)
+    {
+        $this.JobId = $jobId
+    }
+}

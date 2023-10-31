@@ -36,10 +36,29 @@ function Invoke-RelativityApiRequest
         [Hashtable] $RelativityApiRequestBody
     )
 
+    if ($null -eq $script:RelativityBaseUri)
+    {
+        throw "RelativityBaseUri is not set. Please run Set-RelativityBaseUri before proceeding."
+    }
+
+    if ($null -eq $script:RelativityCredential)
+    {
+        throw "RelativityCredential is not set. Please run Set-RelativityCredential before proceeding."
+    }
+
     $RelativityApiEndpointBase = Get-RelativityApiEndpointBase -RelativityBusinessDomain $RelativityBusinessDomain
     $RelativityApiEndpoint = "$($RelativityApiEndpointBase)$($RelativityApiEndpointExtended)"
 
     $RelativityApiRequestHeader = Get-RelativityApiRequestHeader
 
-    Invoke-RestMethod -Uri $RelativityApiEndpoint -Method $RelativityApiHttpMethod -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json"
+    try
+    {
+        $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method $RelativityApiHttpMethod -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json"
+    }
+    catch
+    {
+        throw "Error making API call: $($_).Exception.Message"
+    }
+
+    return $RelativityApiResponse
 }
