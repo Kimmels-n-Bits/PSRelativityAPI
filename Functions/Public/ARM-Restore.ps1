@@ -171,8 +171,8 @@ function New-RelativityArmRestoreJob
 
         $RelativityApiEndpointExtended = "restore-jobs"
 
-        $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
+        $RelativityArmRestoreJobCreateResponse = Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
 
-        return [RelativityArmRestoreJobCreateResponse]::New([Int32]$RelativityApiResponse)
+        return [RelativityArmRestoreJobCreateResponse]::New([Int32]$RelativityArmRestoreJobCreateResponse)
     }
 }

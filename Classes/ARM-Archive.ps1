@@ -171,7 +171,7 @@ class RelativityArmArchiveJobDetails
     }
 }
 
-class RelativityArmArchiveJobCreateRequest
+class RelativityArmArchiveJobRequestBase
 {
     [ValidateNotNull()]
     [Int32] $WorkspaceID
@@ -196,7 +196,7 @@ class RelativityArmArchiveJobCreateRequest
     [ValidateNotNull()]
     [Boolean] $UseDefaultArchiveDirectory
 
-    RelativityArmArchiveJobCreateRequest([Int32] $workspaceID, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)
+    RelativityArmArchiveJobRequestBase([Int32] $workspaceID, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)
     {
         $this.WorkspaceID = $workspaceID
         $this.JobPriority = $jobPriority
@@ -227,6 +227,11 @@ class RelativityArmArchiveJobCreateRequest
             UseDefaultArchiveDirectory = $this.UseDefaultArchiveDirectory
         }
     }
+}
+
+class RelativityArmArchiveJobCreateRequest : RelativityArmArchiveJobRequestBase
+{
+
 }
 
 class RelativityArmArchiveJobCreateResponse
@@ -288,4 +293,9 @@ class RelativityArmArchiveJobReadResponse
         $this.NotificationOptions = $notificationOptions
         $this.UiJobActionsLocked = $uiJobActionsLocked
     }
+}
+
+class RelativityArmArchiveJobUpdateRequest : RelativityArmArchiveJobRequestBase
+{
+  
 }

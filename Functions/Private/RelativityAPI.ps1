@@ -28,11 +28,12 @@ function Invoke-RelativityApiRequest
         [ValidateSet("ARM")]
         [String] $RelativityBusinessDomain,
         [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
         [String] $RelativityApiEndpointExtended,
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Get", "Post")]
+        [ValidateSet("Get", "Post", "Put")]
         [String] $RelativityApiHttpMethod,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [Hashtable] $RelativityApiRequestBody
     )
 
@@ -57,6 +58,7 @@ function Invoke-RelativityApiRequest
         {
             "Get" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Get -Headers $RelativityApiRequestHeader }
             "Post" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Post -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
+            "Put" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Put -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
         }
     }
     catch
