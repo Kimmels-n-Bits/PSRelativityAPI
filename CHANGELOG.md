@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.1] - 2023-10-30
+## [0.0.1] - 2023-10-31
 
 ### Added
-- ARM API : Arm Archive Job Create
-- ARM API : Arm Archive Job Read
-- ARM API : Arm Archive Job Update
-- ARM API : Arm Restore Job Create
+- AgentManager API : Get-RelativityAgentType
+- ARM API : New-RelativityArmArchiveJob
+- ARM API : Get-RelativityArmArchiveJob
+- ARM API : Set-RelativityArmArchiveJob
+- ARM API : New-RelativityArmRestoreJob

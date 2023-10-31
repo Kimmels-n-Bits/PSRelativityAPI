@@ -16,12 +16,13 @@ function Get-RelativityApiEndpointBase
     Param
     (
         [Parameter(Mandatory = $true)]
-        [ValidateSet("ARM")]
+        [ValidateSet("AgentManager", "ARM")]
         [String] $RelativityBusinessDomain
     )
 
     switch ($RelativityBusinessDomain)
     {
+        "AgentManager" { $RelativityBusinessDomainEndpoint = "relativity.agents/workspace/-1"}
         "ARM" { $RelativityBusinessDomainEndpoint = "relativity-arm/v1" }
     }
 

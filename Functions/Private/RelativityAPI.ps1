@@ -25,7 +25,7 @@ function Invoke-RelativityApiRequest
     Param
     (
         [Parameter(Mandatory = $true)]
-        [ValidateSet("ARM")]
+        [ValidateSet("AgentManager", "ARM")]
         [String] $RelativityBusinessDomain,
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
