@@ -30,16 +30,39 @@ function Invoke-RelativityApiRequest
         [Parameter(Mandatory = $true)]
         [String] $RelativityApiEndpointExtended,
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Post")]
+        [ValidateSet("Get", "Post")]
         [String] $RelativityApiHttpMethod,
         [Parameter(Mandatory = $true)]
         [Hashtable] $RelativityApiRequestBody
     )
+
+    if ($null -eq $script:RelativityBaseUri)
+    {
+        throw "RelativityBaseUri is not set. Please run Set-RelativityBaseUri before proceeding."
+    }
+
+    if ($null -eq $script:RelativityCredential)
+    {
+        throw "RelativityCredential is not set. Please run Set-RelativityCredential before proceeding."
+    }
 
     $RelativityApiEndpointBase = Get-RelativityApiEndpointBase -RelativityBusinessDomain $RelativityBusinessDomain
     $RelativityApiEndpoint = "$($RelativityApiEndpointBase)$($RelativityApiEndpointExtended)"
 
     $RelativityApiRequestHeader = Get-RelativityApiRequestHeader
 
-    Invoke-RestMethod -Uri $RelativityApiEndpoint -Method $RelativityApiHttpMethod -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json"
+    try
+    {
+        switch ($RelativityApiHttpMethod)
+        {
+            "Get" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Get -Headers $RelativityApiRequestHeader }
+            "Post" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Post -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
+        }
+    }
+    catch
+    {
+        throw "Error making API call: $($_).Exception.Message"
+    }
+
+    return $RelativityApiResponse
 }

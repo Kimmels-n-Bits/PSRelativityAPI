@@ -19,10 +19,6 @@ function Get-RelativityApiEndpointBase
         [ValidateSet("ARM")]
         [String] $RelativityBusinessDomain
     )
-    if ($script:RelativityBaseUri -eq $null)
-    {
-        throw "RelativityBaseUri is not set - make sure to run Set-RelativityBaseUri to a valid value before continuing."
-    }
 
     switch ($RelativityBusinessDomain)
     {

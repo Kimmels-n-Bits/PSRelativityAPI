@@ -3,12 +3,12 @@
 Sets the base URI for Relativity interactions.
 
 .DESCRIPTION
-The function sets the base URI for all subsequent interactions with the Relativity system. 
-This is essential for forming the correct endpoints when making API calls or other HTTP requests 
+The function sets the base URI for all subsequent interactions with the Relativity system.
+This is essential for forming the correct endpoints when making API calls or other HTTP requests
 to the Relativity system.
 
 .PARAMETER RelativityBaseUri
-The base URI to set for Relativity. It should include the protocol (http/https) and the domain name. 
+The base URI to set for Relativity. It should include the protocol (http/https) and the domain name.
 The function will parse and store a formatted version of this URI for later use.
 
 .EXAMPLE
@@ -21,7 +21,8 @@ Ensure the provided base URI is accessible and correct to avoid issues in subseq
 #>
 function Set-RelativityBaseUri
 {
-    Param 
+    [CmdletBinding(SupportsShouldProcess)]
+    Param
     (
         [Parameter(Mandatory = $true, Position = 0)]
         [ValidateNotNullOrEmpty()]
@@ -38,8 +39,8 @@ function Set-RelativityBaseUri
 Sets the credentials for authenticating with Relativity.
 
 .DESCRIPTION
-The function sets the authentication credentials required for all subsequent interactions with the Relativity system. 
-These credentials are used to authenticate API calls or other HTTP requests to Relativity. 
+The function sets the authentication credentials required for all subsequent interactions with the Relativity system.
+These credentials are used to authenticate API calls or other HTTP requests to Relativity.
 If no credentials are provided, the function will prompt the user to enter them.
 
 .PARAMETER RelativityCredential
@@ -70,12 +71,12 @@ function Set-RelativityCredential
             if (-not $_.UserName) {
                 throw "The PSCredential object must have a UserName."
             }
-            
+
             $password = $_.GetNetworkCredential().Password
             if (-not $password) {
                 throw "The PSCredential object must have a Password."
             }
-            
+
             return $true
         })]
         [PSCredential] $RelativityCredential
