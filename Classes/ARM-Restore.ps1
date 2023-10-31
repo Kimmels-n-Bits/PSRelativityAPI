@@ -81,28 +81,6 @@ class RelativityArmRestoreJobAdvancedFileOptions
     }
 }
 
-class RelativityArmRestoreJobUserMappingItem
-{
-    [ValidateNotNull()]
-    [Int32] $ArchiveUserID
-    [ValidateNotNull()]
-    [Int32] $InstanceUserID
-
-    RelativityArmRestoreJobUserMappingItem([Int32] $archiveUserID, [Int32] $instanceUserID)
-    {
-        $this.ArchiveUserID = $archiveUserID
-        $this.InstanceUserID = $instanceUserID
-    }
-
-    [Hashtable] ToHashTable()
-    {
-        return @{
-            ArchiveUserID = $this.ArchiveUserID
-            InstanceUserID = $this.InstanceUserID
-        }
-    }
-}
-
 class RelativityArmRestoreJobUserMapping
 {
     [ValidateNotNull()]
@@ -249,5 +227,16 @@ class RelativityArmRestoreJobCreateRequest
             NotificationOptions = $this.NotificationOptions.ToHashTable()
             UiJobActionsLocked = $this.UiJobActionsLocked
         }
+    }
+}
+
+class RelativityArmRestoreJobCreateResponse
+{
+    [ValidateNotNull()]
+    [Int32] $JobID
+
+    RelativityArmRestoreJobCreateResponse([Int32] $jobId)
+    {
+        $this.JobID = $jobID
     }
 }

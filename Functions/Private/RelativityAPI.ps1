@@ -30,7 +30,7 @@ function Invoke-RelativityApiRequest
         [Parameter(Mandatory = $true)]
         [String] $RelativityApiEndpointExtended,
         [Parameter(Mandatory = $true)]
-        [ValidateSet("Post")]
+        [ValidateSet("Get", "Post")]
         [String] $RelativityApiHttpMethod,
         [Parameter(Mandatory = $true)]
         [Hashtable] $RelativityApiRequestBody
@@ -53,7 +53,11 @@ function Invoke-RelativityApiRequest
 
     try
     {
-        $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method $RelativityApiHttpMethod -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json"
+        switch ($RelativityApiHttpMethod)
+        {
+            "Get" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Get -Headers $RelativityApiRequestHeader }
+            "Post" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Post -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
+        }
     }
     catch
     {

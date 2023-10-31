@@ -38,7 +38,7 @@ class RelativityArmArchiveJobFileOptions
     [Boolean] $IncludeRepositoryFiles
     [ValidateNotNull()]
     [Boolean] $IncludeLinkedFiles
-    [ValidateSet("SkipFile", "StopJob")]
+    [ValidateSet("", "SkipFile", "StopJob")]
     [String] $MissingFileBehavior
 
     RelativityArmArchiveJobFileOptions([Boolean] $includeRepositoryFiles, [Boolean] $includeLinkedFiles, [String] $missingFileBehavior)
@@ -64,7 +64,7 @@ class RelativityArmArchiveJobProcessingOptions
     [Boolean] $IncludeProcessing
     [ValidateNotNull()]
     [Boolean] $IncludeProcessingFiles
-    [ValidateSet("SkipFile", "StopJob")]
+    [ValidateSet("", "SkipFile", "StopJob")]
     [String] $ProcessingMissingFileBehavior
 
     RelativityArmArchiveJobProcessingOptions([Boolean] $includeProcessing, [Boolean] $includeProcessingFiles, [String] $processingMissingFileBehavior)
@@ -88,7 +88,7 @@ class RelativityArmArchiveJobExtendedWorkspaceDataOptions
 {
     [ValidateNotNull()]
     [Boolean] $IncludeExtendedWorkspaceData
-    [ValidateSet("SkipApplication", "StopJob")]
+    [ValidateSet("", "SkipApplication", "StopJob")]
     [String] $ApplicationErrorExportBehavior
 
     RelativityArmArchiveJobExtendedWorkspaceDataOptions([Boolean] $includeExtendedWorkspaceData, [String] $applicationErrorExportBehavior)
@@ -128,10 +128,53 @@ class RelativityArmArchiveJobNotificationOptions
     }
 }
 
+class RelativityArmArchiveJobActionHistory
+{
+    [ValidateNotNull()]
+    [DateTime] $Date
+    [ValidateNotNullOrEmpty()]
+    [String] $Type
+    [ValidateNotNullOrEmpty()]
+    [String] $UserName
+
+    RelativityArmArchiveJobActionHistory([DateTime] $date, [String] $type, [String] $userName)
+    {
+        $this.Date = $date
+        $this.Type = $type
+        $this.UserName = $userName
+    }
+}
+
+class RelativityArmArchiveJobDetails
+{
+    [ValidateNotNull()]
+    [DateTime] $CreatedOn
+    [ValidateNotNull()]
+    [DateTime] $ModifiedTime
+    [ValidateNotNullOrEmpty()]
+    [String] $SubmittedBy
+    [ValidateNotNullOrEmpty()]
+    [String] $State
+    [ValidateNotNullOrEmpty()]
+    [String] $Priority
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobActionHistory[]] $ActionsHistory
+
+    RelativityArmArchiveJobDetails([DateTime] $createdOn, [DateTime] $modifiedOn, [String] $submittedBy, [String] $state, [String] $priority, [RelativityArmArchiveJobActionHistory[]] $actionsHistory)
+    {
+        $this.CreatedOn = $createdOn
+        $this.ModifiedTime = $modifiedOn
+        $this.SubmittedBy = $submittedBy
+        $this.State = $state
+        $this.Priority = $priority
+        $this.ActionsHistory = $actionsHistory
+    }
+}
+
 class RelativityArmArchiveJobCreateRequest
 {
     [ValidateNotNull()]
-    [Int32] $WorkspaceId
+    [Int32] $WorkspaceID
     [ValidateSet("Low", "Medium", "High")]
     [String] $JobPriority
     [ValidateNotNull()]
@@ -153,9 +196,9 @@ class RelativityArmArchiveJobCreateRequest
     [ValidateNotNull()]
     [Boolean] $UseDefaultArchiveDirectory
 
-    RelativityArmArchiveJobCreateRequest([Int32] $workspaceId, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)
+    RelativityArmArchiveJobCreateRequest([Int32] $workspaceID, [String] $jobPriority, [String] $archiveDirectory, [String] $scheduledStartTime, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked, [Boolean] $useDefaultArchiveDirectory)
     {
-        $this.WorkspaceId = $workspaceId
+        $this.WorkspaceID = $workspaceID
         $this.JobPriority = $jobPriority
         $this.ArchiveDirectory = $archiveDirectory
         $this.ScheduledStartTime = $scheduledStartTime
@@ -171,7 +214,7 @@ class RelativityArmArchiveJobCreateRequest
     [Hashtable] ToHashTable()
     {
         return @{
-            WorkspaceID = $this.WorkspaceId
+            WorkspaceID = $this.WorkspaceID
             ArchiveDirectory = $this.ArchiveDirectory
             JobPriority = $this.JobPriority
             ScheduledStartTime = $this.ScheduledStartTime
@@ -189,10 +232,60 @@ class RelativityArmArchiveJobCreateRequest
 class RelativityArmArchiveJobCreateResponse
 {
     [ValidateNotNull()]
-    [Int32] $JobId
+    [Int32] $JobID
 
-    RelativityArmArchiveJobCreateResponse([Int32] $jobId)
+    RelativityArmArchiveJobCreateResponse([Int32] $jobID)
     {
-        $this.JobId = $jobId
+        $this.JobID = $jobID
+    }
+}
+
+class RelativityArmArchiveJobReadResponse
+{
+    [ValidateNotNull()]
+    [Int32] $JobID
+    [ValidateNotNullOrEmpty()]
+    [String] $JobName
+    [ValidateNotNull()]
+    [Int32] $JobExecutionID
+    [ValidateNotNull()]
+    [Guid] $JobExecutionGuid
+    [ValidateNotNullOrEmpty()]
+    [String] $ArchivePath
+    [ValidateNotNull()]
+    [Int32] $WorkspaceID
+    [ValidateNotNull()]
+    [String] $ScheduledStartTime
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobDetails] $JobDetails
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobMigratorOptions] $MigratorOptions
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobFileOptions] $FileOptions
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobProcessingOptions] $ProcessingOptions
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $ExtendedWorkspaceDataOptions
+    [ValidateNotNull()]
+    [RelativityArmArchiveJobNotificationOptions] $NotificationOptions
+    [ValidateNotNull()]
+    [Boolean] $UiJobActionsLocked
+
+    RelativityArmArchiveJobReadResponse([Int32] $jobID, [String] $jobName, [Int32] $jobExecutionID, [Guid] $jobExecutionGuid, [String] $archivePath, [Int32] $workspaceID, [String] $scheduledStartTime, [RelativityArmArchiveJobDetails] $jobDetails, [RelativityArmArchiveJobMigratorOptions] $migratorOptions, [RelativityArmArchiveJobFileOptions] $fileOptions, [RelativityArmArchiveJobProcessingOptions] $processingOptions, [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $extendedWorkspaceDataOptions, [RelativityArmArchiveJobNotificationOptions] $notificationOptions, [Boolean] $uiJobActionsLocked)
+    {
+        $this.JobID = $jobID
+        $this.JobName = $jobName
+        $this.JobExecutionID = $jobExecutionID
+        $this.JobExecutionGuid = $jobExecutionGuid
+        $this.ArchivePath = $archivePath
+        $this.WorkspaceID = $workspaceID
+        $this.ScheduledStartTime = $scheduledStartTime
+        $this.JobDetails = $jobDetails
+        $this.MigratorOptions = $migratorOptions
+        $this.FileOptions = $fileOptions
+        $this.ProcessingOptions = $processingOptions
+        $this.ExtendedWorkspaceDataOptions = $extendedWorkspaceDataOptions
+        $this.NotificationOptions = $notificationOptions
+        $this.UiJobActionsLocked = $uiJobActionsLocked
     }
 }

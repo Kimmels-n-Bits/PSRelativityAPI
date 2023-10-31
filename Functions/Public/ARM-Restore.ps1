@@ -61,17 +61,20 @@ Default is true.
 Indicates if archive users should be auto mapped by email address.
 
 .PARAMETER UserMappings
-Array of explicit user mappings from the archive to the Relativity instance.
+Hashtable array of explicit user mappings from the archive to the Relativity instance.
+Array must have two properties, ArchiveUserID and InstanceUserID, of type Int32.
 
 .PARAMETER AutoMapGroups
 Indicates if archive groups should be auto mapped by name.
 
 .PARAMETER GroupMappings
-Array of explicit group mappings from the archive to the Relativity instance.
+Hashtable Array of explicit group mappings from the archive to the Relativity instance.
+Array must have two properties: ArchiveGroupID and InstanceGroupID of type Int32.
 
 .PARAMETER Applications
-Array of non-required/3rd party applications that should be installed to the workspace.
+HashtableArray of non-required/3rd party applications that should be installed to the workspace.
 Required Relativity applications are automatically upgraded during workspace upgrade stage and are not needed here.
+Array must have two properties, Guid and ShouldRestore, of types String and Boolean respectively.
 
 .PARAMETER NotifyJobCreator
 Indicates if email notifications will be sent to the job creator.
@@ -122,33 +125,33 @@ function New-RelativityArmRestoreJob
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Int32] $FileRepositoryID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $StructuredAnalyticsServerID = $null,
+        [Int32] $StructuredAnalyticsServerID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $ConceptualAnalyticsServerID = $null,
+        [Int32] $ConceptualAnalyticsServerID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $DtSearchLocationID = $null,
+        [Int32] $DtSearchLocationID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $ReferenceFilesAsArchiveLinks = $false,
+        [Switch] $ReferenceFilesAsArchiveLinks,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $UpdateRepositoryFilePaths = $true,
+        [Switch] $UpdateRepositoryFilePaths = $true,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $UpdateLinkedFilePaths = $true,
+        [Switch] $UpdateLinkedFilePaths = $true,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $AutoMapUsers = $false,
+        [Switch] $AutoMapUsers,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Hashtable[]] $UserMappings,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $AutoMapGroups = $false,
+        [Switch] $AutoMapGroups,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Hashtable[]] $GroupMappings,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Hashtable[]] $Applications,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $NotifyJobCreator = $false,
+        [Switch] $NotifyJobCreator,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $NotifyJobExecutor = $false,
+        [Switch] $NotifyJobExecutor,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Boolean] $UiJobActionsLocked = $false
+        [Switch] $UiJobActionsLocked
     )
     Process
     {
@@ -168,6 +171,8 @@ function New-RelativityArmRestoreJob
 
         $RelativityApiEndpointExtended = "restore-jobs"
 
-        Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
+        $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
+
+        return [RelativityArmRestoreJobCreateResponse]::New([Int32]$RelativityApiResponse)
     }
 }
