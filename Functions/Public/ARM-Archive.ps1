@@ -337,8 +337,8 @@ function Set-RelativityArmArchiveJob
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [Int32] $JobID
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]]
+        [Int32] $JobID,
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Int32] $WorkspaceID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $JobPriority = "Medium",
