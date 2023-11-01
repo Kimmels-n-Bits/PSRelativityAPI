@@ -171,7 +171,7 @@ function New-RelativityArmRestoreJob
 
         [RelativityApiEndpointResource[]]$RelativityApiEndpointResources = @()
         $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("restore-jobs", "")
-        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain = "relativity-arm" -Version = "v1" -Resources $RelativityApiEndpointResources
+        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $RelativityApiEndpointResources
 
         $RelativityArmRestoreJobCreateResponse = Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
 

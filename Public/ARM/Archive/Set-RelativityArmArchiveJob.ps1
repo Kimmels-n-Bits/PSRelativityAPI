@@ -173,7 +173,7 @@ function Set-RelativityArmArchiveJob
 
         [RelativityApiEndpointResource[]]$RelativityApiEndpointResources = @()
         $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("archive-jobs", "$($JobID)")
-        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain = "relativity-arm" -Version = "v1" -Resources $RelativityApiEndpointResources
+        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $RelativityApiEndpointResources
 
         return Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Put" -RelativityApiRequestBody $RelativityApiRequestBody
     }

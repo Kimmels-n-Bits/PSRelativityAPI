@@ -97,7 +97,14 @@ class RelativityArmArchiveJobRequestBase
     {
         $this.WorkspaceID = $workspaceID
         $this.JobPriority = $jobPriority
-        $this.ArchiveDirectory = $archiveDirectory
+        if ($useDefaultArchiveDirectory)
+        {
+            $this.ArchiveDirectory = $null
+        }
+        else
+        {
+            $this.ArchiveDirectory = $archiveDirectory   
+        }
         $this.ScheduledStartTime = $scheduledStartTime
         $this.MigratorOptions = $migratorOptions
         $this.FileOptions = $fileOptions

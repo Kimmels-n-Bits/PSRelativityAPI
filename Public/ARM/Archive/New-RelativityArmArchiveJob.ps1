@@ -107,7 +107,7 @@ function New-RelativityArmArchiveJob
         [Int32] $WorkspaceID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $JobPriority = "Medium",
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $ArchiveDirectory,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
@@ -170,7 +170,7 @@ function New-RelativityArmArchiveJob
 
         [RelativityApiEndpointResource[]]$RelativityApiEndpointResources = @()
         $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("archive-jobs", "")
-        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain = "relativity-arm" -Version = "v1" -Resources $RelativityApiEndpointResources
+        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $RelativityApiEndpointResources
 
         $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
 

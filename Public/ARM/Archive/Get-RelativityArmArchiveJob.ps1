@@ -37,13 +37,13 @@ function Get-RelativityArmArchiveJob
 
         $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Get"
 
-        $RelativityArmArchiveJobActionsHistory = [RelativityArmArchiveJobActionHistory[]]@()
+        [RelativityArmArchiveJobActionHistory[]]$RelativityArmArchiveJobActionsHistory = @()
 
         $RelativityApiResponse.JobDetails.ActionsHistory | ForEach-Object {
             $RelativityArmArchiveJobActionsHistory += [RelativityArmArchiveJobActionHistory]::New($_.Date, $_.Type, $_.UserName)
         }
 
-        $RelativityArmArchiveJobDetails = [RelativityArmArchiveJobDetails]::New($RelativityApiResponse.JobDetails.CreatedOn, $RelativityApiResponse.JobDetails.ModifiedTime, $RelativityApiResponse.JobDetails.SubmittedBy, $RelativityApiResponse.JobDetails.State, $RelativityApiResponse.JobDetails.Priority, $RelativityApiResponse)
+        $RelativityArmArchiveJobDetails = [RelativityArmArchiveJobDetails]::New($RelativityApiResponse.JobDetails.CreatedOn, $RelativityApiResponse.JobDetails.ModifiedTime, $RelativityApiResponse.JobDetails.SubmittedBy, $RelativityApiResponse.JobDetails.State, $RelativityApiResponse.JobDetails.Priority, $RelativityArmArchiveJobActionsHistory)
         $RelativityArmArchiveJobMigratorOptions = [RelativityArmArchiveJobMigratorOptions]::New($RelativityApiResponse.MigratorOptions.IncludeDatabaseBackup, $RelativityApiResponse.MigratorOptions.IncludeDtSearch, $RelativityApiResponse.MigratorOptions.IncludeConceptualAnalytics, $RelativityApiResponse.MigratorOptions.IncludeStructuredAnalytics, $RelativityApiResponse.MigratorOptions.IncludeDataGrid)
         $RelativityArmArchiveJobFileOptions = [RelativityArmArchiveJobFileOptions]::New($RelativityApiResponse.FileOptions.IncludeRepositoryFiles, $RelativityApiResponse.FileOptions.IncludeLinkedFiles, $RelativityApiResponse.FileOptions.MissingFileBehavior)
         $RelativityArmArchiveJobProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New($RelativityApiResponse.FileOptions.IncludeProcessing, $RelativityApiResponse.FileOptions.IncludeProcessingFiles, $RelativityApiResponse.FileOptions.ProcessingMissingFileBehavior)

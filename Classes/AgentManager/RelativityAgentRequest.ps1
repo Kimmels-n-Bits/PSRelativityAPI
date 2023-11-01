@@ -1,3 +1,35 @@
+<#
+.SYNOPSIS
+Class to represent a request for creating or updating an agent in the Relativity's REST API.
+
+.DESCRIPTION
+This class contains properties and methods required to build a structured request for Agent Request in the Relativity's REST API.
+
+.PARAMETER AgentType
+Indicates the kind of job that the agent executes.
+
+.PARAMETER AgentServer
+The server where the agent is to be added.
+
+.PARAMETER Enabled
+A Boolean value indicating whether the agent is running.
+
+.PARAMETER Interval
+Indicates the number of seconds that the agent should wait before checking the database for available jobs.
+
+.PARAMETER LoggingLevel
+An integer value indicating the message type that the system logs in the Event Viewer.
+
+.PARAMETER Keywords
+Optional words or phrases used to describe the agent.
+
+.PARAMETER Notes
+An optional description or other information about the agent.
+
+.METHOD ToHashTable
+Converts the object to a hashtable suitable for JSON conversion.
+#>
+
 class RelativityAgentRequest {
     [ValidateNotNull()]
     [RelativityAgentRequestAgentType] $AgentType

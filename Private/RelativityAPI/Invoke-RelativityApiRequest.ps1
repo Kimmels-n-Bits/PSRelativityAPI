@@ -50,7 +50,7 @@ function Invoke-RelativityApiRequest
             "Post" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Post -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
             "Get" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Get -Headers $RelativityApiRequestHeader }
             "Put" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Put -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
-            "Get" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Delete -Headers $RelativityApiRequestHeader }
+            "Delete" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Delete -Headers $RelativityApiRequestHeader }
         }
     }
     catch
