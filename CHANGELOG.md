@@ -2,9 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.1] - 2023-10-30
+## [0.0.2] - 2023-11-01
 
 ### Added
-- ARM API : Arm Archive Job Create
-- ARM API : Arm Archive Job Read
-- ARM API : Arm Restore Job Create
+- Get-RelativityApiEndpoint
+
+### Changed
+- Refactored code to prevent monolithic .ps1 files in the future
+
+### Fixed
+- Get-RelativityArmArchiveJob no longer deletes ARM jobs
+
+## [0.0.1] - 2023-10-31
+
+### Added
+- AgentManager API : New-RelativityAgent
+- AgentManager API : Get-RelativityAgentType
+- ARM API : New-RelativityArmArchiveJob
+- ARM API : Get-RelativityArmArchiveJob
+- ARM API : Set-RelativityArmArchiveJob
+- ARM API : New-RelativityArmRestoreJob

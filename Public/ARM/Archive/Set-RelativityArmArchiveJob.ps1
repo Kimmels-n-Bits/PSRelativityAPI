@@ -1,17 +1,17 @@
 <#
 .SYNOPSIS
-Creates a new Relativity ARM Archive Job.
+Updates settings for a Relativity ARM Archive Job.
 
 .DESCRIPTION
-The function constructs a request to create a new ARM archive job in Relativity.
+The function constructs a request to update an existing ARM archive job in Relativity.
 It allows for extensive configuration through various parameters, enabling users to specify
 details like the workspace ArtifactId, job priority, file options, and more.
-If job creation is successful the response will be the Id of the newly created job.
+If job creation is successful the response will be a status code of 200.
 If the job creation could not be completed the response will contain validation errors with more detailed information.
 
-.PARAMETER WorkspaceId
+.PARAMETER WorkspaceID
 The ArtifactId of the workspace to archive for the archive job. This is a mandatory parameter.
-This Workspace must not be in the process of upgrading or currently in use by another ARM job.
+This workspace must not be in the process of upgrading or currently in use by another ARM job.
 
 .PARAMETER JobPriority
 Priority of execution for the job. Possible options include "Low", "Medium", and "High".
@@ -86,23 +86,26 @@ When this option is set to true leave ArchiveDirectory empty.
 ARM will select the fist valid one from configuration.
 
 .EXAMPLE
-New-RelativityArmArchiveJob -WorkspaceId 1234567 -ArchiveDirectory "\\server\path" -IncludeDatabaseBackup
+Set-RelativityArmArchiveJob -JobID 54 -WorkspaceId 1234567 -ArchiveDirectory "\\server\path" -IncludeDatabaseBackup
 
-This example creates a new archive job for workspace with the ArtifactId 1234567 in the specified directory and includes a database backup.
+This example updates the existing archive job with JobID 54 to a workspace with the ArtifactId 1234567 in the specified directory and includes a database backup.
 
 .EXAMPLE
-New-RelativityArmArchiveJob -WorkspaceId 1234567 -IncludeDatabaseBackup -IncludeRepositoryFiles -UseDefaultArchiveDirectory
+Set-RelativityArmArchiveJob -JobID 54 -WorkspaceId 1234567 -IncludeDatabaseBackup -IncludeRepositoryFiles -UseDefaultArchiveDirectory
 
-This example creates a new archive job for workspace with the ArtifactId 1234567 using the default archive directory and includes a database backup and repository files.
+This example updates the existing archive job with JobID 54 to a workspace with the ArtifactId 1234567 using the default archive directory and includes a database backup and repository files.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function New-RelativityArmArchiveJob
+function Set-RelativityArmArchiveJob
 {
     [CmdletBinding(SupportsShouldProcess)]
     Param
     (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
+        [Int32] $JobID,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Int32] $WorkspaceID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
@@ -161,76 +164,17 @@ function New-RelativityArmArchiveJob
         $ExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New($IncludeExtendedWorkspaceData, $ApplicationErrorExportBehavior)
         $NotificationOptions = [RelativityArmArchiveJobNotificationOptions]::New($NotifyJobCreator, $NotifyJobExecutor)
 
-        $RelativityArmArchiveJobCreateRequest = [RelativityArmArchiveJobCreateRequest]::New($WorkspaceID, $JobPriority, $ArchiveDirectory, $ScheduledStartTime, $MigratorOptions, $FileOptions, $ProcessingOptions, $ExtendedWorkspaceDataOptions, $NotificationOptions, $UiJobActionsLocked, $UseDefaultArchiveDirectory)
+        $RelativityArmArchiveJobUpdateRequest = [RelativityArmArchiveJobUpdateRequest]::New($WorkspaceID, $JobPriority, $ArchiveDirectory, $ScheduledStartTime, $MigratorOptions, $FileOptions, $ProcessingOptions, $ExtendedWorkspaceDataOptions, $NotificationOptions, $UiJobActionsLocked, $UseDefaultArchiveDirectory)
 
         $RelativityApiRequestBody =
         @{
-            request = $RelativityArmArchiveJobCreateRequest.ToHashTable()
+            request = $RelativityArmArchiveJobUpdateRequest.ToHashTable()
         }
 
-        $RelativityApiEndpointExtended = "archive-jobs"
+        [RelativityApiEndpointResource[]]$RelativityApiEndpointResources = @()
+        $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("archive-jobs", "$($JobID)")
+        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $RelativityApiEndpointResources
 
-        $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
-
-        return [RelativityArmArchiveJobCreateResponse]::New([Int32]$RelativityApiResponse)
-    }
-}
-
-<#
-.SYNOPSIS
-Retrieves details of a Relativity ARM Archive Job.
-
-.DESCRIPTION
-The function sends a request to retrieve details of an ARM archive job in Relativity based on the provided JobID.
-The response contains various details about the job, such as the job's name, execution ID, archive path, workspace it relates to, and other configuration options.
-It's important to ensure that the provided JobID corresponds to an existing job in the system.
-
-.PARAMETER JobID
-The ID of the ARM archive job to retrieve. This is a mandatory parameter.
-
-.EXAMPLE
-Get-RelativityArmArchiveJob -JobID 3026
-
-This example retrieves details of the archive job with the ID of 3026.
-
-.NOTES
-Ensure you have connectivity and appropriate permissions in Relativity before running this function. 
-The function does not modify any data but only retrieves details of a specified job.
-#>
-function Get-RelativityArmArchiveJob
-{
-    [CmdletBinding()]
-    Param
-    (
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [ValidateNotNull()]
-        [Int32] $JobID
-    )
-
-    Process
-    {
-        $RelativityApiRequestBody =
-        @{
-
-        }
-
-        $RelativityApiEndpointExtended = "archive-jobs/$($JobID)"
-
-        $RelativityArmArchiveJobReadResponse = Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Get" -RelativityApiRequestBody $RelativityApiRequestBody
-
-        $RelativityArmArchiveJobActionsHistory = [RelativityArmArchiveJobActionHistory[]]@()
-
-        $RelativityArmArchiveJobReadResponse.JobDetails.ActionsHistory | ForEach-Object {
-            $RelativityArmArchiveJobActionsHistory += [RelativityArmArchiveJobActionHistory]::New($_.Date, $_.Type, $_.UserName)
-        }
-
-        $RelativityArmArchiveJobDetails = [RelativityArmArchiveJobDetails]::New($RelativityArmArchiveJobReadResponse.JobDetails.CreatedOn, $RelativityArmArchiveJobReadResponse.JobDetails.ModifiedTime, $RelativityArmArchiveJobReadResponse.JobDetails.SubmittedBy, $RelativityArmArchiveJobReadResponse.JobDetails.State, $RelativityArmArchiveJobReadResponse.JobDetails.Priority, $RelativityArmArchiveJobActionsHistory)
-        $RelativityArmArchiveJobMigratorOptions = [RelativityArmArchiveJobMigratorOptions]::New($RelativityArmArchiveJobReadResponse.MigratorOptions.IncludeDatabaseBackup, $RelativityArmArchiveJobReadResponse.MigratorOptions.IncludeDtSearch, $RelativityArmArchiveJobReadResponse.MigratorOptions.IncludeConceptualAnalytics, $RelativityArmArchiveJobReadResponse.MigratorOptions.IncludeStructuredAnalytics, $RelativityArmArchiveJobReadResponse.MigratorOptions.IncludeDataGrid)
-        $RelativityArmArchiveJobFileOptions = [RelativityArmArchiveJobFileOptions]::New($RelativityArmArchiveJobReadResponse.FileOptions.IncludeRepositoryFiles, $RelativityArmArchiveJobReadResponse.FileOptions.IncludeLinkedFiles, $RelativityArmArchiveJobReadResponse.FileOptions.MissingFileBehavior)
-        $RelativityArmArchiveJobProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New($RelativityArmArchiveJobReadResponse.FileOptions.IncludeProcessing, $RelativityArmArchiveJobReadResponse.FileOptions.IncludeProcessingFiles, $RelativityArmArchiveJobReadResponse.FileOptions.ProcessingMissingFileBehavior)
-        $RelativityArmArchiveJobExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New($RelativityArmArchiveJobReadResponse.ExtendedWorkspaceDataOptions.IncludeExtendedWorkspaceData, $RelativityArmArchiveJobReadResponse.ExtendedWorkspaceDataOptions.ApplicationErrorExportBehavior)
-        $RelativityArmArchiveJobNotificationOptions = [RelativityArmArchiveJobNotificationOptions]::New($RelativityArmArchiveJobReadResponse.NotificationOptions.NotifyJobCreator, $RelativityArmArchiveJobReadResponse.NotificationOptions.NotifyJobExecutor)
-
-        return [RelativityArmArchiveJobReadResponse]::New($RelativityArmArchiveJobReadResponse.JobID, $RelativityArmArchiveJobReadResponse.JobName, $RelativityArmArchiveJobReadResponse.JobExecutionID, $RelativityArmArchiveJobReadResponse.JobExecutionGuid, $RelativityArmArchiveJobReadResponse.ArchivePath, $RelativityArmArchiveJobReadResponse.WorkspaceID, $RelativityArmArchiveJobReadResponse.ScheduledStartTime, $RelativityArmArchiveJobDetails, $RelativityArmArchiveJobMigratorOptions, $RelativityArmArchiveJobFileOptions, $RelativityArmArchiveJobProcessingOptions, $RelativityArmArchiveJobExtendedWorkspaceDataOptions, $RelativityArmArchiveJobNotificationOptions, $RelativityArmArchiveJobReadResponse.UiJobActionsLocked)
+        return Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Put" -RelativityApiRequestBody $RelativityApiRequestBody
     }
 }

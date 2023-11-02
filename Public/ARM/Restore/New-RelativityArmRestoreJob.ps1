@@ -169,10 +169,12 @@ function New-RelativityArmRestoreJob
             request = $RelativityArmRestoreJobCreateRequest.ToHashTable()
         }
 
-        $RelativityApiEndpointExtended = "restore-jobs"
+        [RelativityApiEndpointResource[]]$RelativityApiEndpointResources = @()
+        $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("restore-jobs", "")
+        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $RelativityApiEndpointResources
 
-        $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityBusinessDomain "ARM" -RelativityApiEndpointExtended $RelativityApiEndpointExtended -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
+        $RelativityArmRestoreJobCreateResponse = Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
 
-        return [RelativityArmRestoreJobCreateResponse]::New([Int32]$RelativityApiResponse)
+        return [RelativityArmRestoreJobCreateResponse]::New([Int32]$RelativityArmRestoreJobCreateResponse)
     }
 }
