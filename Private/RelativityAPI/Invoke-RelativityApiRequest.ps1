@@ -5,13 +5,13 @@ Makes an API request to the specified Relativity endpoint.
 .DESCRIPTION
 Constructs and sends an API request to the given Relativity endpoint, using the specified HTTP method and request body.
 
-.PARAMETER RelativityApiEndpoint
+.PARAMETER ApiEndpoint
 The specific API endpoint to which the request is to be made.
 
-.PARAMETER RelativityApiHttpMethod
+.PARAMETER HttpMethod
 The HTTP method to use for the API request. Currently, only "Post" is supported.
 
-.PARAMETER RelativityApiRequestBody
+.PARAMETER RequestBody
 A hashtable containing the request body to be sent with the API request.
 
 .NOTES
@@ -23,12 +23,12 @@ function Invoke-RelativityApiRequest
     (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String] $RelativityApiEndpoint,
+        [String] $ApiEndpoint,
         [Parameter(Mandatory = $true)]
         [ValidateSet("Post", "Get", "Put", "Delete")]
-        [String] $RelativityApiHttpMethod,
+        [String] $HttpMethod,
         [Parameter(Mandatory = $false)]
-        [Hashtable] $RelativityApiRequestBody
+        [Hashtable] $RequestBody
     )
 
     if ($null -eq $script:RelativityBaseUri)
@@ -41,16 +41,16 @@ function Invoke-RelativityApiRequest
         throw "RelativityCredential is not set. Please run Set-RelativityCredential before proceeding."
     }
 
-    $RelativityApiRequestHeader = Get-RelativityApiRequestHeader
+    $RequestHeader = Get-RelativityApiRequestHeader
 
     try
     {
-        switch ($RelativityApiHttpMethod)
+        switch ($HttpMethod)
         {
-            "Post" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Post -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
-            "Get" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Get -Headers $RelativityApiRequestHeader }
-            "Put" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Put -Headers $RelativityApiRequestHeader -Body ($RelativityApiRequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
-            "Delete" { $RelativityApiResponse = Invoke-RestMethod -Uri $RelativityApiEndpoint -Method Delete -Headers $RelativityApiRequestHeader }
+            "Post" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body ($RequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
+            "Get" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
+            "Put" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body ($RequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
+            "Delete" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader }
         }
     }
     catch
@@ -58,5 +58,5 @@ function Invoke-RelativityApiRequest
         throw "Error making API call: $($_).Exception.Message"
     }
 
-    return $RelativityApiResponse
+    return $Response
 }

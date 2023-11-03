@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2023-11-03
+
+### Added
+- AgentManager API : GetRelativityAgent
+- AgentManager API : Get-RelativityAgentServer
+- AgentManager API : Remove-RelativityAgent
+- AgentManager API : Set-RelativityAgent
+
+### Changed
+- Refactored AgentManager code around revised best practices
+
 ## [0.0.2] - 2023-11-01
 
 ### Added

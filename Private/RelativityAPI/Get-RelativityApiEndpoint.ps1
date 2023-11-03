@@ -15,7 +15,7 @@ The business domain for which the API request is intended. A predefined set of d
 Specifies the version of the API. For example: "v1". It defaults to an empty string if not provided.
 
 .PARAMETER Resources
-An array of `RelativityApiEndpointResource` objects that define the resource and resource ID components of the API endpoint.
+An array of String objects that define the components of the API endpoint.
 
 .PARAMETER QueryString
 The query string to be appended to the API endpoint. Should start with a "?" followed by the query parameters.
@@ -78,7 +78,7 @@ function Get-RelativityApiEndpoint
             "v1"
         )]
         [String] $Version,
-        [RelativityApiEndpointResource[]] $Resources,
+        [String[]] $Resources,
         [ValidateScript({
             $_ -match "^\?((\w|\d)*?=?(\w|\d)*?&?){1,}$"
         }
@@ -91,37 +91,36 @@ function Get-RelativityApiEndpoint
         Param
         (
             [ValidateNotNull()]
-            [String] $RelativityApiEndpoint,
+            [String] $ApiEndpoint,
             [ValidateNotNull()]
             [String] $Value
         )
 
         if (-not [String]::IsNullOrWhiteSpace($Value))
         {
-            if (-not $RelativityApiEndpoint.EndsWith("/"))
+            if (-not $ApiEndpoint.EndsWith("/"))
             {
-                $RelativityApiEndpoint += "/"
+                $ApiEndpoint += "/"
             }
 
-            $RelativityApiEndpoint += $Value
+            $ApiEndpoint += $Value
         }
 
-        return $RelativityApiEndpoint
+        return $ApiEndpoint
     }
 
 
-    $RelativityApiEndpoint = $script:RelativityBaseUri
+    $ApiEndpoint = $script:RelativityBaseUri
 
-    $RelativityApiEndpoint = Join-RelativityApiEndpoint -RelativityApiEndpoint $RelativityApiEndpoint -Value $RestSurface
-    $RelativityApiEndpoint = Join-RelativityApiEndpoint -RelativityApiEndpoint $RelativityApiEndpoint -Value $BusinessDomain
-    $RelativityApiEndpoint = Join-RelativityApiEndpoint -RelativityApiEndpoint $RelativityApiEndpoint -Value $Version
+    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $RestSurface
+    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $BusinessDomain
+    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $Version
 
     $Resources | ForEach-Object {
-        $RelativityApiEndpoint = Join-RelativityApiEndpoint -RelativityApiEndpoint $RelativityApiEndpoint -Value $_.Resource
-        $RelativityApiEndpoint = Join-RelativityApiEndpoint -RelativityApiEndpoint $RelativityApiEndpoint -Value $_.ResourceId
+        $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $_
     }
 
-    $RelativityApiEndpoint = Join-RelativityApiEndpoint -RelativityApiEndpoint $RelativityApiEndpoint -Value $QueryString
+    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $QueryString
 
-    return $RelativityApiEndpoint
+    return $ApiEndpoint
 }

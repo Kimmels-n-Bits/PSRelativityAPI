@@ -1,4 +1,3 @@
-
 [String] $script:RelativityBaseUri = $null
 [PSCredential] $script:RelativityCredential = $null
 

@@ -38,25 +38,31 @@ Number of agents to create. Default is 1.
 .EXAMPLE
 New-RelativityAgent -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
 This example creates two new Relativity agents with the given Artifact IDs and a check interval of 60 seconds.
+
+.NOTES
+Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
 function New-RelativityAgent
 {
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding(SupportsShouldProcess = $true)]
     Param
     (
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentTypeSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
         [Int32] $AgentTypeArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentServerSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
         [Int32] $AgentServerArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Enabled,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Int32] $Interval = 30,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, 10)]
         [Int32] $LoggingLevel = 5,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $Keywords,
@@ -67,27 +73,51 @@ function New-RelativityAgent
     )
     Process
     {
-        $AgentType = [RelativityAgentRequestAgentType]::New($AgentTypeSecured, $AgentTypeArtifactID)
-        $AgentServer = [RelativityagentRequestAgentServer]::New($AgentServerSecured, $AgentServerArtifactID)
-        $AgentRequest = [RelativityAgentRequest]::New($AgentType, $AgentServer, $Enabled, $Interval, $LoggingLevel, $Keywords, $Notes)
-        
-        $RelativityAgentCreateRequest = [RelativityAgentCreateRequest]::New($AgentRequest, $Count)
+        try
+        {
+            $AgentType = [RelativityAgentCreateRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
+            $AgentServer = [RelativityAgentCreateRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
+            $AgentRequest = [RelativityAgentCreateRequestAgentRequest]::New($AgentType, $AgentServer, $Enabled, $Interval, $LoggingLevel, $Keywords, $Notes)
+            
+            $Request = [RelativityAgentCreateRequest]::New($AgentRequest, $Count)
 
-        $RelativityApiRequestBody = $RelativityAgentCreateRequest.ToHashTable()
+            $RequestBody = $Request.ToHashTable()
 
-        [RelativityApiEndpointResource[]] $RelativityApiEndpointResources = @()
-        $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("workspace", "-1")
-        $RelativityApiEndpointResources += [RelativityApiEndpointREsource]::New("agents")
-        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $RelativityApiEndpointResources
+            [String[]] $Resources = @("workspace", "-1", "agents")
 
-        $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Post" -RelativityApiRequestBody $RelativityApiRequestBody
+            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-        $RelativityAgentCreateResponse = [RelativityAgentCreateResponse[]]@()
+            Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 3)"
+            Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
+            if ($PSCmdlet.ShouldProcess($ApiEndpoint))
+            {
+                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
 
-        $RelativityApiResponse | ForEach-Object {
-            $RelativityAgentCreateResponse += [RelativityAgentCreateResponse]::New($_)
+                $Response = [RelativityAgentCreateResponse[]]@()
+
+                $ApiResponse | ForEach-Object {
+                    $Response += [RelativityAgentCreateResponse]::New( [Int32] $_)
+
+                    Write-Verbose "Successfully created one or more agents. Count: $($Response.Count)."
+                }
+            }
+
+            return $Response
         }
-
-        return $RelativityAgentCreateResponse
+        catch
+        {
+            Write-Debug "API Endpoint: $($ApiEndpoint)"
+            Write-Debug "AgentTypeSecured: $($AgentTypeSecured)"
+            Write-Debug "AgentTypeArtifactID: $($AgentTypeArtifactID)"
+            Write-Debug "AgentServerSecured: $($AgentServerSecured)"
+            Write-Debug "AgentServerArtifactID: $($AgentServerArtifactID)"
+            Write-Debug "Enabled: $($Enabled)"
+            Write-Debug "Interval: $($Interval)"
+            Write-Debug "LoggingLevel: $($LoggingLevel)"
+            Write-Debug "Keywords: $($Keywords)"
+            Write-Debug "Notes: $($Notes)"
+            Write-Debug "Count: $($Count)"
+            throw
+        }
     }
 }
