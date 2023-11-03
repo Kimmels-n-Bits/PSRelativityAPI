@@ -15,21 +15,32 @@ The function does not modify any data but only retrieves details of Relativity's
 #>
 function Get-RelativityAgentType
 {
+    [CmdletBinding()]
+    Param ()
     Process
     {
-        [RelativityApiEndpointResource[]] $RelativityApiEndpointResources = @()
-        $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("workspace", "-1")
-        $RelativityApiEndpointResources += [RelativityApiEndpointResource]::New("agenttypes", "")
-        $RelativityApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $RelativityApiEndpointResources
+        try 
+        {
+            [String[]] $Resources = @("workspace", "-1", "agenttypes")
 
-        $RelativityApiResponse = Invoke-RelativityApiRequest -RelativityApiEndpoint $RelativityApiEndpoint -RelativityApiHttpMethod "Get"
+            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-        $RelativityAgentTypeReadResponse = [RelativityAgentType[]]@()
+            Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
+            $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-        $RelativityApiResponse | ForEach-Object {
-            $RelativityAgentTypeReadResponse += [RelativityAgentType]::New($_.ApplicationName, $_.CompanyName, $_.DefaultInterval, $_.DefaultLoggingLevel, $_.ArtifactID, $_.Name)
+            $Response = [RelativityAgentTypeReadResponse[]]@()
+
+            $ApiResponse | ForEach-Object {
+                $Response += [RelativityAgentTypeReadResponse]::New($_)
+            }
+            
+            Write-Verbose "Agent types retrieved successfully."
+            return $Response
         }
-        
-        return $RelativityAgentTypeReadResponse
+        catch
+        {
+            Write-Debug "API Endpoint: $($ApiEndpoint)"
+            throw
+        }
     }
 }

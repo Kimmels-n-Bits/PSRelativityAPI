@@ -1,9 +1,9 @@
-class RelativityAgentCreateRequestSecuredValue
+class RelativityAgentUpdateRequestSecuredValue
 {
     [Boolean] $Secured
     [Int32] $Value
 
-    RelativityAgentCreateRequestSecuredValue([Boolean] $secured, [Int32] $value)
+    RelativityAgentUpdateRequestSecuredValue([Boolean] $secured, [Int32] $value)
     {
         $this.Secured = $secured
         $this.Value = $value
@@ -20,19 +20,19 @@ class RelativityAgentCreateRequestSecuredValue
     }
 }
 
-class RelativityAgentCreateRequestAgentRequest
+class RelativityAgentUpdateRequestAgentRequest
 {
-    [RelativityAgentCreateRequestSecuredValue] $AgentType
-    [RelativityAgentCreateRequestSecuredValue] $AgentServer
+    [RelativityAgentUpdateRequestSecuredValue] $AgentType
+    [RelativityAgentUpdateRequestSecuredValue] $AgentServer
     [Boolean] $Enabled
     [Int32] $Interval
     [Int32] $LoggingLevel
     [String] $Keywords
     [String] $Notes
 
-    RelativityAgentCreateRequestAgentRequest(
-        [RelativityAgentCreateRequestSecuredValue] $agentType,
-        [RelativityAgentCreateRequestSecuredValue] $agentServer,
+    RelativityAgentUpdateRequestAgentRequest(
+        [RelativityAgentUpdateRequestSecuredValue] $agentType,
+        [RelativityAgentUpdateRequestSecuredValue] $agentServer,
         [Boolean] $enabled,
         [Int32] $interval,
         [Int32] $loggingLevel,
@@ -58,22 +58,40 @@ class RelativityAgentCreateRequestAgentRequest
         $ReturnValue.Add("Enabled", $this.Enabled)
         $ReturnValue.Add("Interval", $this.Interval)
         $ReturnValue.Add("LoggingLevel", $this.LoggingLevel)
-        $ReturnValue.Add("Keywords", $this.Keywords)
-        $ReturnValue.Add("Notes", $this.Notes)
+        
+        if (-not $null -eq $this.Keywords)
+        {
+            $ReturnValue.Add("Keywords", $this.Keywords)
+        }
+
+        if (-not $null -eq $this.Notes)
+        {
+            $ReturnValue.Add("Notes", $this.Notes)
+        }
 
         return $ReturnValue
     }
 }
 
-class RelativityAgentCreateRequest
+class RelativityAgentUpdateRequest
 {
-    [RelativityAgentCreateRequestAgentRequest] $AgentRequest
-    [Int32] $Count
+    [RelativityAgentUpdateRequestAgentRequest] $AgentRequest
+    [String] $LastModifiedOn
 
-    RelativityAgentCreateRequest([RelativityAgentCreateRequestAgentRequest] $agentRequest, [Int32] $count)
+    RelativityAgentUpdateRequest([RelativityAgentUpdateRequestAgentRequest] $agentRequest, [String] $lastModifiedOn)
     {
         $this.AgentRequest = $agentRequest
-        $this.Count = $count
+
+        [DateTime] $lastModifiedOnResult = New-Object DateTime
+
+        if ([DateTime]::TryParse($lastModifiedOn, [ref]$lastModifiedOnResult))
+        {
+            $this.LastModifiedOn = $lastModifiedOnResult
+        }
+        elseif(-not [String]::IsNullOrEmpty($lastModifiedOn))
+        {
+            throw "Error parsing LastModifiedOn value: $($lastModifiedOn)"
+        }
     }
 
     [Hashtable] ToHashTable()
@@ -81,7 +99,11 @@ class RelativityAgentCreateRequest
         $ReturnValue = @{}
 
         $ReturnValue.Add("AgentRequest", $this.AgentRequest.ToHashTable())
-        $ReturnValue.Add("Count", $this.Count)
+
+        if($null -ne $this.LastModifiedOn)
+        {
+            $ReturnValue.Add("LastModifiedOn", $this.LastModifiedOn)
+        }
 
         return $ReturnValue
     }
