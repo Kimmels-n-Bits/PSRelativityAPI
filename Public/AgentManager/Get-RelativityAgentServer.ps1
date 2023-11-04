@@ -1,23 +1,23 @@
 <#
 .SYNOPSIS
-Retrieves details of Relativity agent servers.
+Function to retrieve a list of agent servers or servers compatible with a specific agent type using Relativity's REST API.
 
 .DESCRIPTION
-The function sends a request to retrieve details of the agent servers in Relativity.
-The response contains various details about each agent server, such as the agent server's name, artifactID, type, number of agents, and number of processor cores.
+This function sends a GET request to the Relativity REST API to retrieve a list of all agent servers in a Relativity environment or servers compatible with a specific agent type. If the AgentTypeArtifactID parameter is provided, it fetches servers compatible with that agent type; otherwise, it retrieves all agent servers.
 
-.PARAMETER AgentTypeID
-AgentTypeID is an optional filter for servers that support the indicated Agent Type.
+.PARAMETER AgentTypeArtifactID
+(Optional) The Artifact ID of the agent type to retrieve compatible agent servers for. If not specified, the function retrieves all agent servers.
 
 .EXAMPLE
 Get-RelativityAgentServer
+This example retrieves a list of all agent servers in the Relativity environment.
 
 .EXAMPLE
-Get-RelativityAgentServer -AgentTypeID 1234567
+Get-RelativityAgentServer -AgentTypeArtifactID 1015277
+This example retrieves a list of agent servers compatible with the specified agent type.
 
 .NOTES
-Ensure you have connectivity and appropriate permissions in Relativity before running this function. 
-The function does not modify any data but only retrieves details of Relativity's agent servers
+Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
 function Get-RelativityAgentServer
 {
@@ -25,7 +25,7 @@ function Get-RelativityAgentServer
     Param
     (
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $AgentTypeID
+        [Int32] $AgentTypeArtifactID
     )
     Process
     {
@@ -33,10 +33,10 @@ function Get-RelativityAgentServer
         {
             [String[]] $Resources = @("workspace", "-1")
 
-            if ($null -ne $AgentTypeID -and $AgentTypeID -gt 0)
+            if ($null -ne $AgentTypeArtifactID -and $AgentTypeArtifactID -gt 0)
             {
                 $Resources += "agenttypes"
-                $Resources += $AgentTypeID.ToString()
+                $Resources += $AgentTypeArtifactID.ToString()
                 $Resources += "availableagentservers"
             }
             else 
@@ -60,8 +60,8 @@ function Get-RelativityAgentServer
         }
         catch 
         {
-            Write-Debug "API Endpoint: $($ApiEndpoint)"
-            Write-Debug "AgentTypeID: $($AgentTypeID)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
             throw
         }
     }

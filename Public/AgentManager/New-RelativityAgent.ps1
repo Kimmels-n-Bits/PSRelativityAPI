@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Function to create a new Relativity Agent using the Relativity's REST API.
+Function to create a new Relativity Agent using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls the Relativity's REST API, and processes the response to create a new agent.
+This function constructs the required request, calls Relativity's REST API, and processes the response to create a new agent.
 
 .PARAMETER AgentTypeSecured
 Switch to indicate if the current user has permission to view the setting in the Value field for AgentType.
@@ -106,17 +106,17 @@ function New-RelativityAgent
         }
         catch
         {
-            Write-Debug "API Endpoint: $($ApiEndpoint)"
-            Write-Debug "AgentTypeSecured: $($AgentTypeSecured)"
-            Write-Debug "AgentTypeArtifactID: $($AgentTypeArtifactID)"
-            Write-Debug "AgentServerSecured: $($AgentServerSecured)"
-            Write-Debug "AgentServerArtifactID: $($AgentServerArtifactID)"
-            Write-Debug "Enabled: $($Enabled)"
-            Write-Debug "Interval: $($Interval)"
-            Write-Debug "LoggingLevel: $($LoggingLevel)"
-            Write-Debug "Keywords: $($Keywords)"
-            Write-Debug "Notes: $($Notes)"
-            Write-Debug "Count: $($Count)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
+            Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
+            Write-Verbose "AgentServerSecured: $($AgentServerSecured)"
+            Write-Verbose "AgentServerArtifactID: $($AgentServerArtifactID)"
+            Write-Verbose "Enabled: $($Enabled)"
+            Write-Verbose "Interval: $($Interval)"
+            Write-Verbose "LoggingLevel: $($LoggingLevel)"
+            Write-Verbose "Keywords: $($Keywords)"
+            Write-Verbose "Notes: $($Notes)"
+            Write-Verbose "Count: $($Count)"
             throw
         }
     }

@@ -1,10 +1,61 @@
+<#
+.SYNOPSIS
+Function to update the properties of a Relativity Agent using Relativity's REST API.
+
+.DESCRIPTION
+This function constructs the required request, sends a PUT request to the Relativity REST API, and processes the response to update an agent's properties such as its run intervals, enabled property, and others. Additionally, it can restrict the update to the date the agent was last modified by using the LastModifiedOn parameter.
+
+.PARAMETER AgentArtifactID
+The Artifact ID of the agent to be updated.
+
+.PARAMETER AgentTypeSecured
+Switch to indicate whether the current user has permission to view the setting in the Value field for AgentType.
+
+.PARAMETER AgentTypeArtifactID
+The Artifact ID for the agent type, such as a Branding Manager or Production Manager agent.
+
+.PARAMETER AgentServerSecured
+Switch to indicate whether the current user has permission to view the setting in the Value field for AgentServer.
+
+.PARAMETER AgentServerArtifactID
+The Artifact ID of the server where the agent is to be added.
+
+.PARAMETER Enabled
+Switch to indicate whether the agent should be running.
+
+.PARAMETER Interval
+Number of seconds the agent should wait before checking the database for available jobs. Default is 30 seconds.
+
+.PARAMETER LoggingLevel
+An integer value indicating the message type that the system should log in the Event Viewer. Default is 5.
+
+.PARAMETER Keywords
+Optional words or phrases used to describe the agent.
+
+.PARAMETER Notes
+Optional description or other information about the agent.
+
+.PARAMETER LastModifiedOn
+The date and time when the agent was most recently modified. This parameter is only required if you want to restrict the update of an agent to the date that it was last modified.
+
+.EXAMPLE
+Set-RelativityAgent -AgentArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60
+This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds.
+
+.EXAMPLE
+Set-RelativityAgent -AgentArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60 -LastModifiedOn "2018-10-19T18:41:20.54"
+This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds, and restricts the update to the date the agent was last modified.
+
+.NOTES
+Ensure you have connectivity and appropriate permissions in Relativity before running this function.
+#>
 function Set-RelativityAgent
 {
     [CmdletBinding(SupportsShouldProcess = $true)]
     Param
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $AgentID,
+        [Int32] $AgentArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentTypeSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
@@ -47,11 +98,7 @@ function Set-RelativityAgent
 
             $RequestBody = $Request.ToHashTable()
 
-            [String[]] $Resources = @()
-            $Resources += "workspace"
-            $Resources += "-1"
-            $Resources += "agents"
-            $Resources += $AgentID.ToString()
+            [String[]] $Resources = @("workspace", "-1", "agents", $AgentArtifactID.ToString())
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
@@ -68,17 +115,18 @@ function Set-RelativityAgent
         }
         catch 
         {
-            Write-Debug "API Endpoint: $($ApiEndpoint)"
-            Write-Debug "AgentTypeSecured: $($AgentTypeSecured)"
-            Write-Debug "AgentTypeArtifactID: $($AgentTypeArtifactID)"
-            Write-Debug "AgentServerSecured: $($AgentServerSecured)"
-            Write-Debug "AgentServerArtifactID: $($AgentServerArtifactID)"
-            Write-Debug "Enabled: $($Enabled)"
-            Write-Debug "Interval: $($Interval)"
-            Write-Debug "LoggingLevel: $($LoggingLevel)"
-            Write-Debug "Keywords: $($Keywords)"
-            Write-Debug "Notes: $($Notes)"
-            Write-Debug "LastModifiedOn: $($LastModifiedOn)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "AgentArtifactID: $($AgentArtifactID)"
+            Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
+            Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
+            Write-Verbose "AgentServerSecured: $($AgentServerSecured)"
+            Write-Verbose "AgentServerArtifactID: $($AgentServerArtifactID)"
+            Write-Verbose "Enabled: $($Enabled)"
+            Write-Verbose "Interval: $($Interval)"
+            Write-Verbose "LoggingLevel: $($LoggingLevel)"
+            Write-Verbose "Keywords: $($Keywords)"
+            Write-Verbose "Notes: $($Notes)"
+            Write-Verbose "LastModifiedOn: $($LastModifiedOn)"
             throw
         }
     }
