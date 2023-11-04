@@ -31,9 +31,9 @@ function Set-RelativityAgent
     {
         try 
         {
-            $AgentType = [RelativityAgentUpdateRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
-            $AgentServer = [RelativityAgentUpdateRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
-            $AgentRequest = [RelativityAgentUpdateRequestAgentRequest]::New(
+            $AgentType = [RelativityAgentRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
+            $AgentServer = [RelativityAgentRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
+            $AgentRequest = [RelativityAgentRequestAgentRequest]::New(
                 $AgentType,
                 $AgentServer,
                 $Enabled,

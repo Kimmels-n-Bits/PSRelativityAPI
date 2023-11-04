@@ -75,9 +75,9 @@ function New-RelativityAgent
     {
         try
         {
-            $AgentType = [RelativityAgentCreateRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
-            $AgentServer = [RelativityAgentCreateRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
-            $AgentRequest = [RelativityAgentCreateRequestAgentRequest]::New($AgentType, $AgentServer, $Enabled, $Interval, $LoggingLevel, $Keywords, $Notes)
+            $AgentType = [RelativityAgentRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
+            $AgentServer = [RelativityAgentRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
+            $AgentRequest = [RelativityAgentRequestAgentRequest]::New($AgentType, $AgentServer, $Enabled, $Interval, $LoggingLevel, $Keywords, $Notes)
             
             $Request = [RelativityAgentCreateRequest]::New($AgentRequest, $Count)
 

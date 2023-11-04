@@ -75,6 +75,8 @@ NestedModules = @(
     "$PSScriptRoot\Private\RelativityAPI\Invoke-RelativityApiRequest.ps1",
 
     ### Agent Manager API
+    ###Common classes
+    "$PSScriptRoot\Classes\AgentManager\CommonClasses.ps1",
     ###Get-RelativityAgentType
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentTypeReadResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\Get-RelativityAgentType.ps1",
