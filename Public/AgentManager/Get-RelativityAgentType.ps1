@@ -29,6 +29,7 @@ function Get-RelativityAgentType
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
+            Write-Debug "Preparing to invoke GET method at Relativity API endpoint '$($ApiEndpoint)'"
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 

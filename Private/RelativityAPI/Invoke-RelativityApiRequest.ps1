@@ -81,19 +81,58 @@ function Invoke-RelativityApiRequest
         }
         catch [System.Net.WebException]
         {
-            $ErrorResponse = $_.Exception.Response
-            $ErrorStatusCode = $ErrorResponse.StatusCode
-            $ErrorStatusDescription = $ErrorResponse.StatusDescription
-            $ErrorStream = $ErrorResponse.GetResponseStream()
-            $StreamReader = [System.IO.StreamReader]::New($ErrorStream)
-            $ErrorMessage = $StreamReader.ReadToEnd()
-            $StreamReader.Dispose()
+            if ($null -ne $_.Exception.Response)
+            {
+                $ResponseStream = $_.Exception.Response.GetResponseStream()
 
-            throw "Network error making API call: StatusCode:$($ErrorStatusCode) - StatusDescription:$($ErrorStatusDescription) - ResponseContent:$($ErrorMessage)"
+                if ($null -ne $ResponseStream)
+                {
+                    try 
+                    {
+                        $StreamReader = [System.IO.StreamReader]::New($ResponseStream)
+                        $ErrorMessage = $StreamReader.ReadToEnd()
+
+                        if ($ErrorMessage)
+                        {
+                            try
+                            {
+                                $ErrorObject = $ErrorMessage | ConvertFrom-Json
+                                Write-Error "API Error: $($ErrorObject.Message)"
+                            }
+                            catch
+                            {
+                                Write-Error "API Error: $($ErrorMessage)"
+                            }
+                        }
+                        else
+                        {
+                            Write-Error "API Error: No message was provided."
+                        }
+                    }
+                    finally
+                    {
+                        if ($null -ne $StreamReader)
+                        {
+                            $StreamReader.Close()
+                            $StreamReader.Dispose()
+                        }
+                    }
+                }
+                else
+                {
+                    Write-Error "API Error: No response stream available."
+                }
+            }
+            else
+            {
+                Write-Error "An unexpected error occurred: $($_)"
+            }
+
+            throw
         }
         catch
         {
-            throw "Error making API call: $($_.Exception.Message)"
+            throw
         }
 
         try

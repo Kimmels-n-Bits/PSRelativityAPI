@@ -101,9 +101,11 @@ function Set-RelativityArmArchiveJob
     (
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $JobID,
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ArtifactID,
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
@@ -178,7 +180,7 @@ function Set-RelativityArmArchiveJob
 
     Begin
     {
-        Write-Verbose "Starting New-RelativityArmArchiveJob"
+        Write-Verbose "Starting Set-RelativityArmArchiveJob"
     }
     Process
     {
@@ -196,8 +198,8 @@ function Set-RelativityArmArchiveJob
                 $IncludeRepositoryFiles,
                 $IncludeLinkedFiles,
                 $MissingFileBehavior
+            )
             
-                )
             $ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New(
                 $IncludeProcessing,
                 $IncludeProcessingFiles,
@@ -238,7 +240,7 @@ function Set-RelativityArmArchiveJob
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
-            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke PUT method at Relativity API endpoint '$($ApiEndPoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking PUT method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
@@ -277,5 +279,9 @@ function Set-RelativityArmArchiveJob
             Write-Verbose "UseDefaultArchiveDirectory: $($UseDefaultArchiveDirectory)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Set-RelativityArmArchiveJob"
     }
 }

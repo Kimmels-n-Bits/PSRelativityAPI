@@ -29,6 +29,7 @@ function Remove-RelativityAgent
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)]
         [Switch] $Force
@@ -50,7 +51,7 @@ function Remove-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke DELETE method at Reltivity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking DELETE method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {

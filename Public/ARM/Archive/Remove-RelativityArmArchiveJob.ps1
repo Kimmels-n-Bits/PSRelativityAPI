@@ -22,6 +22,7 @@ function Remove-RelativityArmArchiveJob
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $JobID
     )
 
@@ -37,7 +38,7 @@ function Remove-RelativityArmArchiveJob
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
-            Write-Debug "Preparing to invoke method"
+            Write-Debug "Preparing to invoke DELETE method at Relativity API endpoint '$($ApiEndPoint)'"
             Write-Verbose "Invoking DELETE method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {

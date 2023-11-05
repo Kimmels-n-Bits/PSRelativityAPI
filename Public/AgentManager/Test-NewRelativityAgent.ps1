@@ -51,15 +51,18 @@ function Test-NewRelativityAgent
         [Switch] $AgentTypeSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $AgentTypeArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentServerSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $AgentServerArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Enabled,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, 604800)]
         [Int32] $Interval = 30,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1, 10)]
@@ -69,6 +72,7 @@ function Test-NewRelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $Notes,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $Count = 1
     )
 
@@ -100,7 +104,7 @@ function Test-NewRelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Prepaparing to invoke POST method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
 

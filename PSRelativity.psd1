@@ -102,12 +102,18 @@ NestedModules = @(
     "$PSScriptRoot\Public\AgentManager\Test-RemoveRelativityAgent.ps1",
 
     ### ARM API
-    "$PSScriptRoot\Classes\ARM.ps1",
-    "$PSScriptRoot\Public\ARM\New-RelativityArmArchiveJob.ps1",
-    "$PSScriptRoot\Public\ARM\Get-RelativityArmArchiveJob.ps1",
-    "$PSScriptRoot\Public\ARM\Set-RelativityArmArchiveJob.ps1",
-    "$PSScriptRoot\Public\ARM\Remove-RelativityArmArchiveJob.ps1"
-    
+    "$PSScriptRoot\Classes\ARM\CommonClasses.ps1",
+    "$PSScriptRoot\Classes\ARM\Archive\CommonClasses.ps1",
+    "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobCreateOrUpdateRequest.ps1"
+    "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobReadResponse.ps1"
+    "$PSScriptRoot\Classes\ARM\Restore\CommonClasses.ps1",
+    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobCreateOrUpdateRequest.ps1"
+    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobReadResponse.ps1"
+    "$PSScriptRoot\Public\ARM\Archive\New-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Archive\Get-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Archive\Set-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Archive\Remove-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Restore\New-RelativityArmRestoreJob.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -131,7 +137,8 @@ FunctionsToExport = @(
     'New-RelativityArmArchiveJob',
     'Get-RelativityArmArchiveJob',
     'Set-RelativityArmArchiveJob',
-    'Remove-RelativityArmArchiveJob'
+    'Remove-RelativityArmArchiveJob',
+    'New-RelativityArmRestoreJob'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
