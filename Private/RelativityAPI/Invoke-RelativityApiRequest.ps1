@@ -31,78 +31,89 @@ function Invoke-RelativityApiRequest
         [Hashtable] $RequestBody
     )
 
-    if ($null -eq $script:RelativityBaseUri)
+    Begin
     {
-        throw "RelativityBaseUri is not set. Please run Set-RelativityBaseUri before proceeding."
+        Write-Verbose "Starting Invoke-RelativityApiRequest"
     }
-
-    if ($null -eq $script:RelativityCredential)
+    Process
     {
-        throw "RelativityCredential is not set. Please run Set-RelativityCredential before proceeding."
-    }
-
-    $RequestHeader = Get-RelativityApiRequestHeader
-    
-    try
-    {
-        $RequestBodyJson = $RequestBody | ConvertTo-Json -Depth 10
-    }
-    catch
-    {
-        throw "Error parsing request body to JSON: $($_.Exception.Message)"
-    }
-    
-
-    try
-    {
-        $Response = switch ($HttpMethod)
+        if ($null -eq $script:RelativityBaseUri)
         {
-            "Post" { Invoke-WebRequest -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
-            "Get" { Invoke-WebRequest -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
-            "Put" { Invoke-WebRequest -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
-            "Delete"
-            { 
-                if ($null -eq $RequestBody)
-                {
-                    Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader
-                }
-                else 
-                {
-                    Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader -Body $RequestBody -ContentType "application/json"
+            throw "RelativityBaseUri is not set. Please run Set-RelativityBaseUri before proceeding."
+        }
+
+        if ($null -eq $script:RelativityCredential)
+        {
+            throw "RelativityCredential is not set. Please run Set-RelativityCredential before proceeding."
+        }
+
+        $RequestHeader = Get-RelativityApiRequestHeader
+        
+        try
+        {
+            $RequestBodyJson = $RequestBody | ConvertTo-Json -Depth 10
+        }
+        catch
+        {
+            throw "Error parsing request body to JSON: $($_.Exception.Message)"
+        }
+        
+
+        try
+        {
+            $Response = switch ($HttpMethod)
+            {
+                "Post" { Invoke-WebRequest -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
+                "Get" { Invoke-WebRequest -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
+                "Put" { Invoke-WebRequest -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
+                "Delete"
+                { 
+                    if ($null -eq $RequestBody)
+                    {
+                        Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader
+                    }
+                    else 
+                    {
+                        Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader -Body $RequestBody -ContentType "application/json"
+                    }
                 }
             }
         }
-    }
-    catch [System.Net.WebException]
-    {
-        $ErrorResponse = $_.Exception.Response
-        $ErrorStatusCode = $ErrorResponse.StatusCode
-        $ErrorStatusDescription = $ErrorResponse.StatusDescription
-        $ErrorStream = $ErrorResponse.GetResponseStream()
-        $StreamReader = [System.IO.StreamReader]::New($ErrorStream)
-        $ErrorMessage = $StreamReader.ReadToEnd()
-        $StreamReader.Dispose()
+        catch [System.Net.WebException]
+        {
+            $ErrorResponse = $_.Exception.Response
+            $ErrorStatusCode = $ErrorResponse.StatusCode
+            $ErrorStatusDescription = $ErrorResponse.StatusDescription
+            $ErrorStream = $ErrorResponse.GetResponseStream()
+            $StreamReader = [System.IO.StreamReader]::New($ErrorStream)
+            $ErrorMessage = $StreamReader.ReadToEnd()
+            $StreamReader.Dispose()
 
-        throw "Network error making API call: StatusCode:$($ErrorStatusCode) - StatusDescription:$($ErrorStatusDescription) - ResponseContent:$($ErrorMessage)"
-    }
-    catch
-    {
-        throw "Error making API call: $($_.Exception.Message)"
-    }
+            throw "Network error making API call: StatusCode:$($ErrorStatusCode) - StatusDescription:$($ErrorStatusDescription) - ResponseContent:$($ErrorMessage)"
+        }
+        catch
+        {
+            throw "Error making API call: $($_.Exception.Message)"
+        }
 
-    try
-    {
-        $ApiResponse = $Response.Content | ConvertFrom-Json
-    }
-    catch
-    {
-        throw "Error parsing API response: $($_.Exception.Message)"
-    }
+        try
+        {
+            $ApiResponse = $Response.Content | ConvertFrom-Json
+        }
+        catch
+        {
+            throw "Error parsing API response: $($_.Exception.Message)"
+        }
 
-    if (-not $ApiResponse)
-    {
-        $ApiResponse = [PSCustomObject]@{ Success = $true }
-    }
+        if (-not $ApiResponse)
+        {
+            $ApiResponse = [PSCustomObject]@{ Success = $true }
+        }
 
-    return $ApiResponse
+        return $ApiResponse
+    }
+    End
+    {
+        Write-Verbose "Completed Invoke-RelativityApiRequest"
+    }
 }

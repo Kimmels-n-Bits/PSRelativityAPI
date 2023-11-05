@@ -72,6 +72,11 @@ function Test-NewRelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $Notes
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Test-UpdateRelativityAgent"
+    }
     Process
     {
         try
@@ -112,5 +117,9 @@ function Test-NewRelativityAgent
             Write-Verbose "Notes: $($Notes)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Test-UpdateRelativityAgent"
     }
 }

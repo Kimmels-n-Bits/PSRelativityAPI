@@ -24,6 +24,11 @@ function Test-RemoveRelativityAgent
         [ValidateNotNull()]
         [Int32] $ArtifactID
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Test-RemoveRelativityAgent"
+    }
     Process
     {
         try 
@@ -47,5 +52,9 @@ function Test-RemoveRelativityAgent
             Write-Verbose "ArtifactID: $($ArtifactID)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Test-RemoveRelativityAgent"
     }
 }

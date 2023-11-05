@@ -34,6 +34,10 @@ function Get-RelativityAgent
         [Switch] $Extended
     )
 
+    Begin
+    {
+        Write-Verbose "Starting Get-RelativityAgent"
+    }
     Process
     {
         try
@@ -63,5 +67,9 @@ function Get-RelativityAgent
             Write-Verbose "Extended: $($Extended)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Get-RelativityAgent"
     }
 }

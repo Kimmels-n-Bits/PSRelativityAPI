@@ -27,6 +27,11 @@ function Get-RelativityAgentServer
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Int32] $AgentTypeArtifactID
     )
+    
+    Begin
+    {
+        Write-Verbose "Starting Get-RelativityAgentServer"
+    }
     Process
     {
         try
@@ -64,5 +69,9 @@ function Get-RelativityAgentServer
             Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Get-RelativityAgentServer"
     }
 }

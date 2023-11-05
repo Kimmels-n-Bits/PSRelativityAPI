@@ -71,6 +71,11 @@ function New-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Int32] $Count = 1
     )
+
+    Begin
+    {
+        Write-Verbose "Starting New-RelativityAgent"
+    }
     Process
     {
         try
@@ -126,5 +131,9 @@ function New-RelativityAgent
             Write-Verbose "Count: $($Count)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed New-RelativityAgent"
     }
 }

@@ -33,6 +33,11 @@ function Remove-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)]
         [Switch] $Force
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Remove-RelativityAgent"
+    }
     Process
     {
         try 
@@ -65,5 +70,9 @@ function Remove-RelativityAgent
             Write-Verbose "Force: $($Force)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Remove-RelativityAgent"
     }
 }

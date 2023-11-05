@@ -10,12 +10,26 @@ This function is internal and is used to ensure all API requests are correctly a
 #>
 function Get-RelativityApiRequestHeader
 {
-    $RelativityApiAuthorization = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($script:RelativityCredential.UserName):$($script:RelativityCredential.GetNetworkCredential().Password)"));
+    [CmdletBinding()]
+    Param()
 
-    $RelativityApiRequestHeader = New-Object "System.Collections.Generic.Dictionary[[String], [String]]";
-    $RelativityApiRequestHeader.Add("X-CSRF-Header", "-");
-    $RelativityApiRequestHeader.Add("Content-Type", "application/json");
-    $RelativityApiRequestHeader.Add("Authorization", "Basic $($RelativityApiAuthorization)");
+    Begin
+    {
+        Write-Verbose "Starting Get-RelativityApiRequestHeader"
+    }
+    Process
+    {
+        $RelativityApiAuthorization = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($script:RelativityCredential.UserName):$($script:RelativityCredential.GetNetworkCredential().Password)"));
 
-    return $RelativityApiRequestHeader
+        $RelativityApiRequestHeader = New-Object "System.Collections.Generic.Dictionary[[String], [String]]";
+        $RelativityApiRequestHeader.Add("X-CSRF-Header", "-");
+        $RelativityApiRequestHeader.Add("Content-Type", "application/json");
+        $RelativityApiRequestHeader.Add("Authorization", "Basic $($RelativityApiAuthorization)");
+
+        return $RelativityApiRequestHeader
+    }
+    End
+    {
+        Write-Verbose "Completed Get-RelativityApiRequestHeader"
+    }
 }

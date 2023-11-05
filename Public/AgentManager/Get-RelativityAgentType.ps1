@@ -16,6 +16,11 @@ function Get-RelativityAgentType
 {
     [CmdletBinding()]
     Param ()
+
+    Begin
+    {
+        Write-Verbose "Starting Get-RelativityAgentType"
+    }
     Process
     {
         try 
@@ -41,5 +46,9 @@ function Get-RelativityAgentType
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Get-RelativityAgentType"
     }
 }

@@ -78,6 +78,11 @@ function Set-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $LastModifiedOn
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Set-RelativityAgent"
+    }
     Process
     {
         try 
@@ -131,5 +136,9 @@ function Set-RelativityAgent
             Write-Verbose "LastModifiedOn: $($LastModifiedOn)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Set-RelativityAgent"
     }
 }
