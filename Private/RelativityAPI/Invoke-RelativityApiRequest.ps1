@@ -60,7 +60,17 @@ function Invoke-RelativityApiRequest
             "Post" { Invoke-WebRequest -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
             "Get" { Invoke-WebRequest -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
             "Put" { Invoke-WebRequest -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
-            "Delete" { Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader }
+            "Delete"
+            { 
+                if ($null -eq $RequestBody)
+                {
+                    Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader
+                }
+                else 
+                {
+                    Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader -Body $RequestBody -ContentType "application/json"
+                }
+            }
         }
     }
     catch [System.Net.WebException]

@@ -1,68 +1,61 @@
 <#
 .SYNOPSIS
-Function to update the properties of a Relativity Agent using Relativity's REST API.
+Function to validate whether a new Relativity Agent can be created using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, sends a PUT request to the Relativity REST API, and processes the response to update an agent's properties such as its run intervals, enabled property, and others. Additionally, it can restrict the update to the date the agent was last modified by using the LastModifiedOn parameter.
-
-.PARAMETER ArtifactID
-The Artifact ID of the agent to be updated.
+This function constructs the required request, calls Relativity's REST API, and processes the response to validate whether a new agent can be created.
 
 .PARAMETER AgentTypeSecured
-Switch to indicate whether the current user has permission to view the setting in the Value field for AgentType.
+Switch to indicate if the current user has permission to view the setting in the Value field for AgentType.
 
 .PARAMETER AgentTypeArtifactID
-The Artifact ID for the agent type, such as a Branding Manager or Production Manager agent.
+The Artifact ID for the agent type.
 
 .PARAMETER AgentServerSecured
-Switch to indicate whether the current user has permission to view the setting in the Value field for AgentServer.
+Switch to indicate if the current user has permission to view the setting in the Value field for AgentServer.
 
 .PARAMETER AgentServerArtifactID
-The Artifact ID of the server where the agent is to be added.
+The Artifact ID of the server.
 
 .PARAMETER Enabled
-Switch to indicate whether the agent should be running.
+Switch to indicate if the agent should be running.
 
 .PARAMETER Interval
-Number of seconds the agent should wait before checking the database for available jobs. Default is 30 seconds.
+Number of seconds the agent should wait before checking the database. Default is 30 seconds.
 
 .PARAMETER LoggingLevel
-An integer value indicating the message type that the system should log in the Event Viewer. Default is 5.
+Message type that the system should log in the Event Viewer. Default is 5.
 
 .PARAMETER Keywords
-Optional words or phrases used to describe the agent.
+Optional words or phrases to describe the agent.
 
 .PARAMETER Notes
 Optional description or other information about the agent.
 
-.PARAMETER LastModifiedOn
-The date and time when the agent was most recently modified. This parameter is only required if you want to restrict the update of an agent to the date that it was last modified.
+.PARAMETER Count
+Number of agents to create. Default is 1.
 
 .EXAMPLE
-Set-RelativityAgent -ArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60
-This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds.
-
-.EXAMPLE
-Set-RelativityAgent -ArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60 -LastModifiedOn "2018-10-19T18:41:20.54"
-This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds, and restricts the update to the date the agent was last modified.
+Test-NewRelativityAgent -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
+This example validates whether two new Relativity agents with the given agent type, agent server and a check interval of 60 seconds can be created.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function Set-RelativityAgent
+function Test-NewRelativityAgent
 {
-    [CmdletBinding(SupportsShouldProcess = $true)]
+    [CmdletBinding()]
     Param
     (
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $ArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentTypeSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
         [Int32] $AgentTypeArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentServerSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
         [Int32] $AgentServerArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Enabled,
@@ -76,11 +69,11 @@ function Set-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $Notes,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [String] $LastModifiedOn
+        [Int32] $Count = 1
     )
     Process
     {
-        try 
+        try
         {
             $AgentType = [RelativityAgentRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
             $AgentServer = [RelativityAgentRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
@@ -93,32 +86,28 @@ function Set-RelativityAgent
                 $Keywords,
                 $Notes
             )
-
-            $Request = [RelativityAgentUpdateRequest]::New($AgentRequest, $LastModifiedOn)
+            
+            $Request = [RelativityAgentCreateRequest]::New($AgentRequest, $Count)
 
             $RequestBody = $Request.ToHashTable()
 
-            [String[]] $Resources = @("workspace", "-1", "agents", $ArtifactID.ToString())
+            [String[]] $Resources = @("workspace", "-1", "agents", "validateinstancelimits")
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
             Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
-            Write-Verbose "Invoking PUT method at Relativity API: $($ApiEndpoint)"
-            if ($PSCmdlet.ShouldProcess($ApiEndpoint))
-            {
-                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Put" -RequestBody $RequestBody
+            Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
+            $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
 
-                $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
+            $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
 
-                Write-Verbose "Successfully updated agent."
-            }
-            
+            Write-Verbose "Successfully validated whether one or more agents could be created. Count: $($Response.Count)."
+
             return $Response
         }
-        catch 
+        catch
         {
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "ArtifactID: $($ArtifactID)"
             Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
             Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
             Write-Verbose "AgentServerSecured: $($AgentServerSecured)"
@@ -128,7 +117,7 @@ function Set-RelativityAgent
             Write-Verbose "LoggingLevel: $($LoggingLevel)"
             Write-Verbose "Keywords: $($Keywords)"
             Write-Verbose "Notes: $($Notes)"
-            Write-Verbose "LastModifiedOn: $($LastModifiedOn)"
+            Write-Verbose "Count: $($Count)"
             throw
         }
     }
