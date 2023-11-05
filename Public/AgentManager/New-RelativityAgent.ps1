@@ -60,14 +60,17 @@ function New-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Enabled,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, 604800)]
         [Int32] $Interval = 30,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1, 10)]
         [Int32] $LoggingLevel = 5,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [String] $Keywords,
+        [ValidateNotNull()]
+        [String] $Keywords = "",
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [String] $Notes,
+        [ValidateNotNull()]
+        [String] $Notes = "",
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Int32] $Count = 1
     )
@@ -106,29 +109,30 @@ function New-RelativityAgent
             {
                 $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
 
-                $Response = [RelativityAgentCreateResponse[]]@()
+                $Response = New-Object "System.Collections.Generic.List[RelativityAgentCreateResponse]"
 
                 $ApiResponse | ForEach-Object {
-                    $Response += [RelativityAgentCreateResponse]::New( [Int32] $_)
+                    $Response.Add([RelativityAgentCreateResponse]::New( [Int32] $_))
                 }
                 Write-Verbose "Successfully created one or more agents. Count: $($Response.Count)."
             }
 
-            return $Response
+            return $Response.ToArray()
         }
         catch
         {
-            Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
-            Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
-            Write-Verbose "AgentServerSecured: $($AgentServerSecured)"
-            Write-Verbose "AgentServerArtifactID: $($AgentServerArtifactID)"
-            Write-Verbose "Enabled: $($Enabled)"
-            Write-Verbose "Interval: $($Interval)"
-            Write-Verbose "LoggingLevel: $($LoggingLevel)"
-            Write-Verbose "Keywords: $($Keywords)"
-            Write-Verbose "Notes: $($Notes)"
-            Write-Verbose "Count: $($Count)"
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Error "API Endpoint: $($ApiEndpoint)"
+            Write-Error "AgentTypeSecured: $($AgentTypeSecured)"
+            Write-Error "AgentTypeArtifactID: $($AgentTypeArtifactID)"
+            Write-Error "AgentServerSecured: $($AgentServerSecured)"
+            Write-Error "AgentServerArtifactID: $($AgentServerArtifactID)"
+            Write-Error "Enabled: $($Enabled)"
+            Write-Error "Interval: $($Interval)"
+            Write-Error "LoggingLevel: $($LoggingLevel)"
+            Write-Error "Keywords: $($Keywords)"
+            Write-Error "Notes: $($Notes)"
+            Write-Error "Count: $($Count)"
             throw
         }
     }

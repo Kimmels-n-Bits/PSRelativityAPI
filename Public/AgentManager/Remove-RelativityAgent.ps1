@@ -65,9 +65,10 @@ function Remove-RelativityAgent
         }
         catch 
         {
-            Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "ArtifactID: $($ArtifactID)"
-            Write-Verbose "Force: $($Force)"
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Error "API Endpoint: $($ApiEndpoint)"
+            Write-Error "ArtifactID: $($ArtifactID)"
+            Write-Error "Force: $($Force)"
             throw
         }
     }
