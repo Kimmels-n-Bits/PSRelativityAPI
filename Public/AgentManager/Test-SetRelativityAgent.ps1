@@ -36,13 +36,13 @@ Optional words or phrases to describe the agent.
 Optional description or other information about the agent.
 
 .EXAMPLE
-Test-UpdateRelativityAgent -ArtifactID 1019521 -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
+Test-SetRelativityAgent -ArtifactID 1019521 -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
 This example validates whether a Relativity agent can be updated with the given agent type, agent server and a check interval of 60 seconds.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function Test-NewRelativityAgent
+function Test-SetRelativityAgent
 {
     [CmdletBinding()]
     Param
@@ -79,7 +79,7 @@ function Test-NewRelativityAgent
 
     Begin
     {
-        Write-Verbose "Starting Test-UpdateRelativityAgent"
+        Write-Verbose "Starting Test-SetRelativityAgent"
     }
     Process
     {
@@ -125,6 +125,6 @@ function Test-NewRelativityAgent
     }
     End
     {
-        Write-Verbose "Completed Test-UpdateRelativityAgent"
+        Write-Verbose "Completed Test-SetRelativityAgent"
     }
 }

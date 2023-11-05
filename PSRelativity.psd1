@@ -98,7 +98,7 @@ NestedModules = @(
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentDeleteRequest.ps1",
     "$PSScriptRoot\Public\AgentManager\Remove-RelativityAgent.ps1",
     "$PSScriptRoot\Public\AgentManager\Test-NewRelativityAgent.ps1",
-    "$PSScriptRoot\Public\AgentManager\Test-UpdateRelativityAgent.ps1",
+    "$PSScriptRoot\Public\AgentManager\Test-SetRelativityAgent.ps1",
     "$PSScriptRoot\Public\AgentManager\Test-RemoveRelativityAgent.ps1",
 
     ### ARM API
@@ -130,7 +130,7 @@ FunctionsToExport = @(
     "Set-RelativityAgent",
     "Remove-RelativityAgent",
     "Test-NewRelativityAgent",
-    "Test-UpdateRelativityAgent",
+    "Test-SetRelativityAgent",
     "Test-RemoveRelativityAgent",
 
     ### ARM API

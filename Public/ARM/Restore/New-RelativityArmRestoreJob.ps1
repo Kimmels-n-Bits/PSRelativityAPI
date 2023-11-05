@@ -127,13 +127,13 @@ function New-RelativityArmRestoreJob
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $FileRepositoryID,
-        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $StructuredAnalyticsServerID,
-        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ConceptualAnalyticsServerID,
-        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $DtSearchLocationID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
@@ -189,54 +189,58 @@ function New-RelativityArmRestoreJob
             )
 
             $UserMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobUserMapping]"
-
-            $UserMappings | ForEach-Object {
-                if (-not $_.ContainsKey("ArchiveUserID") -or -not $_.ContainsKey("InstanceUserID"))
-                {
-                    throw "UserMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveUserID' and 'InstanceUserID'."
-                }
-                else
-                {
-                    $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
-                        $_.ArchiveUserID,
-                        $_.InstanceUserID
-                    ))
+            if ($null -ne $UserMappings)
+            {
+                $UserMappings | ForEach-Object {
+                    if (-not $_.ContainsKey("ArchiveUserID") -or -not $_.ContainsKey("InstanceUserID"))
+                    {
+                        throw "UserMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveUserID' and 'InstanceUserID'."
+                    }
+                    else
+                    {
+                        $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
+                            $_.ArchiveUserID,
+                            $_.InstanceUserID
+                        ))
+                    }
                 }
             }
-
             $UserMapping = [RelativityArmRestoreJobUserMappingOption]::New($AutoMapUsers, $UserMappingsValue.ToArray())
 
             $GroupMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobGroupMapping]"
-
-            $GroupMappings | ForEach-Object {
-                if (-not $_.ContainsKey("ArchiveGroupID") -or -not $_.ContainsKey("InstanceGroupID"))
-                {
-                    throw "GroupMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveGroupID' and 'InstanceGroupID'."
-                }
-                else
-                {
-                    $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
-                        $_.ArchiveGroupID,
-                        $_.InstanceGroupID
-                    ))
+            if ($null -ne $GroupMappings)
+            {
+                $GroupMappings | ForEach-Object {
+                    if (-not $_.ContainsKey("ArchiveGroupID") -or -not $_.ContainsKey("InstanceGroupID"))
+                    {
+                        throw "GroupMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveGroupID' and 'InstanceGroupID'."
+                    }
+                    else
+                    {
+                        $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
+                            $_.ArchiveGroupID,
+                            $_.InstanceGroupID
+                        ))
+                    }
                 }
             }
-
             $GroupMapping = [RelativityArmRestoreJobGroupMappingOption]::New($AutoMapGroups, $GroupMappingsValue.ToArray())
 
             $ApplicationsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobApplication]"
-
-            $Applications | ForEach-Object {
-                if (-not $_.ContainsKey("Guid") -or -not $_.ContainsKey("ShouldRestore"))
-                {
-                    throw "Applications hashtable array has at least one item missing a required key. Ensure all hashtables in the array contain both 'Guid' and 'ShouldRestore'."
-                }
-                else 
-                {
-                    $ApplicationsValue.Add([RelativityArmRestoreJobApplication]::New(
-                        $_.Guid,
-                        $_.ShouldRestore
-                    ))
+            if ($null -ne $Applications)
+            {
+                $Applications | ForEach-Object {
+                    if (-not $_.ContainsKey("Guid") -or -not $_.ContainsKey("ShouldRestore"))
+                    {
+                        throw "Applications hashtable array has at least one item missing a required key. Ensure all hashtables in the array contain both 'Guid' and 'ShouldRestore'."
+                    }
+                    else 
+                    {
+                        $ApplicationsValue.Add([RelativityArmRestoreJobApplication]::New(
+                            $_.Guid,
+                            $_.ShouldRestore
+                        ))
+                    }
                 }
             }
 
@@ -255,12 +259,12 @@ function New-RelativityArmRestoreJob
                 $AdvancedFileOptions,
                 $UserMapping,
                 $GroupMapping,
-                $ApplicationsValue,
+                $ApplicationsValue.ToArray(),
                 $NotificationOptions,
                 $UiJobActionsLocked
             )
 
-            $Request = [RelativityArmRestoreJobCreateOrUpdateRequest]::(
+            $Request = [RelativityArmRestoreJobCreateOrUpdateRequest]::New(
                 $JobOptions
             )
 

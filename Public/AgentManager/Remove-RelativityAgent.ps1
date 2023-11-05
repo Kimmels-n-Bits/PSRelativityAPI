@@ -43,7 +43,7 @@ function Remove-RelativityAgent
     {
         try 
         {
-            $Request = [RelativityagentDeleteRequest]::New($Force)
+            $Request = [RelativityAgentDeleteRequest]::New($Force)
 
             $RequestBody = $Request.ToHashTable()
 

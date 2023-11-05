@@ -52,7 +52,7 @@ class RelativityArmRestoreJobMigratorsDestinationOptions
         $ReturnValue.Add("StructuredAnalyticsServerID", $this.StructuredAnalyticsServerID)
         $ReturnValue.Add("ConceptualAnalyticsServerID", $this.ConceptualAnalyticsServerID)
         $ReturnValue.Add("DtSearchLocationID", $this.DtSearchLocationID)
-
+        
         return $ReturnValue
     }
 }
@@ -265,7 +265,16 @@ class RelativityArmRestoreJobBase
 
         $ReturnValue.Add("ArchivePath", $this.ArchivePath)
         $ReturnValue.Add("ScheduledStartTime", $this.ScheduledStartTime)
-        $ReturnValue.Add("ExistingTargetDatabase", $this.ExistingTargetDatabase)
+
+        if ([String]::IsNullOrEmpty($this.ExistingTargetDatabase))
+        {
+            $ReturnValue.Add("ExistingTargetDatabase", $null)
+        }
+        else
+        {
+            $ReturnValue.Add("ExistingTargetDatabase", $this.ExistingTargetDatabase)
+        }
+        
         $ReturnValue.Add("DestinationOptions", $this.DestinationOptions.ToHashTable())
         $ReturnValue.Add("MigratorsDestinationOptions", $this.MigratorsDestinationOptions.ToHashTable())
         $ReturnValue.Add("AdvancedFileOptions", $this.AdvancedFileOptions.ToHashTable())
