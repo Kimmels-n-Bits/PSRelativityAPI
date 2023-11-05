@@ -1,25 +1,26 @@
 <#
 .SYNOPSIS
-Function to retrieve metadata of a specific Relativity Agent.
+Function to retrieve metadata for a Relativity Agent using Relativity's REST API.
 
 .DESCRIPTION
-The function sends a request to retrieve either basic or extended metadata of a specified Relativity Agent.
+This function sends a GET request to the Relativity REST API to retrieve metadata for an agent. It can fetch basic information or extended metadata, which includes operations permitted for the agent.
 
-.PARAMETER AgentID
-The Artifact ID of the agent for which the metadata needs to be retrieved.
+.PARAMETER ArtifactID
+The Artifact ID of the agent for which metadata is being retrieved.
 
 .PARAMETER Extended
-Switch to indicate if extended metadata should be retrieved.
+Switch to indicate if extended metadata should be retrieved. If this switch is provided, the function retrieves extended information, including permissible operations on the agent.
 
 .EXAMPLE
-Get-RelativityAgent -AgentID $AgentID
+Get-RelativityAgent -ArtifactID 2017104
+This example retrieves basic metadata for the Relativity agent with the given Artifact ID.
 
 .EXAMPLE
-Get-RelativityAgent -AgentID $AgentID -Extended
+Get-RelativityAgent -ArtifactID 2017104 -Extended
+This example retrieves extended metadata for the Relativity agent with the given Artifact ID.
 
 .NOTES
-Ensure you have connectivity and appropriate permissions in Relativity before running this function. 
-The function does not modify any data but only retrieves details of Relativity's agent types
+Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
 function Get-RelativityAgent
 {
@@ -28,7 +29,7 @@ function Get-RelativityAgent
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [Int32] $AgentID,
+        [Int32] $ArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Extended
     )
@@ -37,7 +38,7 @@ function Get-RelativityAgent
     {
         try
         {
-            [String[]] $Resources = @("workspace", "-1", "agents", $AgentID.ToString())
+            [String[]] $Resources = @("workspace", "-1", "agents", $ArtifactID.ToString())
 
             if ($Extended)
             {
@@ -57,9 +58,9 @@ function Get-RelativityAgent
         }
         catch 
         {
-            Write-Debug "API Endpoint: $($ApiEndpoint)"
-            Write-Debug "AgentID: $($AgentID)"
-            Write-Debug "Extended: $($Extended)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "ArtifactID: $($ArtifactID)"
+            Write-Verbose "Extended: $($Extended)"
             throw
         }
     }

@@ -1,17 +1,16 @@
 <#
 .SYNOPSIS
-Retrieves details of Relativity agent types.
+Function to retrieve a list of agent types available in a Relativity instance using Relativity's REST API.
 
 .DESCRIPTION
-The function sends a request to retrieve details of the agent types in Relativity.
-The response contains various details about each agent type, such as the agent type's name, artifactID, default logging level, default run interval, company name, and associated application.
+This function sends a GET request to the Relativity REST API to retrieve a list of agent types.
 
 .EXAMPLE
 Get-RelativityAgentType
+This example retrieves a list of all agent types in the Relativity environment.
 
 .NOTES
-Ensure you have connectivity and appropriate permissions in Relativity before running this function. 
-The function does not modify any data but only retrieves details of Relativity's agent types
+Make sure you have connectivity and the necessary permissions in Relativity before executing this function.
 #>
 function Get-RelativityAgentType
 {
@@ -39,7 +38,7 @@ function Get-RelativityAgentType
         }
         catch
         {
-            Write-Debug "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
             throw
         }
     }
