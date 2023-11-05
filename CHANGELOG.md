@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.4] - 2023-11-04
+
+### Added
+- AgentManager API : Test-NewRelativityAgent
+- AgentManager API : Test-RemoveRelativityAgent
+- AgentManager API : Test-UpdateRelativityAgent
+
+### Changed
+- Added success response instead of null when response is a success but doesn't return anything
+- Refactored to use Invoke-WebRequest instead of Invoke-RestMethod for better error handling
+- Removed duplicated code
+
 ## [0.0.3] - 2023-11-03
 
 ### Added

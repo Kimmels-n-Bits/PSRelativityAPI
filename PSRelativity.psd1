@@ -12,7 +12,7 @@
 RootModule = 'PSRelativity.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.4'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop'
@@ -68,6 +68,7 @@ PowerShellVersion = '5.1'
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
     ### General
+    "$PSScriptRoot\Classes\RelativityAPI\RelativityApiSuccessResponse.ps1",
     "$PSScriptRoot\Public\RelativityAPI\Set-RelativityBaseUri.ps1",
     "$PSScriptRoot\Public\RelativityAPI\Set-RelativityCredential.ps1",
     "$PSScriptRoot\Private\RelativityAPI\Get-RelativityApiEndpoint.ps1",
@@ -87,12 +88,21 @@ NestedModules = @(
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentCreateRequest.ps1",
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentCreateResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\New-RelativityAgent.ps1",
+    ### Get-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentReadResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\Get-RelativityAgent.ps1",
+    ### Set-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentUpdateRequest.ps1",
     "$PSScriptRoot\Public\AgentManager\Set-RelativityAgent.ps1",
+    ### Remove-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentDeleteRequest.ps1",
-    "$PSScriptRoot\Public\AgentManager\Remove-RelativityAgent.ps1"
+    "$PSScriptRoot\Public\AgentManager\Remove-RelativityAgent.ps1",
+    ### Test-NewRelativityAgent
+    "$PSScriptRoot\Public\AgentManager\Test-NewRelativityAgent.ps1",
+    ### Test-UpdateRelativityAgent
+    "$PSScriptRoot\Public\AgentManager\Test-UpdateRelativityAgent.ps1",
+    ### Test-RemoveRelativityAgent
+    "$PSScriptRoot\Public\AgentManager\Test-RemoveRelativityAgent.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -107,7 +117,10 @@ FunctionsToExport = @(
     "New-RelativityAgent",
     "Get-RelativityAgent",
     "Set-RelativityAgent",
-    "Remove-RelativityAgent"
+    "Remove-RelativityAgent",
+    "Test-NewRelativityAgent",
+    "Test-UpdateRelativityAgent",
+    "Test-RemoveRelativityAgent"
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
