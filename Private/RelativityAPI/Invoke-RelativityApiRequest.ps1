@@ -9,7 +9,7 @@ Constructs and sends an API request to the given Relativity endpoint, using the 
 The specific API endpoint to which the request is to be made.
 
 .PARAMETER HttpMethod
-The HTTP method to use for the API request. Currently, only "Post" is supported.
+The HTTP method to use for the API request.
 
 .PARAMETER RequestBody
 A hashtable containing the request body to be sent with the API request.
@@ -42,21 +42,57 @@ function Invoke-RelativityApiRequest
     }
 
     $RequestHeader = Get-RelativityApiRequestHeader
-
+    
     try
     {
-        switch ($HttpMethod)
-        {
-            "Post" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body ($RequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
-            "Get" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
-            "Put" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body ($RequestBody | ConvertTo-Json -Depth 3) -ContentType "application/json" }
-            "Delete" { $Response = Invoke-RestMethod -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader }
-        }
+        $RequestBodyJson = $RequestBody | ConvertTo-Json -Depth 10
     }
     catch
     {
-        throw "Error making API call: $($_).Exception.Message"
+        throw "Error parsing request body to JSON: $($_.Exception.Message)"
+    }
+    
+
+    try
+    {
+        $Response = switch ($HttpMethod)
+        {
+            "Post" { Invoke-WebRequest -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
+            "Get" { Invoke-WebRequest -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
+            "Put" { Invoke-WebRequest -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
+            "Delete" { Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader }
+        }
+    }
+    catch [System.Net.WebException]
+    {
+        $ErrorResponse = $_.Exception.Response
+        $ErrorStatusCode = $ErrorResponse.StatusCode
+        $ErrorStatusDescription = $ErrorResponse.StatusDescription
+        $ErrorStream = $ErrorResponse.GetResponseStream()
+        $StreamReader = [System.IO.StreamReader]::New($ErrorStream)
+        $ErrorMessage = $StreamReader.ReadToEnd()
+        $StreamReader.Dispose()
+
+        throw "Network error making API call: StatusCode:$($ErrorStatusCode) - StatusDescription:$($ErrorStatusDescription) - ResponseContent:$($ErrorMessage)"
+    }
+    catch
+    {
+        throw "Error making API call: $($_.Exception.Message)"
     }
 
-    return $Response
+    try
+    {
+        $ApiResponse = $Response.Content | ConvertFrom-Json
+    }
+    catch
+    {
+        throw "Error parsing API response: $($_.Exception.Message)"
+    }
+
+    if (-not $ApiResponse)
+    {
+        $ApiResponse = [PSCustomObject]@{ Success = $true }
+    }
+
+    return $ApiResponse
 }

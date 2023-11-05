@@ -5,7 +5,7 @@ Function to update the properties of a Relativity Agent using Relativity's REST 
 .DESCRIPTION
 This function constructs the required request, sends a PUT request to the Relativity REST API, and processes the response to update an agent's properties such as its run intervals, enabled property, and others. Additionally, it can restrict the update to the date the agent was last modified by using the LastModifiedOn parameter.
 
-.PARAMETER AgentArtifactID
+.PARAMETER ArtifactID
 The Artifact ID of the agent to be updated.
 
 .PARAMETER AgentTypeSecured
@@ -39,11 +39,11 @@ Optional description or other information about the agent.
 The date and time when the agent was most recently modified. This parameter is only required if you want to restrict the update of an agent to the date that it was last modified.
 
 .EXAMPLE
-Set-RelativityAgent -AgentArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60
+Set-RelativityAgent -ArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60
 This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds.
 
 .EXAMPLE
-Set-RelativityAgent -AgentArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60 -LastModifiedOn "2018-10-19T18:41:20.54"
+Set-RelativityAgent -ArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60 -LastModifiedOn "2018-10-19T18:41:20.54"
 This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds, and restricts the update to the date the agent was last modified.
 
 .NOTES
@@ -55,7 +55,7 @@ function Set-RelativityAgent
     Param
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [Int32] $AgentArtifactID,
+        [Int32] $ArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentTypeSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
@@ -98,7 +98,7 @@ function Set-RelativityAgent
 
             $RequestBody = $Request.ToHashTable()
 
-            [String[]] $Resources = @("workspace", "-1", "agents", $AgentArtifactID.ToString())
+            [String[]] $Resources = @("workspace", "-1", "agents", $ArtifactID.ToString())
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
@@ -116,7 +116,7 @@ function Set-RelativityAgent
         catch 
         {
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "AgentArtifactID: $($AgentArtifactID)"
+            Write-Verbose "ArtifactID: $($ArtifactID)"
             Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
             Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
             Write-Verbose "AgentServerSecured: $($AgentServerSecured)"
