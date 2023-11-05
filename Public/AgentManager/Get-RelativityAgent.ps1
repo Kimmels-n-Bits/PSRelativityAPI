@@ -55,7 +55,7 @@ function Get-RelativityAgent
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            [RelativityAgentReadResponse] $Response = [RelativityAgentReadResponse]::New($ApiResponse)
+            $Response = [RelativityAgentReadResponse]::New($ApiResponse)
 
             Write-Verbose "Agent metadata retrieved successfully."
             return $Response

@@ -27,10 +27,10 @@ Number of seconds the agent should wait before checking the database. Default is
 Message type that the system should log in the Event Viewer. Default is 5.
 
 .PARAMETER Keywords
-Optional words or phrases to describe the agent.
+Words or phrases to describe the agent.
 
 .PARAMETER Notes
-Optional description or other information about the agent.
+Description or other information about the agent.
 
 .PARAMETER Count
 Number of agents to create. Default is 1.
@@ -103,7 +103,7 @@ function New-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
