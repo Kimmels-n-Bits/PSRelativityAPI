@@ -8,7 +8,7 @@ class RelativityAgentUpdateRequest
     {
         $this.AgentRequest = $agentRequest
 
-        [DateTime] $lastModifiedOnResult = New-Object DateTime
+        [DateTime] $lastModifiedOnResult = New-Object "DateTime"
 
         if ([DateTime]::TryParse($lastModifiedOn, [ref]$lastModifiedOnResult))
         {

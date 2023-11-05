@@ -44,7 +44,7 @@ function Get-RelativityAgentType
         catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
-            Write-Error "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
             throw
         }
     }

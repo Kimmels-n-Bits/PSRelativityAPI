@@ -106,16 +106,16 @@ function Test-NewRelativityAgent
         catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
-            Write-Error "API Endpoint: $($ApiEndpoint)"
-            Write-Error "AgentTypeSecured: $($AgentTypeSecured)"
-            Write-Error "AgentTypeArtifactID: $($AgentTypeArtifactID)"
-            Write-Error "AgentServerSecured: $($AgentServerSecured)"
-            Write-Error "AgentServerArtifactID: $($AgentServerArtifactID)"
-            Write-Error "Enabled: $($Enabled)"
-            Write-Error "Interval: $($Interval)"
-            Write-Error "LoggingLevel: $($LoggingLevel)"
-            Write-Error "Keywords: $($Keywords)"
-            Write-Error "Notes: $($Notes)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
+            Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
+            Write-Verbose "AgentServerSecured: $($AgentServerSecured)"
+            Write-Verbose "AgentServerArtifactID: $($AgentServerArtifactID)"
+            Write-Verbose "Enabled: $($Enabled)"
+            Write-Verbose "Interval: $($Interval)"
+            Write-Verbose "LoggingLevel: $($LoggingLevel)"
+            Write-Verbose "Keywords: $($Keywords)"
+            Write-Verbose "Notes: $($Notes)"
             throw
         }
     }

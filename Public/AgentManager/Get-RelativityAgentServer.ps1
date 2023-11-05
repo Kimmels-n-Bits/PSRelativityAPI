@@ -66,8 +66,8 @@ function Get-RelativityAgentServer
         catch 
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
-            Write-Error "API Endpoint: $($ApiEndpoint)"
-            Write-Error "AgentTypeArtifactID: $($AgentTypeArtifactID)"
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
             throw
         }
     }
