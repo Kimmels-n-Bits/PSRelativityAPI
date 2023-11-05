@@ -27,10 +27,10 @@ Number of seconds the agent should wait before checking the database. Default is
 Message type that the system should log in the Event Viewer. Default is 5.
 
 .PARAMETER Keywords
-Optional words or phrases to describe the agent.
+Words or phrases to describe the agent.
 
 .PARAMETER Notes
-Optional description or other information about the agent.
+Description or other information about the agent.
 
 .PARAMETER Count
 Number of agents to create. Default is 1.
@@ -60,17 +60,25 @@ function New-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Enabled,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, 604800)]
         [Int32] $Interval = 30,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1, 10)]
         [Int32] $LoggingLevel = 5,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [String] $Keywords,
+        [ValidateNotNull()]
+        [String] $Keywords = "",
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
-        [String] $Notes,
+        [ValidateNotNull()]
+        [String] $Notes = "",
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Int32] $Count = 1
     )
+
+    Begin
+    {
+        Write-Verbose "Starting New-RelativityAgent"
+    }
     Process
     {
         try
@@ -95,24 +103,25 @@ function New-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
                 $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
 
-                $Response = [RelativityAgentCreateResponse[]]@()
+                $Response = New-Object "System.Collections.Generic.List[RelativityAgentCreateResponse]"
 
                 $ApiResponse | ForEach-Object {
-                    $Response += [RelativityAgentCreateResponse]::New( [Int32] $_)
+                    $Response.Add([RelativityAgentCreateResponse]::New( [Int32] $_))
                 }
                 Write-Verbose "Successfully created one or more agents. Count: $($Response.Count)."
             }
 
-            return $Response
+            return $Response.ToArray()
         }
         catch
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
             Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
@@ -126,5 +135,9 @@ function New-RelativityAgent
             Write-Verbose "Count: $($Count)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed New-RelativityAgent"
     }
 }

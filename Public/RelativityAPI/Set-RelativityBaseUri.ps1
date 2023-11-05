@@ -21,15 +21,26 @@ Ensure the provided base URI is accessible and correct to avoid issues in subseq
 #>
 function Set-RelativityBaseUri
 {
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding()]
     Param
     (
-        [Parameter(Mandatory = $true, Position = 0)]
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [String] $RelativityBaseUri
     )
 
-    [System.Uri]$ParsedRelativityBaseUri = [System.Uri]::new($RelativityBaseUri)
+    Begin
+    {
+        Write-Verbose "Starting Set-RelativityBaseUri"
+    }
+    Process
+    {
+        [System.Uri]$ParsedRelativityBaseUri = [System.Uri]::new($RelativityBaseUri)
 
-    $script:RelativityBaseUri = "$($ParsedRelativityBaseUri.Scheme)://$($ParsedRelativityBaseUri.Host)"
+        $script:RelativityBaseUri = "$($ParsedRelativityBaseUri.Scheme)://$($ParsedRelativityBaseUri.Host)"
+    }
+    End
+    {
+        Write-Verbose "Completed Set-RelativityBaseUri"
+    }
 }

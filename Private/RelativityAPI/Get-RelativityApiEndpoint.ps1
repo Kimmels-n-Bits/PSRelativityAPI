@@ -36,10 +36,10 @@ function Get-RelativityApiEndpoint
     [CmdletBinding()]
     Param
     (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [String] $RestSurface = "relativity.rest/api",
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateSet(
             "classification-analytics",
             "conceptual-analytics",
@@ -72,13 +72,15 @@ function Get-RelativityApiEndpoint
             "relativity.structuredanalytics.services.interfaces.structuredanalytics.istructuredanalyticsmodule"
         )]
         [String] $BusinessDomain,
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateSet(
             "",
             "v1"
         )]
         [String] $Version,
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [String[]] $Resources,
+        [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
             $_ -match "^\?((\w|\d)*?=?(\w|\d)*?&?){1,}$"
         }
@@ -86,41 +88,52 @@ function Get-RelativityApiEndpoint
         [String] $QueryString
     )
 
-    function Join-RelativityApiEndpoint
+    Begin
     {
-        Param
-        (
-            [ValidateNotNull()]
-            [String] $ApiEndpoint,
-            [ValidateNotNull()]
-            [String] $Value
-        )
+        Write-Verbose "Starting Get-RelativityApiEndpoint"
 
-        if (-not [String]::IsNullOrWhiteSpace($Value))
+        function Join-RelativityApiEndpoint
         {
-            if (-not $ApiEndpoint.EndsWith("/"))
+            Param
+            (
+                [ValidateNotNull()]
+                [String] $ApiEndpoint,
+                [ValidateNotNull()]
+                [String] $Value
+            )
+
+            if (-not [String]::IsNullOrWhiteSpace($Value))
             {
-                $ApiEndpoint += "/"
+                if (-not $ApiEndpoint.EndsWith("/"))
+                {
+                    $ApiEndpoint += "/"
+                }
+
+                $ApiEndpoint += $Value
             }
 
-            $ApiEndpoint += $Value
+            return $ApiEndpoint
         }
+    }
+    Process
+    {
+        $ApiEndpoint = $script:RelativityBaseUri
 
+        $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $RestSurface
+        $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $BusinessDomain
+        $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $Version
+    
+        $Resources | ForEach-Object {
+            $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $_
+        }
+    
+        $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $QueryString
+    
         return $ApiEndpoint
     }
-
-
-    $ApiEndpoint = $script:RelativityBaseUri
-
-    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $RestSurface
-    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $BusinessDomain
-    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $Version
-
-    $Resources | ForEach-Object {
-        $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $_
+    End
+    {
+        Write-Verbose "Completed Get-RelativityApiEndpoint"
     }
-
-    $ApiEndpoint = Join-RelativityApiEndpoint -ApiEndpoint $ApiEndpoint -Value $QueryString
-
-    return $ApiEndpoint
+    
 }

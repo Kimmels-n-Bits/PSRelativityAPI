@@ -76,7 +76,7 @@ class RelativityAgentReadResponse
 
     RelativityAgentReadResponse([PSCustomObject] $ApiResponse)
     {
-        [RelativityAgentReadResponseValue] $AgentTypeValue = [RelativityAgentReadResponseValue]::New(
+        $AgentTypeValue = [RelativityAgentReadResponseValue]::New(
             $ApiResponse.AgentType.Value.ArtifactID,
             $ApiResponse.AgentType.Value.Name
         )
@@ -86,7 +86,7 @@ class RelativityAgentReadResponse
             $AgentTypeValue
         )
 
-        [RelativityAgentReadResponseValue] $AgentServerValue = [RelativityAgentReadResponseValue]::New(
+        $AgentServerValue = [RelativityAgentReadResponseValue]::New(
             $ApiResponse.AgentServer.Value.ArtifactID,
             $ApiResponse.AgentServer.Value.Name
         )

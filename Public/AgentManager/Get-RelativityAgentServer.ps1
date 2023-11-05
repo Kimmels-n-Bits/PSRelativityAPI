@@ -27,6 +27,11 @@ function Get-RelativityAgentServer
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Int32] $AgentTypeArtifactID
     )
+    
+    Begin
+    {
+        Write-Verbose "Starting Get-RelativityAgentServer"
+    }
     Process
     {
         try
@@ -49,20 +54,25 @@ function Get-RelativityAgentServer
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            $Response = [RelativityAgentServerReadResponse[]]@()
+            $Response = New-Object "System.Collections.Generic.List[RelativityAgentServerReadResponse]"
 
             $ApiResponse | ForEach-Object {
-                $Response += [RelativityAgentServerReadResponse]::New($_)
+                $Response.Add([RelativityAgentServerReadResponse]::New($_))
             }
             
             Write-Verbose "Agent servers retrieved successfully."
-            return $Response
+            return $Response.ToArray()
         }
         catch 
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Get-RelativityAgentServer"
     }
 }

@@ -78,6 +78,11 @@ function Set-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $LastModifiedOn
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Set-RelativityAgent"
+    }
     Process
     {
         try 
@@ -102,7 +107,7 @@ function Set-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking PUT method at Relativity API: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
@@ -117,6 +122,7 @@ function Set-RelativityAgent
         }
         catch 
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             Write-Verbose "ArtifactID: $($ArtifactID)"
             Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
@@ -131,5 +137,9 @@ function Set-RelativityAgent
             Write-Verbose "LastModifiedOn: $($LastModifiedOn)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Set-RelativityAgent"
     }
 }

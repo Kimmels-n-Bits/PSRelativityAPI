@@ -33,6 +33,11 @@ function Remove-RelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $True)]
         [Switch] $Force
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Remove-RelativityAgent"
+    }
     Process
     {
         try 
@@ -45,7 +50,7 @@ function Remove-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Prepaparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking DELETE method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
@@ -60,10 +65,15 @@ function Remove-RelativityAgent
         }
         catch 
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             Write-Verbose "ArtifactID: $($ArtifactID)"
             Write-Verbose "Force: $($Force)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Remove-RelativityAgent"
     }
 }

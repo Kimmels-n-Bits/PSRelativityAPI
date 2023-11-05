@@ -16,6 +16,11 @@ function Get-RelativityAgentType
 {
     [CmdletBinding()]
     Param ()
+
+    Begin
+    {
+        Write-Verbose "Starting Get-RelativityAgentType"
+    }
     Process
     {
         try 
@@ -27,19 +32,24 @@ function Get-RelativityAgentType
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            $Response = [RelativityAgentTypeReadResponse[]]@()
+            $Response = New-Object "System.Collections.Generic.List[RelativityAgentTypeReadResponse]"
 
             $ApiResponse | ForEach-Object {
-                $Response += [RelativityAgentTypeReadResponse]::New($_)
+                $Response.Add([RelativityAgentTypeReadResponse]::New($_))
             }
             
             Write-Verbose "Agent types retrieved successfully."
-            return $Response
+            return $Response.ToArray()
         }
         catch
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Get-RelativityAgentType"
     }
 }

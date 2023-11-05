@@ -12,7 +12,7 @@
 RootModule = 'PSRelativity.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.2'
+ModuleVersion = '0.0.4'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop'
@@ -68,6 +68,7 @@ PowerShellVersion = '5.1'
 # Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
 NestedModules = @(
     ### General
+    "$PSScriptRoot\Classes\RelativityAPI.ps1",
     "$PSScriptRoot\Public\RelativityAPI\Set-RelativityBaseUri.ps1",
     "$PSScriptRoot\Public\RelativityAPI\Set-RelativityCredential.ps1",
     "$PSScriptRoot\Private\RelativityAPI\Get-RelativityApiEndpoint.ps1",
@@ -75,24 +76,38 @@ NestedModules = @(
     "$PSScriptRoot\Private\RelativityAPI\Invoke-RelativityApiRequest.ps1",
 
     ### Agent Manager API
-    ###Common classes
+    ### Common classes
     "$PSScriptRoot\Classes\AgentManager\CommonClasses.ps1",
-    ###Get-RelativityAgentType
+    ### Get-RelativityAgentType
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentTypeReadResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\Get-RelativityAgentType.ps1",
-    ###Get-RelativityAgentServer
+    ### Get-RelativityAgentServer
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentServerReadResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\Get-RelativityAgentServer.ps1",
     ### New-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentCreateRequest.ps1",
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentCreateResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\New-RelativityAgent.ps1",
+    ### Get-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentReadResponse.ps1",
     "$PSScriptRoot\Public\AgentManager\Get-RelativityAgent.ps1",
+    ### Set-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentUpdateRequest.ps1",
     "$PSScriptRoot\Public\AgentManager\Set-RelativityAgent.ps1",
+    ### Remove-RelativityAgent
     "$PSScriptRoot\Classes\AgentManager\RelativityAgentDeleteRequest.ps1",
-    "$PSScriptRoot\Public\AgentManager\Remove-RelativityAgent.ps1"
+    "$PSScriptRoot\Public\AgentManager\Remove-RelativityAgent.ps1",
+    "$PSScriptRoot\Public\AgentManager\Test-NewRelativityAgent.ps1",
+    "$PSScriptRoot\Public\AgentManager\Test-UpdateRelativityAgent.ps1",
+    "$PSScriptRoot\Public\AgentManager\Test-RemoveRelativityAgent.ps1",
+
+    ### ARM API
+    "$PSScriptRoot\Classes\ARM.ps1",
+    "$PSScriptRoot\Public\ARM\New-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Get-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Set-RelativityArmArchiveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Remove-RelativityArmArchiveJob.ps1"
+    
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -107,7 +122,16 @@ FunctionsToExport = @(
     "New-RelativityAgent",
     "Get-RelativityAgent",
     "Set-RelativityAgent",
-    "Remove-RelativityAgent"
+    "Remove-RelativityAgent",
+    "Test-NewRelativityAgent",
+    "Test-UpdateRelativityAgent",
+    "Test-RemoveRelativityAgent",
+
+    ### ARM API
+    'New-RelativityArmArchiveJob',
+    'Get-RelativityArmArchiveJob',
+    'Set-RelativityArmArchiveJob',
+    'Remove-RelativityArmArchiveJob'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

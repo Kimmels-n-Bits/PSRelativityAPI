@@ -27,10 +27,10 @@ Always handle credentials securely and avoid hardcoding them in scripts.
 #>
 function Set-RelativityCredential
 {
-    [CmdletBinding(SupportsShouldProcess)]
+    [CmdletBinding()]
     Param
     (
-        [Parameter(Mandatory = $false, Position = 0)]
+        [Parameter(Mandatory = $false, Position = 0, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
             if (-not $_.UserName) {
                 throw "The PSCredential object must have a UserName."
@@ -46,10 +46,21 @@ function Set-RelativityCredential
         [PSCredential] $RelativityCredential
     )
 
-    if ($RelativityCredential -eq $null)
+    Begin
     {
-        $RelativityCredential = Get-Credential -Message "Enter your Relativity credentials."
+        Write-Verbose "Starting Set-RelativityCredential"
     }
+    Process
+    {
+        if ($null -eq $RelativityCredential)
+        {
+            $RelativityCredential = Get-Credential -Message "Enter your Relativity credentials."
+        }
 
-    $script:RelativityCredential = $RelativityCredential
+        $script:RelativityCredential = $RelativityCredential
+    }
+    End
+    {
+        Write-Verbose "Completed Set-RelativityCredential"
+    }
 }

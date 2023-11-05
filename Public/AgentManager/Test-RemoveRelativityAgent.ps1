@@ -24,6 +24,11 @@ function Test-RemoveRelativityAgent
         [ValidateNotNull()]
         [Int32] $ArtifactID
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Test-RemoveRelativityAgent"
+    }
     Process
     {
         try 
@@ -43,9 +48,14 @@ function Test-RemoveRelativityAgent
         }
         catch 
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             Write-Verbose "ArtifactID: $($ArtifactID)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Test-RemoveRelativityAgent"
     }
 }

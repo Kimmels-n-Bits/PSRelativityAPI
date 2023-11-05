@@ -72,6 +72,11 @@ function Test-NewRelativityAgent
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $Notes
     )
+
+    Begin
+    {
+        Write-Verbose "Starting Test-UpdateRelativityAgent"
+    }
     Process
     {
         try
@@ -100,6 +105,7 @@ function Test-NewRelativityAgent
         }
         catch
         {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
             Write-Verbose "AgentTypeSecured: $($AgentTypeSecured)"
             Write-Verbose "AgentTypeArtifactID: $($AgentTypeArtifactID)"
@@ -112,5 +118,9 @@ function Test-NewRelativityAgent
             Write-Verbose "Notes: $($Notes)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed Test-UpdateRelativityAgent"
     }
 }
