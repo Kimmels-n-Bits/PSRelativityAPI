@@ -29,6 +29,7 @@ function Get-RelativityAgent
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Extended
@@ -52,6 +53,7 @@ function Get-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
+            Write-Debug "Preparing to invoke GET method at Relativity API endpoint '$($ApiEndpoint)'"
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.5] - 2023-11-05
+
+### Added
+- ARM API : Remove-RelativityArmArchiveJob
+- ARM API : New-RelativityArmRestoreJob
+
+### Changes
+- ARM API : Refactored class structure to reduce duplication of code
+- ARM API : Pre-existing API calls refactored around revised best practices
+
 ## [0.0.4] - 2023-11-04
 
 ### Added

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Function to create a new Relativity ARM archive Job using Relativity's REST API..
+Function to create a new Relativity ARM archive job using Relativity's REST API.
 
 .DESCRIPTION
 This function constructs the required request, calls Relativity's REST API, and processes the response to create a new ARM archive job.
@@ -102,6 +102,7 @@ function New-RelativityArmArchiveJob
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ArtifactID,
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
@@ -236,7 +237,7 @@ function New-RelativityArmArchiveJob
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
-            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
@@ -275,5 +276,9 @@ function New-RelativityArmArchiveJob
             Write-Verbose "UseDefaultArchiveDirectory: $($UseDefaultArchiveDirectory)"
             throw
         }
+    }
+    End
+    {
+        Write-Verbose "Completed New-RelativityArmArchiveJob"
     }
 }

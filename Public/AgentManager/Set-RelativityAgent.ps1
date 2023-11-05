@@ -55,18 +55,23 @@ function Set-RelativityAgent
     Param
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentTypeSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $AgentTypeArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $AgentServerSecured,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $AgentServerArtifactID,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Switch] $Enabled,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, 604800)]
         [Int32] $Interval = 30,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1, 10)]
@@ -107,7 +112,7 @@ function Set-RelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
-            Write-Debug "Preparing to invoke method with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Debug "Preparing to invoke PUT method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking PUT method at Relativity API: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {

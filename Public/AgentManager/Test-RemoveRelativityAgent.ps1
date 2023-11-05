@@ -22,6 +22,7 @@ function Test-RemoveRelativityAgent
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
+        [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ArtifactID
     )
 
@@ -37,6 +38,7 @@ function Test-RemoveRelativityAgent
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity.agents" -Resources $Resources
 
+            Write-Debug "Preparing to invoke DELETE method at Relativity API endpoint '$($ApiEndpoint)'"
             Write-Verbose "Invoking DELETE method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Delete"
 

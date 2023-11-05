@@ -11,8 +11,16 @@ class RelativityAgentDeleteRequest
     {
         $ReturnValue = @{}
 
-        $ReturnValue.Add("Force", $this.Force)
+        if($this.Force -eq $false)
+        {
+            return $ReturnValue
+        }
+        else 
+        {
+            $ReturnValue.Add("force", $this.Force)
 
-        return $ReturnValue
+            return $ReturnValue
+        }
+        
     }
 }
