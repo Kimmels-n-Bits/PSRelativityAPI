@@ -86,9 +86,9 @@ Indicates if job actions normally available on UI should be visible for the user
 This behavior can be override by adding boolean instance setting OverrideUiJobActionsLock.
 
 .EXAMPLE
-New-RelativityArmRestoreJob -ArchivePath "\\server\path" -DatabaseServerID 1234567 -ResourcePoolID 2345671 -MatterID 3456712 -CacheLocationID 4567123 -FileRepositoryID 5671234
+Set-RelativityArmRestoreJob -ArchivePath "\\server\path" -DatabaseServerID 1234567 -ResourcePoolID 2345671 -MatterID 3456712 -CacheLocationID 4567123 -FileRepositoryID 5671234
 
-This example creates a new restore job with the specified archive path and destination options.
+This example updates an existing restore job with the specified archive path and destination options.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.

@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - ARM API : New-RelativityArmRestoreJob
 - ARM API : Get-RelativityArmRestoreJob
 - ARM API : Set-RelativityArmRestoreJob
+- ARM API : Remove-RelativityArmRestoreJob
 
 ### Changes
 - ARM API : Refactored class structure to reduce duplication of code
