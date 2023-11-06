@@ -1,33 +1,3 @@
-class RelativityArmRestoreJobDestinationOptions : RelativityArmJobDestinationOptions
-{
-    [Int32] $MatterID
-
-    RelativityArmRestoreJobDestinationOptions(
-        [Int32] $databaseServerID,
-        [Int32] $resourcePoolID,
-        [Int32] $matterID,
-        [Int32] $cacheLocationID,
-        [Int32] $fileRepositoryID
-    ) : base (
-        $databaseServerID,
-        $resourcePoolID,
-        $cacheLocationID,
-        $fileRepositoryID
-    )
-    {
-        $this.MatterID = $matterID
-    }
-
-    [Hashtable] ToHashTable()
-    {
-        $ReturnValue = ([RelativityArmJobDestinationOptions] $this).ToHashTable()
-
-        $ReturnValue.Add("MatterID", $this.MatterID)
-
-        return $ReturnValue
-    }
-}
-
 class RelativityArmRestoreJobMigratorsDestinationOptions
 {
     [Int32] $StructuredAnalyticsServerID
@@ -81,56 +51,6 @@ class RelativityArmRestoreJobAdvancedFileOptions
         $ReturnValue.Add("ReferenceFilesAsArchiveLinks", $this.ReferenceFilesAsArchiveLinks)
         $ReturnValue.Add("UpdateRepositoryFilePaths", $this.UpdateRepositoryFilePaths)
         $ReturnValue.Add("UpdateLinkedFilePaths", $this.UpdateLinkedFilePaths)
-
-        return $ReturnValue
-    }
-}
-
-class RelativityArmRestoreJobUserMapping
-{
-    [Int32] $ArchiveUserID
-    [Int32] $InstanceUserID
-
-    RelativityArmRestoreJobUserMapping(
-        [Int32] $archiveUserID,
-        [Int32] $instanceUserID
-    )
-    {
-        $this.ArchiveUserID = $archiveUserID
-        $this.InstanceUserID = $instanceUserID
-    }
-
-    [Hashtable] ToHashTable()
-    {
-        $ReturnValue = @{}
-
-        $ReturnValue.Add("ArchiveUserID", $this.ArchiveUserID)
-        $ReturnValue.Add("InstanceUserID", $this.InstanceUserID)
-
-        return $ReturnValue
-    }
-}
-
-class RelativityArmRestoreJobGroupMapping
-{
-    [Int32] $ArchiveGroupID
-    [Int32] $InstanceGroupID
-
-    RelativityArmRestoreJobGroupMapping(
-        [Int32] $archiveGroupID,
-        [Int32] $instanceGroupID
-    )
-    {
-        $this.ArchiveGroupID = $archiveGroupID
-        $this.InstanceGroupID = $instanceGroupID
-    }
-
-    [Hashtable] ToHashTable()
-    {
-        $ReturnValue = @{}
-
-        $ReturnValue.Add("ArchiveGroupID", $this.ArchiveGroupID)
-        $ReturnValue.Add("InstanceGroupID", $this.InstanceGroupID)
 
         return $ReturnValue
     }

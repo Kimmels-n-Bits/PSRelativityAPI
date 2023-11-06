@@ -1,30 +1,22 @@
-class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
+class RelativityArmDatabaseRestoreJobOptions : RelativityArmDatabaseRestoreJobBase
 {
     [String] $JobPriority
     [RelativityArmRestoreJobUserMappingOption] $UserMapping
     [RelativityArmRestoreJobGroupMappingOption] $GroupMapping
 
-    RelativityArmRestoreJobOptions(
-        [String] $archivePath,
+    RelativityArmDatabaseRestoreJobOptions(
+        [String] $sourceDatabase,
         [String] $jobPriority,
         [String] $scheduledStartTime,
-        [String] $existingTargetDatabase,
         [RelativityArmRestoreJobDestinationOptions] $destinationOptions,
-        [RelativityArmRestoreJobMigratorsDestinationOptions] $migratorsDestinationOptions,
-        [RelativityArmRestoreJobAdvancedFileOptions] $advancedFileOptions,
         [RelativityArmRestoreJobUserMappingOption] $userMapping,
         [RelativityArmRestoreJobGroupMappingOption] $groupMapping,
-        [RelativityArmRestoreJobApplication[]] $applications,
         [RelativityArmJobNotificationOptions] $notificationOptions,
         [Boolean] $uiJobActionsLocked
     ): base(
-        $archivePath,
+        $sourceDatabase,
         $scheduledStartTime,
-        $existingTargetDatabase,
         $destinationOptions,
-        $migratorsDestinationOptions,
-        $advancedFileOptions,
-        $applications,
         $notificationOptions,
         $uiJobActionsLocked
     )
@@ -36,7 +28,7 @@ class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
 
     [Hashtable] ToHashTable()
     {
-        $ReturnValue = ([RelativityArmRestoreJobBase] $this).ToHashTable()
+        $ReturnValue = ([RelativityArmDatabaseRestoreJobBase] $this).ToHashTable()
 
         $ReturnValue.Add("JobPriority", $this.JobPriority)
         $ReturnValue.Add("UserMapping", $this.UserMapping.ToHashTable())
@@ -46,12 +38,12 @@ class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
     }
 }
 
-class RelativityArmRestoreJobCreateOrUpdateRequest
+class RelativityArmDatabaseRestoreJobCreateOrUpdateRequest
 {
-    [RelativityArmRestoreJobOptions] $Request
+    [RelativityArmDatabaseRestoreJobOptions] $Request
 
-    RelativityArmRestoreJobCreateOrUpdateRequest(
-        [RelativityArmRestoreJobOptions] $request
+    RelativityArmDatabaseRestoreJobCreateOrUpdateRequest(
+        [RelativityArmDatabaseRestoreJobOptions] $request
     )
     {
         $this.Request = $request
