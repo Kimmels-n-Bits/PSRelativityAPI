@@ -1,96 +1,13 @@
-class RelativityArmRestoreJobUserMappingOption
+class RelativityArmRestoreJobOptions : RelativityArmJobOptionsBase
 {
-    [Boolean] $AutoMapUsers
-    [RelativityArmRestoreJobUserMapping[]] $UserMappings
-
-    RelativityArmRestoreJobUserMappingOption(
-        [Boolean] $autoMapUsers,
-        [Hashtable[]] $userMappings
-    )
-    {
-        $this.AutoMapUsers = $autoMapUsers
-        
-        $UserMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobUserMapping]"
-        if ($null -ne $UserMappings)
-        {
-            $UserMappings | ForEach-Object {
-                if (-not $_.ContainsKey("ArchiveUserID") -or -not $_.ContainsKey("InstanceUserID"))
-                {
-                    throw "UserMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveUserID' and 'InstanceUserID'."
-                }
-                else
-                {
-                    $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
-                        $_.ArchiveUserID,
-                        $_.InstanceUserID
-                    ))
-                }
-            }
-        }
-
-        $this.UserMappings = $UserMappingsValue.ToArray()
-    }
-
-    [Hashtable] ToHashTable()
-    {
-        $ReturnValue = @{}
-
-        $ReturnValue.Add("AutoMapUsers", $this.AutoMapUsers)
-        $ReturnValue.Add("UserMappings", ($this.UserMappings | ForEach-Object { $_.ToHashTable }))
-
-        return $ReturnValue
-    }
-}
-
-class RelativityArmRestoreJobGroupMappingOption
-{
-    [Boolean] $AutoMapGroups
-    [RelativityArmRestoreJobGroupMapping[]] $GroupMappings
-
-    RelativityArmRestoreJobGroupMappingOption(
-        [Boolean] $autoMapGroups,
-        [Hashtable[]] $groupMappings
-    )
-    {
-        $this.AutoMapGroups = $autoMapGroups
-        
-        $GroupMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobGroupMapping]"
-        if ($null -ne $GroupMappings)
-        {
-            $GroupMappings | ForEach-Object {
-                if (-not $_.ContainsKey("ArchiveGroupID") -or -not $_.ContainsKey("InstanceGroupID"))
-                {
-                    throw "GroupMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveGroupID' and 'InstanceGroupID'."
-                }
-                else
-                {
-                    $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
-                        $_.ArchiveGroupID,
-                        $_.InstanceGroupID
-                    ))
-                }
-            }
-        }
-        
-        $this.GroupMappings = $GroupMappingsValue.ToArray()
-    }
-
-    [Hashtable] ToHashTable()
-    {
-        $ReturnValue = @{}
-
-        $ReturnValue.Add("AutoMapGroups", $this.AutoMapGroups)
-        $ReturnValue.Add("GroupMappings", ($this.GroupMappings | ForEach-Object { $_.ToHashTable }))
-
-        return $ReturnValue
-    }
-}
-
-class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
-{
-    [String] $JobPriority
+    [String] $ArchivePath
+    [String] $ExistingTargetDatabase
+    [RelativityArmRestoreJobDestinationOptions] $DestinationOptions
+    [RelativityArmRestoreJobMigratorsDestinationOptions] $MigratorsDestinationOptions
+    [RelativityArmRestoreJobAdvancedFileOptions] $AdvancedFileOptions
     [RelativityArmRestoreJobUserMappingOption] $UserMapping
     [RelativityArmRestoreJobGroupMappingOption] $GroupMapping
+    [RelativityArmRestoreJobApplication[]] $Applications
 
     RelativityArmRestoreJobOptions(
         [String] $archivePath,
@@ -105,30 +22,44 @@ class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
         [RelativityArmRestoreJobApplication[]] $applications,
         [RelativityArmJobNotificationOptions] $notificationOptions,
         [Boolean] $uiJobActionsLocked
-    ): base(
-        $archivePath,
+    ) : base(
+        $jobPriority,
         $scheduledStartTime,
-        $existingTargetDatabase,
-        $destinationOptions,
-        $migratorsDestinationOptions,
-        $advancedFileOptions,
-        $applications,
         $notificationOptions,
         $uiJobActionsLocked
     )
     {
-        $this.JobPriority = $jobPriority
+        $this.ArchivePath = $archivePath
+        $this.ExistingTargetDatabase = $existingTargetDatabase
+        $this.DestinationOptions = $destinationOptions
+        $this.MigratorsDestinationOptions = $migratorsDestinationOptions
+        $this.AdvancedFileOptions = $advancedFileOptions
         $this.UserMapping = $userMapping
         $this.GroupMapping = $groupMapping
+        $this.Applications = $applications
     }
 
     [Hashtable] ToHashTable()
     {
-        $ReturnValue = ([RelativityArmRestoreJobBase] $this).ToHashTable()
+        $ReturnValue = ([RelativityArmJobOptionsBase] $this).ToHashTable()
 
-        $ReturnValue.Add("JobPriority", $this.JobPriority)
-        $ReturnValue.Add("UserMapping", $this.UserMapping)
-        $ReturnValue.Add("GroupMapping", $this.GroupMapping)
+        $ReturnValue.Add("ArchivePath", $this.ArchivePath)
+        
+        if ([String]::IsNullOrEmpty($this.ExistingTargetDatabase))
+        {
+            $ReturnValue.Add("ExistingTargetDatabase", $null)
+        }
+        else
+        {
+            $ReturnValue.Add("ExistingTargetDatabase", $this.ExistingTargetDatabase)
+        }
+
+        $ReturnValue.Add("DestinationOptions", $this.DestinationOptions.ToHashTable())
+        $ReturnValue.Add("MigratorsDestinationOptions", $this.MigratorsDestinationOptions.ToHashTable())
+        $ReturnValue.Add("AdvancedFileOptions", $this.AdvancedFileOptions.ToHashTable())
+        $ReturnValue.Add("UserMapping", $this.UserMapping.ToHashTable())
+        $ReturnValue.Add("GroupMapping", $this.GroupMapping.ToHashTable())
+        $ReturnValue.Add("Applications", ($this.Applications | ForEach-Object { $_.ToHashTable() }))
 
         return $ReturnValue
     }

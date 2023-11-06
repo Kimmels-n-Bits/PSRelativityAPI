@@ -1,44 +1,44 @@
-class RelativityArmRestoreJobReadResponse : RelativityArmRestoreJobBase
+class RelativityArmRestoreJobReadResponse : RelativityArmJobReadResponseBase
 {
-    [Int32] $JobID
-    [String] $JobName
-    [Int32] $JobExecutionID
-    [Guid] $JobExecutionGuid
+    [String] $ArchivePath
     [String] $SourceWorkspace
     [Int32] $DestinationWorkspaceID
-    [RelativityArmJobDetails] $JobDetails
+    [String] $ExistingTargetDatabase
+    [RelativityArmRestoreJobDestinationOptions] $DestinationOptions
+    [RelativityArmRestoreJobMigratorsDestinationOptions] $MigratorsDestinationOptions
+    [RelativityArmRestoreJobAdvancedFileOptions] $AdvancedFileOptions
     [RelativityArmRestoreJobUserMapping[]] $UserMappings
     [RelativityArmRestoreJobGroupMapping[]] $GroupMappings
+    [RelativityArmRestoreJobApplication[]] $Applications
 
-    RelativityArmRestoreJobReadResponse([PSCustomObject] $apiResponse) : base($apiResponse)
+    RelativityArmRestoreJobReadResponse(
+        [PSCustomObject] $apiResponse
+    ) : base($apiResponse)
     {
-        $this.JobID = $apiResponse.JobID
-        $this.JobName = $apiResponse.JobName
-        $this.JobExecutionID = $apiResponse.JobExecutionID
-        $this.JobExecutionGuid = $apiResponse.JobExecutionGuid
+        $this.ArchivePath = $apiResponse.ArchivePath
         $this.SourceWorkspace = $apiResponse.SourceWorkspace
         $this.DestinationWorkspaceID = $apiResponse.DestinationWorkspaceID
+        $this.ExistingTargetDatabase = $apiResponse.ExistingTargetDatabase
 
-        $ActionsHistoryValue = New-Object "System.Collections.Generic.List[RelativityArmJobActionHistory]"
-
-        $apiResponse.JobDetails.ActionsHistory | Foreach-Object {
-            $ActionsHistoryValue.Add([RelativityArmJobActionHistory]::New(
-                $_.Date,
-                $_.Type,
-                $_.UserName
-            ))
-        }
-
-        $JobDetailsValue = [RelativityArmJobDetails]::New(
-            $apiResponse.JobDetails.CreatedOn,
-            $apiResponse.JobDetails.ModifiedTime,
-            $apiResponse.JobDetails.SubmittedBy,
-            $apiResponse.JobDetails.State,
-            $apiResponse.JobDetails.Priority,
-            $ActionsHistoryValue.ToArray()
+        $this.DestinationOptions = [RelativityArmRestoreJobDestinationOptions]::New(
+            $apiResponse.DestinationOptions.DatabaseServerID,
+            $apiResponse.DestinationOptions.ResourcePoolID,
+            $apiResponse.DestinationOptions.MatterID,
+            $apiResponse.DestinationOptions.CacheLocationID,
+            $apiResponse.DestinationOptions.FileRepositoryID
         )
 
-        $this.JobDetails = $JobDetailsValue
+        $this.MigratorsDestinationOptions = [RelativityArmRestoreJobMigratorsDestinationOptions]::New(
+            $apiResponse.MigratorsDestinationOptions.StructuredAnalyticsServerID,
+            $apiResponse.MigratorsDestinationOptions.ConceptualAnalyticsServerID,
+            $apiResponse.MigratorsDestinationOptions.DtSearchLocationID
+        )
+
+        $this.AdvancedFileOptions = [RelativityArmRestoreJobAdvancedFileOptions]::New(
+            $apiResponse.AdvancedFileOptions.ReferenceFilesAsArchiveLinks,
+            $apiResponse.AdvancedFileOptions.UpdateRepositoryFilePaths,
+            $apiResponse.AdvancedFileOptions.UpdateLinkedFilePaths
+        )
 
         $UserMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobUserMapping]"
 
@@ -60,6 +60,14 @@ class RelativityArmRestoreJobReadResponse : RelativityArmRestoreJobBase
             ))
         }
 
-        $this.GroupMappings = $GroupMappingsValue.ToArray()
+        $ApplicationsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobApplication]"
+
+        $apiResponse.Applications | ForEach-Object {
+            $ApplicationsValue.Add([RelativityArmRestoreJobApplication]::New(
+                $_.Name,
+                $_.Guid,
+                $_.ShouldRestore
+            ))
+        }
     }
 }

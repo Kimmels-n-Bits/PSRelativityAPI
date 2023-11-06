@@ -1,7 +1,11 @@
-class RelativityArmArchiveJobOptions : RelativityArmArchiveJobBase
+class RelativityArmArchiveJobOptions : RelativityArmJobOptionsBase
 {
+    [Int32] $WorkspaceID
     [String] $ArchiveDirectory
-    [String] $JobPriority
+    [RelativityArmArchiveJobMigratorOptions] $MigratorOptions
+    [RelativityArmArchiveJobFileOptions] $FileOptions
+    [RelativityArmArchiveJobProcessingOptions] $ProcessingOptions
+    [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $ExtendedWorkspaceDataOptions
     [Boolean] $UseDefaultArchiveDirectory
 
     RelativityArmArchiveJobOptions(
@@ -17,27 +21,31 @@ class RelativityArmArchiveJobOptions : RelativityArmArchiveJobBase
         [Boolean] $uiJobActionsLocked,
         [Boolean] $useDefaultArchiveDirectory
     ) : base(
-        $workspaceID,
+        $jobPriority,
         $scheduledStartTime,
-        $migratorOptions,
-        $fileOptions,
-        $processingOptions,
-        $extendedWorkspaceDataOptions,
         $notificationOptions,
         $uiJobActionsLocked
     )
     {
-        $this.JobPriority = $jobPriority
+        $this.WorkspaceID = $workspaceID
         $this.ArchiveDirectory = $archiveDirectory
+        $this.MigratorOptions = $migratorOptions
+        $this.FileOptions = $fileOptions
+        $this.ProcessingOptions = $processingOptions
+        $this.ExtendedWorkspaceDataOptions = $extendedWorkspaceDataOptions
         $this.UseDefaultArchiveDirectory = $useDefaultArchiveDirectory
     }
 
     [Hashtable] ToHashTable()
     {
-        $ReturnValue = ([RelativityArmArchiveJobBase] $this).ToHashTable()
-
+        $ReturnValue = ([RelativityArmJobOptionsBase] $this).ToHashTable()
+        
+        $ReturnValue.Add("WorkspaceID", $this.WorkspaceID)
         $ReturnValue.Add("ArchiveDirectory", $this.ArchiveDirectory)
-        $ReturnValue.Add("JobPriority", $this.JobPriority)
+        $ReturnValue.Add("MigratorOptions", $this.MigratorOptions.ToHashTable())
+        $ReturnValue.Add("FileOptions", $this.FileOptions.ToHashTable())
+        $ReturnValue.Add("ProcessingOptions", $this.ProcessingOptions.ToHashTable())
+        $ReturnValue.Add("ExtendedWorkspaceDataOptions", $this.ExtendedWorkspaceDataOptions.ToHashTable())
         $ReturnValue.Add("UseDefaultArchiveDirectory", $this.UseDefaultArchiveDirectory)
 
         return $ReturnValue
