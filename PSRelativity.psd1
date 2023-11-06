@@ -113,7 +113,8 @@ NestedModules = @(
     "$PSScriptRoot\Public\ARM\Archive\Get-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Set-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Remove-RelativityArmArchiveJob.ps1",
-    "$PSScriptRoot\Public\ARM\Restore\New-RelativityArmRestoreJob.ps1"
+    "$PSScriptRoot\Public\ARM\Restore\New-RelativityArmRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\Restore\Get-RelativityArmRestoreJob.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -138,7 +139,8 @@ FunctionsToExport = @(
     'Get-RelativityArmArchiveJob',
     'Set-RelativityArmArchiveJob',
     'Remove-RelativityArmArchiveJob',
-    'New-RelativityArmRestoreJob'
+    'New-RelativityArmRestoreJob',
+    'Get-RelativityArmRestoreJob'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
