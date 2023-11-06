@@ -6,7 +6,7 @@ Function to remove a Relativity ARM archive job using Relativity's REST API.
 This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the response to remove an ARM archive job.
 
 .PARAMETER JobID
-The Job ID of the agent to be deleted.
+The Job ID of the ARM archive job to be deleted. This is a mandatory parameter.
 
 .EXAMPLE
 Remove-RelativityArmArchiveJob -JobID 200

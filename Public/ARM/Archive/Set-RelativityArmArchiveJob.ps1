@@ -5,6 +5,9 @@ Function to update an existing Relativity ARM archive Job using Relativity's RES
 .DESCRIPTION
 This function constructs the required request, calls Relativity's REST API, and processes the response to update a an existing ARM archive job.
 
+.PARAMETER JobID
+The Job ID of the ARM archive job to be updated. This is a mandatory parameter.
+
 .PARAMETER ArtifactID
 The ArtifactId of the workspace to archive for the archive job.
 This workspace must not be in the process of upgrading or currently in use by another ARM job.
