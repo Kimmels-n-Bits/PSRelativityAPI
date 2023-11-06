@@ -187,44 +187,16 @@ function New-RelativityArmRestoreJob
                 $UpdateRepositoryFilePaths,
                 $UpdateLinkedFilePaths
             )
+            
+            $UserMapping = [RelativityArmRestoreJobUserMappingOption]::New(
+                $AutoMapUsers,
+                $UserMappings
+            )
 
-            $UserMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobUserMapping]"
-            if ($null -ne $UserMappings)
-            {
-                $UserMappings | ForEach-Object {
-                    if (-not $_.ContainsKey("ArchiveUserID") -or -not $_.ContainsKey("InstanceUserID"))
-                    {
-                        throw "UserMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveUserID' and 'InstanceUserID'."
-                    }
-                    else
-                    {
-                        $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
-                            $_.ArchiveUserID,
-                            $_.InstanceUserID
-                        ))
-                    }
-                }
-            }
-            $UserMapping = [RelativityArmRestoreJobUserMappingOption]::New($AutoMapUsers, $UserMappingsValue.ToArray())
-
-            $GroupMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobGroupMapping]"
-            if ($null -ne $GroupMappings)
-            {
-                $GroupMappings | ForEach-Object {
-                    if (-not $_.ContainsKey("ArchiveGroupID") -or -not $_.ContainsKey("InstanceGroupID"))
-                    {
-                        throw "GroupMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveGroupID' and 'InstanceGroupID'."
-                    }
-                    else
-                    {
-                        $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
-                            $_.ArchiveGroupID,
-                            $_.InstanceGroupID
-                        ))
-                    }
-                }
-            }
-            $GroupMapping = [RelativityArmRestoreJobGroupMappingOption]::New($AutoMapGroups, $GroupMappingsValue.ToArray())
+            $GroupMapping = [RelativityArmRestoreJobGroupMappingOption]::New(
+                $AutoMapGroups,
+                $GroupMappings
+            )
 
             $ApplicationsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobApplication]"
             if ($null -ne $Applications)
