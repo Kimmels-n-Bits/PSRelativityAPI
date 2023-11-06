@@ -1,6 +1,7 @@
-class RelativityArmDatabaseRestoreJobOptions : RelativityArmDatabaseRestoreJobBase
+class RelativityArmDatabaseRestoreJobOptions : RelativityArmJobOptionsBase
 {
-    [String] $JobPriority
+    [String] $SourceDatabase
+    [RelativityArmRestoreJobDestinationOptions] $DestinationOptions
     [RelativityArmRestoreJobUserMappingOption] $UserMapping
     [RelativityArmRestoreJobGroupMappingOption] $GroupMapping
 
@@ -13,24 +14,25 @@ class RelativityArmDatabaseRestoreJobOptions : RelativityArmDatabaseRestoreJobBa
         [RelativityArmRestoreJobGroupMappingOption] $groupMapping,
         [RelativityArmJobNotificationOptions] $notificationOptions,
         [Boolean] $uiJobActionsLocked
-    ): base(
-        $sourceDatabase,
+    ) : base(
+        $jobPriority,
         $scheduledStartTime,
-        $destinationOptions,
         $notificationOptions,
         $uiJobActionsLocked
     )
     {
-        $this.JobPriority = $jobPriority
+        $this.SourceDatabase = $sourceDatabase
+        $this.DestinationOptions = $destinationOptions
         $this.UserMapping = $userMapping
         $this.GroupMapping = $groupMapping
     }
 
     [Hashtable] ToHashTable()
     {
-        $ReturnValue = ([RelativityArmDatabaseRestoreJobBase] $this).ToHashTable()
+        $ReturnValue = ([RelativityArmJobOptionsBase] $this).ToHashTable()
 
-        $ReturnValue.Add("JobPriority", $this.JobPriority)
+        $ReturnValue.Add("SourceDatabase", $this.SourceDatabase)
+        $ReturnValue.Add("DestinationOptions", $this.DestinationOptions.ToHashTable())
         $ReturnValue.Add("UserMapping", $this.UserMapping.ToHashTable())
         $ReturnValue.Add("GroupMapping", $this.GroupMapping.ToHashTable())
 

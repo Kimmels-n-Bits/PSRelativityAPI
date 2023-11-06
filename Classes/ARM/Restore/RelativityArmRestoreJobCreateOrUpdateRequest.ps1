@@ -1,8 +1,13 @@
-class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
+class RelativityArmRestoreJobOptions : RelativityArmJobOptionsBase
 {
-    [String] $JobPriority
+    [String] $ArchivePath
+    [String] $ExistingTargetDatabase
+    [RelativityArmRestoreJobDestinationOptions] $DestinationOptions
+    [RelativityArmRestoreJobMigratorsDestinationOptions] $MigratorsDestinationOptions
+    [RelativityArmRestoreJobAdvancedFileOptions] $AdvancedFileOptions
     [RelativityArmRestoreJobUserMappingOption] $UserMapping
     [RelativityArmRestoreJobGroupMappingOption] $GroupMapping
+    [RelativityArmRestoreJobApplication[]] $Applications
 
     RelativityArmRestoreJobOptions(
         [String] $archivePath,
@@ -17,30 +22,44 @@ class RelativityArmRestoreJobOptions : RelativityArmRestoreJobBase
         [RelativityArmRestoreJobApplication[]] $applications,
         [RelativityArmJobNotificationOptions] $notificationOptions,
         [Boolean] $uiJobActionsLocked
-    ): base(
-        $archivePath,
+    ) : base(
+        $jobPriority,
         $scheduledStartTime,
-        $existingTargetDatabase,
-        $destinationOptions,
-        $migratorsDestinationOptions,
-        $advancedFileOptions,
-        $applications,
         $notificationOptions,
         $uiJobActionsLocked
     )
     {
-        $this.JobPriority = $jobPriority
+        $this.ArchivePath = $archivePath
+        $this.ExistingTargetDatabase = $existingTargetDatabase
+        $this.DestinationOptions = $destinationOptions
+        $this.MigratorsDestinationOptions = $migratorsDestinationOptions
+        $this.AdvancedFileOptions = $advancedFileOptions
         $this.UserMapping = $userMapping
         $this.GroupMapping = $groupMapping
+        $this.Applications = $applications
     }
 
     [Hashtable] ToHashTable()
     {
-        $ReturnValue = ([RelativityArmRestoreJobBase] $this).ToHashTable()
+        $ReturnValue = ([RelativityArmJobOptionsBase] $this).ToHashTable()
 
-        $ReturnValue.Add("JobPriority", $this.JobPriority)
+        $ReturnValue.Add("ArchivePath", $this.ArchivePath)
+        
+        if ([String]::IsNullOrEmpty($this.ExistingTargetDatabase))
+        {
+            $ReturnValue.Add("ExistingTargetDatabase", $null)
+        }
+        else
+        {
+            $ReturnValue.Add("ExistingTargetDatabase", $this.ExistingTargetDatabase)
+        }
+
+        $ReturnValue.Add("DestinationOptions", $this.DestinationOptions.ToHashTable())
+        $ReturnValue.Add("MigratorsDestinationOptions", $this.MigratorsDestinationOptions.ToHashTable())
+        $ReturnValue.Add("AdvancedFileOptions", $this.AdvancedFileOptions.ToHashTable())
         $ReturnValue.Add("UserMapping", $this.UserMapping.ToHashTable())
         $ReturnValue.Add("GroupMapping", $this.GroupMapping.ToHashTable())
+        $ReturnValue.Add("Applications", ($this.Applications | ForEach-Object { $_.ToHashTable() }))
 
         return $ReturnValue
     }

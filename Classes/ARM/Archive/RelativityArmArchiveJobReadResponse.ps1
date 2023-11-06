@@ -1,38 +1,42 @@
-class RelativityArmArchiveJobReadResponse : RelativityArmArchiveJobBase
+class RelativityArmArchiveJobReadResponse : RelativityArmJobReadResponseBase
 {
-    [Int32] $JobID
-    [String] $JobName
-    [Int32] $JobExecutionID
-    [Guid] $JobExecutionGuid
     [String] $ArchivePath
-    [RelativityArmJobDetails] $JobDetails
+    [Int32] $WorkspaceID
+    [RelativityArmArchiveJobMigratorOptions] $MigratorOptions
+    [RelativityArmArchiveJobFileOptions] $FileOptions
+    [RelativityArmArchiveJobProcessingOptions] $ProcessingOptions
+    [RelativityArmArchiveJobExtendedWorkspaceDataOptions] $ExtendedWorkspaceDataOptions
 
-    RelativityArmArchiveJobReadResponse([PSCustomObject] $apiResponse) : base($apiResponse)
+    RelativityArmArchiveJobReadResponse(
+        [PSCustomObject] $apiResponse
+    ) : base($apiResponse)
     {
-        $this.JobID = $apiResponse.jobID
-        $this.JobName = $apiResponse.jobName
-        $this.JobExecutionID = $apiResponse.jobExecutionID
-        $this.JobExecutionGuid = $apiResponse.jobExecutionGuid
-        $this.ArchivePath = $apiResponse.archivePath
+        $this.ArchivePath = $apiResponse.ArchivePath
+        $this.WorkspaceID = $apiResponse.WorkspaceID
 
-        $ActionsHistoryValue = New-Object "System.Collections.Generic.List[RelativityArmJobActionHistory]"
-
-        $apiResponse.JobDetails.ActionsHistory | ForEach-Object {
-            $ActionsHistoryValue.Add([RelativityArmJobActionHistory]::New(
-                $_.Date,
-                $_.Type,
-                $_.UserName))
-        }
-
-        $JobDetailsValue = [RelativityArmJobDetails]::New(
-            $apiResponse.JobDetails.CreatedOn,
-            $apiResponse.JobDetails.ModifiedTime,
-            $apiResponse.JobDetails.SubmittedBy,
-            $apiResponse.JobDetails.State,
-            $apiResponse.JobDetails.Priority,
-            $ActionsHistoryValue.ToArray()
+        $this.MigratorOptions = [RelativityArmArchiveJobMigratorOptions]::New(
+            $apiResponse.MigratorOptions.IncludeDatabaseBackup,
+            $apiResponse.MigratorOptions.IncludeDtSearch,
+            $apiResponse.MigratorOptions.IncludeConceptualAnalytics,
+            $apiResponse.MigratorOptions.IncludeStructuredAnalytics,
+            $apiResponse.MigratorOptions.IncludeDataGrid
         )
-        
-        $this.JobDetails = $JobDetailsValue
+
+        $this.FileOptions = [RelativityArmArchiveJobFileOptions]::New(
+            $apiResponse.FileOptions.IncludeRepositoryFiles,
+            $apiResponse.FileOptions.IncludeLinkedFiles,
+            $apiResponse.FileOptions.MissingFileBehavior
+        )
+
+        $this.ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New(
+            $apiResponse.ProcessingOptions.IncludeProcessing,
+            $apiResponse.ProcessingOptions.IncludeProcessingFiles,
+            $apiResponse.ProcessingOptions.ProcessingMissingFileBehavior
+        )
+
+        $this.ExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New(
+            $apiResponse.ExtendedWorkspaceDataOptions.IncludeExtendedWorkspaceData,
+            $apiResponse.ExtendedWorkspaceDataOptions.ApplicationErrorExportBehavior
+        )
     }
 }

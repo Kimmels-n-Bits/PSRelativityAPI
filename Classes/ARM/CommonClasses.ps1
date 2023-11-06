@@ -139,7 +139,7 @@ class RelativityArmJobCreateResponse
     }
 }
 
-<# This class is used by both "Restore" and "DatabaseRestore" calls #>
+<# This class is used by both "Restore" and "DatabaseRestore" jobs #>
 class RelativityArmRestoreJobDestinationOptions : RelativityArmJobDestinationOptions
 {
     [Int32] $MatterID
@@ -170,7 +170,120 @@ class RelativityArmRestoreJobDestinationOptions : RelativityArmJobDestinationOpt
     }
 }
 
-<# This class is used by both "Restore" and "DatabaseRestore" calls #>
+class RelativityArmJobBase
+{
+    [String] $ScheduledStartTime
+    [RelativityArmJobNotificationOptions] $NotificationOptions
+    [Boolean] $UiJobActionsLocked
+
+    RelativityArmJobBase(
+        [String] $scheduledStartTime,
+        [RelativityArmJobNotificationOptions] $notificationOptions,
+        [Boolean] $uiJobActionsLocked
+    )
+    {
+        $this.ScheduledStartTime = $scheduledStartTime
+        $this.NotificationOptions = $notificationOptions
+        $this.UiJobActionsLocked = $uiJobActionsLocked
+    }
+
+    RelativityArmJobBase(
+        [PSCustomObject] $apiResponse
+    )
+    {
+        $this.ScheduledStartTime = $apiResponse.ScheduledStartTime
+        
+        $this.NotificationOptions = [RelativityArmJobNotificationOptions]::New(
+            $apiResponse.NotificationOptions.NotifyJobCreator,
+            $apiResponse.NotificationOptions.NotifyJobExecutor
+        )
+
+        $this.UiJobActionsLocked = $apiResponse.UiJobActionsLocked
+    }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+
+        $ReturnValue.Add("ScheduledStartTime", $this.ScheduledStartTime)
+        $ReturnValue.Add("NotificationOptions", $this.NotificationOptions.ToHashTable())
+        $ReturnValue.Add("UiJobActionsLocked", $this.UiJobActionsLocked)
+
+        return $ReturnValue
+    }
+}
+
+class RelativityArmJobOptionsBase : RelativityArmJobBase
+{
+    [String] $JobPriority
+
+    RelativityArmJobOptionsBase(
+        [String] $jobPriority,
+        [String] $scheduledStartTime,
+        [RelativityArmJobNotificationOptions] $notificationOptions,
+        [Boolean] $uiJobActionsLocked
+    ) : base(
+        $scheduledStartTime,
+        $notificationOptions,
+        $uiJobActionsLocked
+    )
+    {
+        $this.JobPriority = $jobPriority
+    }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = ([RelativityArmJobBase] $this).ToHashTable()
+
+        $ReturnValue.Add("JobPriority", $this.JobPriority)
+
+        return $ReturnValue
+    }
+}
+
+class RelativityArmJobReadResponseBase : RelativityArmJobBase
+{
+    [Int32] $JobID
+    [String] $JobName
+    [Int32] $JobExecutionID
+    [Guid] $JobExecutionGuid
+    [RelativityArmJobDetails] $JobDetails
+
+    RelativityArmJobReadResponseBase(
+        [PSCustomObject] $apiResponse
+    ) : base(
+        [PSCustomObject] $apiResponse
+    )
+    {
+        $this.JobID = $apiResponse.JobID
+        $this.JobName = $apiResponse.JobName
+        $this.JobExecutionID = $apiResponse.JobExecutionID
+        $this.JobExecutionGuid = $apiResponse.JobExecutionGuid
+
+        $ActionsHistoryValue = New-Object "System.Collections.Generic.List[RelativityArmJobActionHistory]"
+
+        $apiResponse.JobDetails.ActionsHistory | Foreach-Object {
+            $ActionsHistoryValue.Add([RelativityArmJobActionHistory]::New(
+                $_.Date,
+                $_.Type,
+                $_.UserName
+            ))
+        }
+
+        $JobDetailsValue = [RelativityArmJobDetails]::New(
+            $apiResponse.JobDetails.CreatedOn,
+            $apiResponse.JobDetails.ModifiedTime,
+            $apiResponse.JobDetails.SubmittedBy,
+            $apiResponse.JobDetails.State,
+            $apiResponse.JobDetails.Priority,
+            $ActionsHistoryValue.ToArray()
+        )
+
+        $this.JobDetails = $JobDetailsValue
+    }
+}
+
+<# This class is used by both "Restore" and "DatabaseRestore" jobs #>
 class RelativityArmRestoreJobUserMapping
 {
     [Int32] $ArchiveUserID
@@ -196,7 +309,7 @@ class RelativityArmRestoreJobUserMapping
     }
 }
 
-<# This class is used by both "Restore" and "DatabaseRestore" calls #>
+<# This class is used by both "Restore" and "DatabaseRestore" jobs #>
 class RelativityArmRestoreJobGroupMapping
 {
     [Int32] $ArchiveGroupID
@@ -222,7 +335,7 @@ class RelativityArmRestoreJobGroupMapping
     }
 }
 
-<# This class is used by both "Restore" and "DatabaseRestore" calls #>
+<# This class is used by both "Restore" and "DatabaseRestore" jobs #>
 class RelativityArmRestoreJobUserMappingOption
 {
     [Boolean] $AutoMapUsers
@@ -267,7 +380,7 @@ class RelativityArmRestoreJobUserMappingOption
     }
 }
 
-<# This class is used by both "Restore" and "DatabaseRestore" calls #>
+<# This class is used by both "Restore" and "DatabaseRestore" jobs #>
 class RelativityArmRestoreJobGroupMappingOption
 {
     [Boolean] $AutoMapGroups
