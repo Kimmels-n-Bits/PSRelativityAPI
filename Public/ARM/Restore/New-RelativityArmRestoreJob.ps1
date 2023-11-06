@@ -168,77 +168,33 @@ function New-RelativityArmRestoreJob
     {
         try
         {
-            $DestinationOptions = [RelativityArmRestoreJobDestinationOptions]::New(
-                $DatabaseServerID,
-                $ResourcePoolID,
-                $MatterID,
-                $CacheLocationID,
-                $FileRepositoryID
-            )
-
-            $MigratorsDestinationOptions = [RelativityArmRestoreJobMigratorsDestinationOptions]::New(
-                $StructuredAnalyticsServerID,
-                $ConceptualAnalyticsServerID,
-                $DtSearchLocationID
-            )
-
-            $AdvancedFileOptions = [RelativityArmRestoreJobAdvancedFileOptions]::New(
-                $ReferenceFilesAsArchiveLinks,
-                $UpdateRepositoryFilePaths,
-                $UpdateLinkedFilePaths
-            )
-            
-            $UserMapping = [RelativityArmRestoreJobUserMappingOption]::New(
-                $AutoMapUsers,
-                $UserMappings
-            )
-
-            $GroupMapping = [RelativityArmRestoreJobGroupMappingOption]::New(
-                $AutoMapGroups,
-                $GroupMappings
-            )
-
-            $ApplicationsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobApplication]"
-            if ($null -ne $Applications)
-            {
-                $Applications | ForEach-Object {
-                    if (-not $_.ContainsKey("Guid") -or -not $_.ContainsKey("ShouldRestore"))
-                    {
-                        throw "Applications hashtable array has at least one item missing a required key. Ensure all hashtables in the array contain both 'Guid' and 'ShouldRestore'."
-                    }
-                    else 
-                    {
-                        $ApplicationsValue.Add([RelativityArmRestoreJobApplication]::New(
-                            $_.Guid,
-                            $_.ShouldRestore
-                        ))
-                    }
-                }
+            $Params = @{
+                ArchivePath = $ArchivePath
+                JobPriority = $JobPriority
+                ScheduledStartTime = $ScheduledStartTime
+                ExistingTargetDatabase = $ExistingTargetDatabase
+                DatabaseServerID = $DatabaseServerID
+                ResourcePoolID = $ResourcePoolID
+                MatterID = $MatterID
+                CacheLocationID = $CacheLocationID
+                FileRepositoryID = $FileRepositoryID
+                StructuredAnalyticsServerID = $StructuredAnalyticsServerID
+                ConceptualAnalyticsServerID = $ConceptualAnalyticsServerID
+                DtSearchLocationID = $DtSearchLocationID
+                ReferenceFilesAsArchiveLinks = $ReferenceFilesAsArchiveLinks
+                UpdateRepositoryFilePaths = $UpdateRepositoryFilePaths
+                UpdateLinkedFilePaths = $UpdateLinkedFilePaths
+                AutoMapUsers = $AutoMapUsers
+                UserMappings = $UserMappings
+                AutoMapGroups = $AutoMapGroups
+                GroupMappings = $GroupMappings
+                Applications = $Applications
+                NotifyJobCreator = $NotifyJobCreator
+                NotifyJobExecutor = $NotifyJobExecutor
+                UiJobActionsLocked = $UiJobActionsLocked
             }
 
-            $NotificationOptions = [RelativityArmJobNotificationOptions]::New(
-                $NotifyJobCreator,
-                $NotifyJobExecutor
-            )
-
-            $JobOptions = [RelativityArmRestoreJobOptions]::New(
-                $ArchivePath,
-                $JobPriority,
-                $ScheduledStartTime,
-                $ExistingTargetDatabase,
-                $DestinationOptions,
-                $MigratorsDestinationOptions,
-                $AdvancedFileOptions,
-                $UserMapping,
-                $GroupMapping,
-                $ApplicationsValue.ToArray(),
-                $NotificationOptions,
-                $UiJobActionsLocked
-            )
-
-            $Request = [RelativityArmRestoreJobCreateOrUpdateRequest]::New(
-                $JobOptions
-            )
+            $Request = Get-RelativityArmRestoreJobCreateOrUpdateRequest @Params
 
             $RequestBody = $Request.ToHashTable()
 

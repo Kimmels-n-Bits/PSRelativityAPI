@@ -107,8 +107,10 @@ NestedModules = @(
     "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobCreateOrUpdateRequest.ps1"
     "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobReadResponse.ps1"
     "$PSScriptRoot\Classes\ARM\Restore\CommonClasses.ps1",
-    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobCreateOrUpdateRequest.ps1"
-    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobReadResponse.ps1"
+    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
+    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobReadResponse.ps1",
+    "$PSScriptRoot\Private\ARM\Archive\Get-RelativityArmArchiveJobCreateOrUpdateRequest.ps1",
+    "$PSScriptRoot\Private\ARM\Restore\Get-RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
     "$PSScriptRoot\Public\ARM\Archive\New-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Get-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Set-RelativityArmArchiveJob.ps1",

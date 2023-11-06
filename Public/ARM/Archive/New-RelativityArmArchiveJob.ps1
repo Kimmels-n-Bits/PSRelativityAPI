@@ -183,54 +183,32 @@ function New-RelativityArmArchiveJob
     {
         try
         {
-            $MigratorOptions = [RelativityArmArchiveJobMigratorOptions]::New(
-                $IncludeDatabaseBackup,
-                $IncludeDtSearch,
-                $IncludeConceptualAnalytics,
-                $IncludeStructuredAnalytics,
-                $IncludeDataGrid
-            )
+            $Params = @{
+                ArtifactID = $ArtifactID
+                JobPriority = $JobPriority
+                ArchiveDirectory = $ArchiveDirectory
+                ScheduledStartTime = $ScheduledStartTime
+                IncludeDatabaseBackup = $IncludeDatabaseBackup
+                IncludeDtSearch = $IncludeDtSearch
+                IncludeConceptualAnalytics = $IncludeConceptualAnalytics
+                IncludeStructuredAnalytics = $IncludeStructuredAnalytics
+                IncludeDataGrid = $IncludeDataGrid
+                IncludeRepositoryFiles = $IncludeRepositoryFiles
+                IncludeLinkedFiles = $IncludeLinkedFiles
+                MissingFileBehavior = $MissingFileBehavior
+                IncludeProcessing = $IncludeProcessing
+                IncludeProcessingFiles = $IncludeProcessingFiles
+                ProcessingMissingFileBehavior = $ProcessingMissingFileBehavior
+                IncludeExtendedWorkspaceData = $IncludeExtendedWorkspaceData
+                ApplicationErrorExportBehavior = $ApplicationErrorExportBehavior
+                NotifyJobCreator = $NotifyJobCreator
+                NotifyJobExecutor = $NotifyJobExecutor
+                UiJobActionsLocked = $UiJobActionsLocked
+                UseDefaultArchiveDirectory = $UseDefaultArchiveDirectory
+            }
 
-            $FileOptions = [RelativityArmArchiveJobFileOptions]::New(
-                $IncludeRepositoryFiles,
-                $IncludeLinkedFiles,
-                $MissingFileBehavior
+            $Request = Get-RelativityArmArchiveJobCreateOrUpdateRequest @Params
             
-                )
-            $ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New(
-                $IncludeProcessing,
-                $IncludeProcessingFiles,
-                $ProcessingMissingFileBehavior
-            )
-
-            $ExtendedWorkspaceDataOptions = [RelativityArmArchiveJobExtendedWorkspaceDataOptions]::New(
-                $IncludeExtendedWorkspaceData,
-                $ApplicationErrorExportBehavior
-            )
-
-            $NotificationOptions = [RelativityArmJobNotificationOptions]::New(
-                $NotifyJobCreator,
-                $NotifyJobExecutor
-            )
-
-            $JobOptions = [RelativityArmArchiveJobOptions]::New(
-                $ArtifactID,
-                $JobPriority,
-                $ArchiveDirectory,
-                $ScheduledStartTime,
-                $MigratorOptions,
-                $FileOptions,
-                $ProcessingOptions,
-                $ExtendedWorkspaceDataOptions,
-                $NotificationOptions,
-                $UiJobActionsLocked,
-                $UseDefaultArchiveDirectory
-            )
-
-            $Request = [RelativityArmArchiveJobCreateOrUpdateRequest]::New(
-                $JobOptions
-            )
-
             $RequestBody = $Request.ToHashTable()
 
             [String[]] $Resources = @("archive-jobs")

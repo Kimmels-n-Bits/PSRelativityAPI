@@ -5,15 +5,6 @@ class RelativityArmRestoreJobUserMappingOption
 
     RelativityArmRestoreJobUserMappingOption(
         [Boolean] $autoMapUsers,
-        [RelativityArmRestoreJobUserMapping[]] $userMappings
-    )
-    {
-        $this.AutoMapUsers = $autoMapUsers
-        $this.UserMappings = $userMappings
-    }
-
-    RelativityArmRestoreJobUserMappingOption(
-        [Boolean] $autoMapUsers,
         [Hashtable[]] $userMappings
     )
     {
@@ -55,15 +46,6 @@ class RelativityArmRestoreJobGroupMappingOption
 {
     [Boolean] $AutoMapGroups
     [RelativityArmRestoreJobGroupMapping[]] $GroupMappings
-
-    RelativityArmRestoreJobGroupMappingOption(
-        [Boolean] $autoMapGroups,
-        [RelativityArmRestoreJobGroupMapping[]] $groupMappings
-    )
-    {
-        $this.AutoMapGroups = $autoMapGroups
-        $this.GroupMappings = $groupMappings
-    }
 
     RelativityArmRestoreJobGroupMappingOption(
         [Boolean] $autoMapGroups,

@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Changes
 - ARM API : Refactored class structure to reduce duplication of code
 - ARM API : Pre-existing API calls refactored around revised best practices
+- ARM API : Refactored function structure to reduce duplication of code
 
 ## [0.0.4] - 2023-11-04
 
