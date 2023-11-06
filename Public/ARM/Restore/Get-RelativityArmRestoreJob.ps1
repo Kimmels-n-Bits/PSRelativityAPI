@@ -1,22 +1,22 @@
 <#
 .SYNOPSIS
-Retrieves details of a Relativity ARM archive job using Relativity's REST API.
+Retrieves details of a Relativity ARM restore job using Relativity's REST API.
 
 .DESCRIPTION
-The function sends a request to retrieve details of an ARM archive job in Relativity based on the provided JobID.
+The function sends a request to retrieve details of an ARM restore job in Relativity based on the provided JobID.
 
 .PARAMETER JobID
-The ID of the ARM archive job to retrieve. This is a mandatory parameter.
+The ID of the ARM restore job to retrieve. This is a mandatory parameter.
 
 .EXAMPLE
-Get-RelativityArmArchiveJob -JobID 3026
+Get-RelativityArmRestoreJob -JobID 2525
 
-This example retrieves details of the archive job with the ID of 3026.
+This example retrieves details of the restore job with the ID of 2525.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function Get-RelativityArmArchiveJob
+function Get-RelativityArmRestoreJob
 {
     [CmdletBinding()]
     Param
@@ -29,13 +29,13 @@ function Get-RelativityArmArchiveJob
 
     Begin
     {
-        Write-Verbose "Starting Get-RelativityArmArchiveJob"
+        Write-Verbose "Starting Get-RelativityArmRestoreJob"
     }
     Process
     {
         try
         {
-            [String[]] $Resources = @("archive-jobs", $JobID.ToString())
+            [String[]] $Resources = @("restore-jobs", $JobID.ToString())
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
@@ -43,9 +43,9 @@ function Get-RelativityArmArchiveJob
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            $Response = [RelativityArmArchiveJobReadResponse]::New($ApiResponse)
+            $Response = [RelativityArmRestoreJobReadResponse]::New($ApiResponse)
 
-            Write-Verbose "ARM Archive Job details retrieved successfully."
+            Write-Verbose "ARM Restore Job details retrieved successfully."
             return $Response
         }
         catch
@@ -58,6 +58,6 @@ function Get-RelativityArmArchiveJob
     }
     End
     {
-        Write-Verbose "Completed Get-RelativityArmArchiveJob"
+        Write-Verbose "Completed Get-RelativityArmRestoreJob"
     }
 }

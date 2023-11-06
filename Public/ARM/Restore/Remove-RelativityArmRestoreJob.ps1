@@ -1,21 +1,21 @@
 <#
 .SYNOPSIS
-Function to remove a Relativity ARM archive job using Relativity's REST API.
+Function to remove a Relativity ARM restore job using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the response to remove an ARM archive job.
+This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the response to remove an ARM restore job.
 
 .PARAMETER JobID
-The Job ID of the ARM archive job to be deleted. This is a mandatory parameter.
+The Job ID of the ARM restore job to be deleted. This is a mandatory parameter.
 
 .EXAMPLE
-Remove-RelativityArmArchiveJob -JobID 200
-This example removes the Relativity ARM archive job with the given Job ID.
+Remove-RelativityArmRestoreJob -JobID 200
+This example removes the Relativity ARM restore job with the given Job ID.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function Remove-RelativityArmArchiveJob
+function Remove-RelativityArmRestoreJob
 {
     [CmdletBinding(SupportsShouldProcess = $true)]
     Param
@@ -28,13 +28,13 @@ function Remove-RelativityArmArchiveJob
 
     Begin
     {
-        Write-Verbose "Starting Remove-RelativityArmArchiveJob"
+        Write-Verbose "Starting Remove-RelativityArmRestoreJob"
     }
     Process
     {
         try 
         {
-            [String[]] $Resources = @("archive-jobs", $JobID.ToString())
+            [String[]] $Resources = @("restore-jobs", $JobID.ToString())
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
@@ -61,6 +61,6 @@ function Remove-RelativityArmArchiveJob
     }
     End
     {
-        Write-Verbose "Completed Remove-RelativityArmArchiveJob"
+        Write-Verbose "Completed Remove-RelativityArmRestoreJob"
     }
 }

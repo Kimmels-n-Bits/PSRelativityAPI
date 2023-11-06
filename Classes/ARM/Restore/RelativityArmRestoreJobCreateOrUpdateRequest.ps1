@@ -5,27 +5,27 @@ class RelativityArmRestoreJobUserMappingOption
 
     RelativityArmRestoreJobUserMappingOption(
         [Boolean] $autoMapUsers,
-        [RelativityArmRestoreJobUserMapping[]] $userMappings
-    )
-    {
-        $this.AutoMapUsers = $autoMapUsers
-        $this.UserMappings = $userMappings
-    }
-
-    RelativityArmRestoreJobUserMappingOption(
-        [Boolean] $autoMapUsers,
         [Hashtable[]] $userMappings
     )
     {
         $this.AutoMapUsers = $autoMapUsers
         
         $UserMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobUserMapping]"
-
-        $userMappings | ForEach-Object {
-            $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
-                $_.ArchiveUserID,
-                $_.InstanceUserID
-            ))
+        if ($null -ne $UserMappings)
+        {
+            $UserMappings | ForEach-Object {
+                if (-not $_.ContainsKey("ArchiveUserID") -or -not $_.ContainsKey("InstanceUserID"))
+                {
+                    throw "UserMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveUserID' and 'InstanceUserID'."
+                }
+                else
+                {
+                    $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
+                        $_.ArchiveUserID,
+                        $_.InstanceUserID
+                    ))
+                }
+            }
         }
 
         $this.UserMappings = $UserMappingsValue.ToArray()
@@ -49,29 +49,29 @@ class RelativityArmRestoreJobGroupMappingOption
 
     RelativityArmRestoreJobGroupMappingOption(
         [Boolean] $autoMapGroups,
-        [RelativityArmRestoreJobGroupMapping[]] $groupMappings
-    )
-    {
-        $this.AutoMapGroups = $autoMapGroups
-        $this.GroupMappings = $groupMappings
-    }
-
-    RelativityArmRestoreJobGroupMappingOption(
-        [Boolean] $autoMapGroups,
         [Hashtable[]] $groupMappings
     )
     {
         $this.AutoMapGroups = $autoMapGroups
         
         $GroupMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobGroupMapping]"
-
-        $groupMappings | ForEach-Object {
-            $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
-                $_.ArchiveGroupID,
-                $_.InstanceGroupID
-            ))
+        if ($null -ne $GroupMappings)
+        {
+            $GroupMappings | ForEach-Object {
+                if (-not $_.ContainsKey("ArchiveGroupID") -or -not $_.ContainsKey("InstanceGroupID"))
+                {
+                    throw "GroupMappings hashtable array has at least one item missing a required key. Ensure all hashtables in the array contains both 'ArchiveGroupID' and 'InstanceGroupID'."
+                }
+                else
+                {
+                    $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
+                        $_.ArchiveGroupID,
+                        $_.InstanceGroupID
+                    ))
+                }
+            }
         }
-
+        
         $this.GroupMappings = $GroupMappingsValue.ToArray()
     }
 

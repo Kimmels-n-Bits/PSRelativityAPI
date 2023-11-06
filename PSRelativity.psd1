@@ -107,13 +107,18 @@ NestedModules = @(
     "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobCreateOrUpdateRequest.ps1"
     "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobReadResponse.ps1"
     "$PSScriptRoot\Classes\ARM\Restore\CommonClasses.ps1",
-    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobCreateOrUpdateRequest.ps1"
-    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobReadResponse.ps1"
+    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
+    "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobReadResponse.ps1",
+    "$PSScriptRoot\Private\ARM\Archive\Get-RelativityArmArchiveJobCreateOrUpdateRequest.ps1",
+    "$PSScriptRoot\Private\ARM\Restore\Get-RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
     "$PSScriptRoot\Public\ARM\Archive\New-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Get-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Set-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Remove-RelativityArmArchiveJob.ps1",
-    "$PSScriptRoot\Public\ARM\Restore\New-RelativityArmRestoreJob.ps1"
+    "$PSScriptRoot\Public\ARM\Restore\New-RelativityArmRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\Restore\Get-RelativityArmRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\Restore\Set-RelativityArmRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\Restore\Remove-RelativityArmRestoreJob.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -138,7 +143,10 @@ FunctionsToExport = @(
     'Get-RelativityArmArchiveJob',
     'Set-RelativityArmArchiveJob',
     'Remove-RelativityArmArchiveJob',
-    'New-RelativityArmRestoreJob'
+    'New-RelativityArmRestoreJob',
+    'Get-RelativityArmRestoreJob',
+    'Set-RelativityArmRestoreJob',
+    'Remove-RelativityArmRestoreJob'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.

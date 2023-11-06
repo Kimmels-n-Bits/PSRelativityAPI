@@ -1,9 +1,12 @@
 <#
 .SYNOPSIS
-Function to create a new Relativity ARM restore job using Relativity's REST API.
+Function to update an existing Relativity ARM restore job using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls Relativity's REST API, and processes the response to create a new ARM retore job.
+This function constructs the required request, calls Relativity's REST API, and processes the response to update an existing ARM retore job.
+
+.PARAMETER JobID
+The Job ID of the ARM restore job to be updated. This is a mandatory parameter.
 
 .PARAMETER ArchivePath
 The path of the ARM archive to be restored. This archive path must not be in use by another ARM job.
@@ -83,18 +86,21 @@ Indicates if job actions normally available on UI should be visible for the user
 This behavior can be override by adding boolean instance setting OverrideUiJobActionsLock.
 
 .EXAMPLE
-New-RelativityArmRestoreJob -ArchivePath "\\server\path" -DatabaseServerID 1234567 -ResourcePoolID 2345671 -MatterID 3456712 -CacheLocationID 4567123 -FileRepositoryID 5671234
+Set-RelativityArmRestoreJob -ArchivePath "\\server\path" -DatabaseServerID 1234567 -ResourcePoolID 2345671 -MatterID 3456712 -CacheLocationID 4567123 -FileRepositoryID 5671234
 
-This example creates a new restore job with the specified archive path and destination options.
+This example updates an existing restore job with the specified archive path and destination options.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function New-RelativityArmRestoreJob
+function Set-RelativityArmRestoreJob
 {
     [CmdletBinding(SupportsShouldProcess)]
     Param
     (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateRange(1, [Int32]::MaxValue)]
+        [Int32] $JobID,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [String] $ArchivePath,
@@ -162,7 +168,7 @@ function New-RelativityArmRestoreJob
 
     Begin
     {
-        Write-Verbose "Starting New-RelativityArmRestoreJob"
+        Write-Verbose "Starting Set-RelativityArmRestoreJob"
     }
     Process
     {
@@ -198,18 +204,18 @@ function New-RelativityArmRestoreJob
 
             $RequestBody = $Request.ToHashTable()
 
-            [String[]]$Resources = @("restore-jobs")
+            [String[]]$Resources = @("restore-jobs", $JobID.ToString())
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
-            Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndPoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
-            Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndPoint)"
+            Write-Debug "Preparing to invoke PUT method at Relativity API endpoint '$($ApiEndPoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Verbose "Invoking PUT method at Relativity API endpoint: $($ApiEndPoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
-                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
+                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Put" -RequestBody $RequestBody
 
-                $Response = [RelativityArmJobCreateResponse]::New([Int32] $ApiResponse)
-                Write-Verbose "Successfully created ARM restore job with ID: $($Response.JobID)"
+                $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
+                Write-Verbose "Successfully updated ARM restore job with ID: $($JobID)"
             }
 
             return $Response
@@ -246,6 +252,6 @@ function New-RelativityArmRestoreJob
     }
     End
     {
-        Write-Verbose "Completed New-RelativityArmRestoreJob"
+        Write-Verbose "Completed Set-RelativityArmRestoreJob"
     }
 }
