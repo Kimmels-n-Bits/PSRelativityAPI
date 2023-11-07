@@ -224,6 +224,7 @@ function Set-RelativityArmRestoreJob
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
+            Write-Verbose "JobID: $($JobID)"
             Write-Verbose "ArchivePath: $($ArchivePath)"
             Write-Verbose "JobPriority: $($JobPriority)"
             Write-Verbose "ScheduledStartTime: $($ScheduledStartTime)"

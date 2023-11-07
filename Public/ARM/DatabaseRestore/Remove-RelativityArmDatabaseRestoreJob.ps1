@@ -1,21 +1,21 @@
 <#
 .SYNOPSIS
-Function to remove a Relativity ARM restore job using Relativity's REST API.
+Function to remove a Relativity ARM database restore job using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the response to remove an ARM restore job.
+This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the response to remove an ARM database restore job.
 
 .PARAMETER JobID
-The Job ID of the ARM restore job to be deleted. This is a mandatory parameter.
+The Job ID of the ARM database restore job to be deleted. This is a mandatory parameter.
 
 .EXAMPLE
-Remove-RelativityArmRestoreJob -JobID 200
-This example removes the Relativity ARM restore job with the given Job ID.
+Remove-RelativityArmDatabaseRestoreJob -JobID 250
+This example removes the Relativity ARM database restore job with the given Job ID.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
 #>
-function Remove-RelativityArmRestoreJob
+function Remove-RelativityArmDatabaseRestoreJob
 {
     [CmdletBinding(SupportsShouldProcess = $true)]
     Param
@@ -28,13 +28,13 @@ function Remove-RelativityArmRestoreJob
 
     Begin
     {
-        Write-Verbose "Starting Remove-RelativityArmRestoreJob"
+        Write-Verbose "Starting Remove-RelativityArmDatabaseRestoreJob"
     }
     Process
     {
         try 
         {
-            [String[]] $Resources = @("restore-jobs", $JobID.ToString())
+            [String[]] $Resources = @("database-restore-jobs", $JobID.ToString())
 
             $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
 
@@ -46,7 +46,7 @@ function Remove-RelativityArmRestoreJob
 
                 $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
 
-                Write-Verbose "Successfully deleted ARM restore job."
+                Write-Verbose "Successfully deleted ARM database restore job."
             }
             
             return $Response
@@ -61,6 +61,6 @@ function Remove-RelativityArmRestoreJob
     }
     End
     {
-        Write-Verbose "Completed Remove-RelativityArmRestoreJob"
+        Write-Verbose "Completed Remove-RelativityArmDatabaseRestoreJob"
     }
 }

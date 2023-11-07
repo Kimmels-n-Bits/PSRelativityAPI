@@ -12,7 +12,7 @@
 RootModule = 'PSRelativity.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.5'
+ModuleVersion = '0.0.6'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop'
@@ -113,6 +113,7 @@ NestedModules = @(
     "$PSScriptRoot\Classes\ARM\DatabaseRestore\RelativityArmDatabaseRestoreJobReadResponse.ps1",
     "$PSScriptRoot\Private\ARM\Archive\Get-RelativityArmArchiveJobCreateOrUpdateRequest.ps1",
     "$PSScriptRoot\Private\ARM\Restore\Get-RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
+    "$PSScriptRoot\Private\ARM\DatabaseRestore\Get-RelativityArmDatabaseRestoreJobCreateOrUpdateRequest.ps1"
     "$PSScriptRoot\Public\ARM\Archive\New-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Get-RelativityArmArchiveJob.ps1",
     "$PSScriptRoot\Public\ARM\Archive\Set-RelativityArmArchiveJob.ps1",
@@ -120,7 +121,11 @@ NestedModules = @(
     "$PSScriptRoot\Public\ARM\Restore\New-RelativityArmRestoreJob.ps1",
     "$PSScriptRoot\Public\ARM\Restore\Get-RelativityArmRestoreJob.ps1",
     "$PSScriptRoot\Public\ARM\Restore\Set-RelativityArmRestoreJob.ps1",
-    "$PSScriptRoot\Public\ARM\Restore\Remove-RelativityArmRestoreJob.ps1"
+    "$PSScriptRoot\Public\ARM\Restore\Remove-RelativityArmRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\DatabaseRestore\New-RelativityArmDatabaseRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\DatabaseRestore\Get-RelativityArmDatabaseRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\DatabaseRestore\Set-RelativityArmDatabaseRestoreJob.ps1",
+    "$PSScriptRoot\Public\ARM\DatabaseRestore\Remove-RelativityArmDatabaseRestoreJob.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -148,7 +153,11 @@ FunctionsToExport = @(
     'New-RelativityArmRestoreJob',
     'Get-RelativityArmRestoreJob',
     'Set-RelativityArmRestoreJob',
-    'Remove-RelativityArmRestoreJob'
+    'Remove-RelativityArmRestoreJob',
+    'New-RelativityArmDatabaseRestoreJob',
+    'Get-RelativityArmDatabaseRestoreJob',
+    'Set-RelativityArmDatabaseRestoreJob',
+    'Remove-RelativityArmDatabaseRestoreJob'
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
