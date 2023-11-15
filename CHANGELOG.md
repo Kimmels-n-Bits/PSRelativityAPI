@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.7] - 2023-11-15
+
+### Added
+- ARM API : New-RelativityArmMoveJob
+- ARM API : Get-RelativityArmMoveJob
+- ARM API : Set-RelativityArmMoveJob
+- ARM API : Remove-RelativityArmMoveJob
+
+## [0.0.6] - 2023-11-06
+
+### Added
+
+- ARM API : New-RelativityArmDatabaseRestoreJob
+- ARM API : Get-RelativityArmDatabaseRestoreJob
+- ARM API : Set-RelativtiyArmDatabaseRestoreJob
+- ARM API : Remove-RelativityArmDatabaseRestoreJob
+
 ## [0.0.5] - 2023-11-05
 
 ### Added
