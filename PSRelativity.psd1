@@ -12,7 +12,7 @@
 RootModule = 'PSRelativity.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.7'
+ModuleVersion = '0.0.8'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop'
@@ -114,6 +114,7 @@ NestedModules = @(
     "$PSScriptRoot\Classes\ARM\Move\CommonClasses.ps1",
     "$PSScriptRoot\Classes\ARM\Move\RelativityArmMoveJobCreateOrUpdateRequest.ps1",
     "$PSScriptRoot\Classes\ARM\Move\RelativityArmMoveJobReadResponse.ps1",
+    "$PSScriptRoot\Classes\ARM\RelativityArmJobStatusReadResponse.ps1",
     "$PSScriptRoot\Private\ARM\Archive\Get-RelativityArmArchiveJobCreateOrUpdateRequest.ps1",
     "$PSScriptRoot\Private\ARM\Restore\Get-RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
     "$PSScriptRoot\Private\ARM\DatabaseRestore\Get-RelativityArmDatabaseRestoreJobCreateOrUpdateRequest.ps1",
@@ -133,7 +134,12 @@ NestedModules = @(
     "$PSScriptRoot\Public\ARM\Move\New-RelativityArmMoveJob.ps1",
     "$PSScriptRoot\Public\ARM\Move\Get-RelativityArmMoveJob.ps1",
     "$PSScriptRoot\Public\ARM\Move\Set-RelativityArmMoveJob.ps1",
-    "$PSScriptRoot\Public\ARM\Move\Remove-RelativityArmMoveJob.ps1"
+    "$PSScriptRoot\Public\ARM\Move\Remove-RelativityArmMoveJob.ps1",
+    "$PSScriptRoot\Public\ARM\Start-RelativityArmJob.ps1",
+    "$PSScriptRoot\Public\ARM\Stop-RelativityArmJob.ps1",
+    "$PSScriptRoot\Public\ARM\Suspend-RelativityArmJob.ps1",
+    "$PSScriptRoot\Public\ARM\Terminate-RelativityArmJob.ps1",
+    "$PSScriptRoot\Public\ARM\Get-RelativityArmJobStatus.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -169,7 +175,12 @@ FunctionsToExport = @(
     "New-RelativityArmMoveJob",
     "Get-RelativityArmMoveJob",
     "Set-RelativityArmMoveJob",
-    "Remove-RelativityArmMoveJob"
+    "Remove-RelativityArmMoveJob",
+    "Start-RelativityArmJob",
+    "Stop-RelativityArmJob",
+    "Suspend-RelativityArmJob",
+    "Terminate-RelativityArmJob",
+    "Get-RelativityArmJobStatus"
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
