@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.8] - 2023-11-16
+
+### Added
+- ARM API : Start-RelativityArmJob
+- ARM API : Stop-RelativityArmJob
+- ARM API : Suspend-RelativityArmJob
+- ARM API : Terminate-RelativityArmJob
+- ARM API : Get-RelativityArmJobStatus
+
 ## [0.0.7] - 2023-11-15
 
 ### Added
