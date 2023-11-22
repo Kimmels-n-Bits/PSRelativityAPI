@@ -12,7 +12,7 @@
 RootModule = 'PSRelativity.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.8'
+ModuleVersion = '0.0.9'
 
 # Supported PSEditions
 CompatiblePSEditions = 'Desktop'
@@ -139,7 +139,8 @@ NestedModules = @(
     "$PSScriptRoot\Public\ARM\Stop-RelativityArmJob.ps1",
     "$PSScriptRoot\Public\ARM\Suspend-RelativityArmJob.ps1",
     "$PSScriptRoot\Public\ARM\Terminate-RelativityArmJob.ps1",
-    "$PSScriptRoot\Public\ARM\Get-RelativityArmJobStatus.ps1"
+    "$PSScriptRoot\Public\ARM\Get-RelativityArmJobStatus.ps1",
+    "$PSScriptRoot\Public\ARM\Get-RelativityArmJobLog.ps1"
 )
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
@@ -180,7 +181,8 @@ FunctionsToExport = @(
     "Stop-RelativityArmJob",
     "Suspend-RelativityArmJob",
     "Terminate-RelativityArmJob",
-    "Get-RelativityArmJobStatus"
+    "Get-RelativityArmJobStatus",
+    "Get-RelativityArmJobLog"
 )
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
