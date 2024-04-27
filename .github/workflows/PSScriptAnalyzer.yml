@@ -36,9 +36,9 @@ jobs:
         with:
           # Check https://github.com/microsoft/action-psscriptanalyzer for more info about the options.
           # Scan entire repository and get settings from a settings file in the repo.
-          path: .\
+          path: ./
           recurse: true
-          settings: .\PSScriptAnalyzer\Settings.psd1
+          settings: ./PSScriptAnalyzer/Settings.psd1
           output: results.sarif
 
       # Upload the SARIF file generated in the previous step
