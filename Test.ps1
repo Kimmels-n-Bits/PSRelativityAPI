@@ -1,1 +1,0 @@
-Write-Output "This is a test of the PSScriptAnalyzer GitHub Action."
