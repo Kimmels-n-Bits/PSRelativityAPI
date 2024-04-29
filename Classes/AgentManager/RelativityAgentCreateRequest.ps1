@@ -1,5 +1,3 @@
-#Import used classes
-. "$($PSScriptRoot)/Classes/AgentManager/CommonClasses.ps1"
 class RelativityAgentCreateRequest
 {
     [RelativityAgentRequestAgentRequest] $AgentRequest
