@@ -34,7 +34,7 @@ function Get-RelativityArmDatabaseRestoreJobCreateOrUpdateRequest
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Boolean] $UiJobActionsLocked
     )
-    
+
     Begin
     {
         Write-Verbose "Starting Get-RelativityArmDatabaseRestoreJobCreateOrUpdateRequest"

@@ -3,13 +3,17 @@
 Function to remove a Relativity Agent using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the response to remove an agent. It supports both graceful and forceful deletion of an agent. A graceful delete waits for the agent to finish executing before deletion, while a forceful delete removes the agent immediately, which is useful when an agent becomes unresponsive.
+This function constructs the required request, sends a DELETE request to the Relativity REST API, and processes the
+response to remove an agent. It supports both graceful and forceful deletion of an agent. A graceful delete waits for
+the agent to finish executing before deletion, while a forceful delete removes the agent immediately, which is useful
+when an agent becomes unresponsive.
 
 .PARAMETER ArtifactID
 The Artifact ID of the agent to be deleted.
 
 .PARAMETER Force
-Switch to indicate whether to forcefully delete the agent. When this switch is provided, the agent will be deleted immediately without waiting for it to finish executing.
+Switch to indicate whether to forcefully delete the agent. When this switch is provided, the agent will be deleted
+immediately without waiting for it to finish executing.
 
 .EXAMPLE
 Remove-RelativityAgent -ArtifactID 1015277
@@ -17,10 +21,12 @@ This example removes the Relativity agent with the given Artifact ID after it ha
 
 .EXAMPLE
 Remove-RelativityAgent -ArtifactID 1015277 -Force
-This example forcefully removes the Relativity agent with the given Artifact ID immediately without waiting for it to finish executing.
+This example forcefully removes the Relativity agent with the given Artifact ID immediately without waiting for it to
+finish executing.
 
 .NOTES
-Ensure you have connectivity and appropriate permissions in Relativity before running this function. It's recommended to use force delete only when an agent has become unresponsive.
+Ensure you have connectivity and appropriate permissions in Relativity before running this function. It's recommended
+to use force delete only when an agent has become unresponsive.
 #>
 function Remove-RelativityAgent
 {
@@ -41,7 +47,7 @@ function Remove-RelativityAgent
     }
     Process
     {
-        try 
+        try
         {
             $Request = [RelativityAgentDeleteRequest]::New($Force)
 
@@ -55,16 +61,19 @@ function Remove-RelativityAgent
             Write-Verbose "Invoking DELETE method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
-                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Delete" -RequestBody $RequestBody
+                $ApiResponse = Invoke-RelativityApiRequest `
+                    -ApiEndpoint $ApiEndpoint `
+                    -HttpMethod "Delete" `
+                    -RequestBody $RequestBody
 
                 $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
 
                 Write-Verbose "Successfully deleted agent."
             }
-            
+
             return $Response
         }
-        catch 
+        catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"

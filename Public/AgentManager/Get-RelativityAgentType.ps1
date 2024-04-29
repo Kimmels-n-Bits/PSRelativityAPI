@@ -23,7 +23,7 @@ function Get-RelativityAgentType
     }
     Process
     {
-        try 
+        try
         {
             [String[]] $Resources = @("workspace", "-1", "agenttypes")
 
@@ -38,7 +38,7 @@ function Get-RelativityAgentType
             $ApiResponse | ForEach-Object {
                 $Response.Add([RelativityAgentTypeReadResponse]::New($_))
             }
-            
+
             Write-Verbose "Agent types retrieved successfully."
             return $Response.ToArray()
         }

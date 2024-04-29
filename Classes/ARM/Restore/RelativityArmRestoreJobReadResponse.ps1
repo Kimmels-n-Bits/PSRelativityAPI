@@ -44,9 +44,9 @@ class RelativityArmRestoreJobReadResponse : RelativityArmJobReadResponseBase
 
         $apiResponse.UserMappings | ForEach-Object {
             $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
-                $_.ArchiveUserID,
-                $_.InstanceUserID
-            ))
+                    $_.ArchiveUserID,
+                    $_.InstanceUserID
+                ))
         }
 
         $this.UserMappings = $UserMappingsValue.ToArray()
@@ -55,19 +55,19 @@ class RelativityArmRestoreJobReadResponse : RelativityArmJobReadResponseBase
 
         $apiResponse.GroupMappings | ForEach-Object {
             $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
-                $_.ArchiveGroupID,
-                $_.InstanceGroupID
-            ))
+                    $_.ArchiveGroupID,
+                    $_.InstanceGroupID
+                ))
         }
 
         $ApplicationsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobApplication]"
 
         $apiResponse.Applications | ForEach-Object {
             $ApplicationsValue.Add([RelativityArmRestoreJobApplication]::New(
-                $_.Name,
-                $_.Guid,
-                $_.ShouldRestore
-            ))
+                    $_.Name,
+                    $_.Guid,
+                    $_.ShouldRestore
+                ))
         }
     }
 }

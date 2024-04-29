@@ -23,7 +23,7 @@ function Get-RelativityArmJobStatistic
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [ValidateRange(1,[Int32]::MaxValue)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $JobExecutionID
     )
 
@@ -37,7 +37,10 @@ function Get-RelativityArmJobStatistic
         {
             [String[]] $Resources = @("jobs", $JobExecutionID.ToString(), "statistics")
 
-            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
+            $ApiEndpoint = Get-RelativityApiEndpoint `
+                -BusinessDomain "relativity-arm" `
+                -Version "v1" `
+                -Resources $Resources
 
             Write-Debug "Preparing to invoke GET method at Relativity API endpoint '$($ApiEndpoint)'"
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"

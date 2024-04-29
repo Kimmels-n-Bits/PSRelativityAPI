@@ -16,7 +16,7 @@ class RelativityAgentRequestSecuredValue
 
         $ReturnValue.Add("Secured", $this.Secured)
         $ReturnValue.Add("Value", @{ ArtifactID = $this.Value.ToString() })
-        
+
         return $ReturnValue
     }
 }

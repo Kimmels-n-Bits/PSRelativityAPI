@@ -3,7 +3,9 @@
 Function to update the properties of a Relativity Agent using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, sends a PUT request to the Relativity REST API, and processes the response to update an agent's properties such as its run intervals, enabled property, and others. Additionally, it can restrict the update to the date the agent was last modified by using the LastModifiedOn parameter.
+This function constructs the required request, sends a PUT request to the Relativity REST API, and processes the
+response to update an agent's properties such as its run intervals, enabled property, and others. Additionally, it can
+restrict the update to the date the agent was last modified by using the LastModifiedOn parameter.
 
 .PARAMETER ArtifactID
 The Artifact ID of the agent to be updated.
@@ -36,15 +38,27 @@ Optional words or phrases used to describe the agent.
 Optional description or other information about the agent.
 
 .PARAMETER LastModifiedOn
-The date and time when the agent was most recently modified. This parameter is only required if you want to restrict the update of an agent to the date that it was last modified.
+The date and time when the agent was most recently modified. This parameter is only required if you want to restrict
+the update of an agent to the date that it was last modified.
 
 .EXAMPLE
-Set-RelativityAgent -ArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60
-This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds.
+Set-RelativityAgent `
+    -ArtifactID 1015277 `
+    -AgentTypeArtifactID 1016924 `
+    -AgentServerArtifactID 1016925 `
+    -Enabled -Interval 60
+This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60
+seconds.
 
 .EXAMPLE
-Set-RelativityAgent -ArtifactID 1015277 -AgentTypeArtifactID 1016924 -AgentServerArtifactID 1016925 -Enabled -Interval 60 -LastModifiedOn "2018-10-19T18:41:20.54"
-This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60 seconds, and restricts the update to the date the agent was last modified.
+Set-RelativityAgent `
+    -ArtifactID 1015277 `
+    -AgentTypeArtifactID 1016924 `
+    -AgentServerArtifactID 1016925 `
+    -Enabled -Interval 60 `
+    -LastModifiedOn "2018-10-19T18:41:20.54"
+This example updates the properties of a Relativity agent with the given Artifact IDs and a check interval of 60
+seconds, and restricts the update to the date the agent was last modified.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
@@ -90,7 +104,7 @@ function Set-RelativityAgent
     }
     Process
     {
-        try 
+        try
         {
             $AgentType = [RelativityAgentRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
             $AgentServer = [RelativityAgentRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
@@ -116,16 +130,19 @@ function Set-RelativityAgent
             Write-Verbose "Invoking PUT method at Relativity API: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
-                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Put" -RequestBody $RequestBody
+                $ApiResponse = Invoke-RelativityApiRequest `
+                    -ApiEndpoint $ApiEndpoint `
+                    -HttpMethod "Put" `
+                    -RequestBody $RequestBody
 
                 $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
 
                 Write-Verbose "Successfully updated agent."
             }
-            
+
             return $Response
         }
-        catch 
+        catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"

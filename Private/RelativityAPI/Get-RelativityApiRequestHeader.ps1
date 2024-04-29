@@ -19,12 +19,17 @@ function Get-RelativityApiRequestHeader
     }
     Process
     {
-        $RelativityApiAuthorization = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$($script:RelativityCredential.UserName):$($script:RelativityCredential.GetNetworkCredential().Password)"));
+        $UserName = $script:RelativityCredential.UserName
+        $Password = $script.RelativtityCredential.GetNetworkCredential().Password
 
-        $RelativityApiRequestHeader = New-Object "System.Collections.Generic.Dictionary[[String], [String]]";
-        $RelativityApiRequestHeader.Add("X-CSRF-Header", "-");
-        $RelativityApiRequestHeader.Add("Content-Type", "application/json");
-        $RelativityApiRequestHeader.Add("Authorization", "Basic $($RelativityApiAuthorization)");
+        $RelativityApiAuthorization = [Convert]::ToBase64String(
+            [Text.Encoding]::ASCII.GetBytes("$($UserName):$($Password)")
+        )
+
+        $RelativityApiRequestHeader = New-Object "System.Collections.Generic.Dictionary[[String], [String]]"
+        $RelativityApiRequestHeader.Add("X-CSRF-Header", "-")
+        $RelativityApiRequestHeader.Add("Content-Type", "application/json")
+        $RelativityApiRequestHeader.Add("Authorization", "Basic $($RelativityApiAuthorization)")
 
         return $RelativityApiRequestHeader
     }

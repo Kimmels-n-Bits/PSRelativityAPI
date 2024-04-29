@@ -65,8 +65,8 @@ function Get-RelativityArmArchiveJobCreateOrUpdateRequest
             $IncludeRepositoryFiles,
             $IncludeLinkedFiles,
             $MissingFileBehavior
-        
-            )
+        )
+
         $ProcessingOptions = [RelativityArmArchiveJobProcessingOptions]::New(
             $IncludeProcessing,
             $IncludeProcessingFiles,

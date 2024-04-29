@@ -2,5 +2,6 @@
 #TODO: Implement RelativityObjectMassDeleteRequestByCriteria class
 <#
     Inherit from RelativityObjectMassRequesByCriteriatBase
-    There are no additional properties to this class, should I keep it as-is or just have the API call method use the Base class?
+    There are no additional properties to this class, should I keep it as-is or just have the API call method use the
+    Base class?
 #>

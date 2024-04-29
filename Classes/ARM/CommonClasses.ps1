@@ -192,7 +192,7 @@ class RelativityArmJobBase
     )
     {
         $this.ScheduledStartTime = $apiResponse.ScheduledStartTime
-        
+
         $this.NotificationOptions = [RelativityArmJobNotificationOptions]::New(
             $apiResponse.NotificationOptions.NotifyJobCreator,
             $apiResponse.NotificationOptions.NotifyJobExecutor
@@ -262,12 +262,12 @@ class RelativityArmJobReadResponseBase : RelativityArmJobBase
 
         $ActionsHistoryValue = New-Object "System.Collections.Generic.List[RelativityArmJobActionHistory]"
 
-        $apiResponse.JobDetails.ActionsHistory | Foreach-Object {
+        $apiResponse.JobDetails.ActionsHistory | ForEach-Object {
             $ActionsHistoryValue.Add([RelativityArmJobActionHistory]::New(
-                $_.Date,
-                $_.Type,
-                $_.UserName
-            ))
+                    $_.Date,
+                    $_.Type,
+                    $_.UserName
+                ))
         }
 
         $JobDetailsValue = [RelativityArmJobDetails]::New(
@@ -347,7 +347,7 @@ class RelativityArmRestoreJobUserMappingOption
     )
     {
         $this.AutoMapUsers = $autoMapUsers
-        
+
         $UserMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobUserMapping]"
         if ($null -ne $UserMappings)
         {
@@ -359,9 +359,9 @@ class RelativityArmRestoreJobUserMappingOption
                 else
                 {
                     $UserMappingsValue.Add([RelativityArmRestoreJobUserMapping]::New(
-                        $_.ArchiveUserID,
-                        $_.InstanceUserID
-                    ))
+                            $_.ArchiveUserID,
+                            $_.InstanceUserID
+                        ))
                 }
             }
         }
@@ -392,7 +392,7 @@ class RelativityArmRestoreJobGroupMappingOption
     )
     {
         $this.AutoMapGroups = $autoMapGroups
-        
+
         $GroupMappingsValue = New-Object "System.Collections.Generic.List[RelativityArmRestoreJobGroupMapping]"
         if ($null -ne $GroupMappings)
         {
@@ -404,13 +404,13 @@ class RelativityArmRestoreJobGroupMappingOption
                 else
                 {
                     $GroupMappingsValue.Add([RelativityArmRestoreJobGroupMapping]::New(
-                        $_.ArchiveGroupID,
-                        $_.InstanceGroupID
-                    ))
+                            $_.ArchiveGroupID,
+                            $_.InstanceGroupID
+                        ))
                 }
             }
         }
-        
+
         $this.GroupMappings = $GroupMappingsValue.ToArray()
     }
 

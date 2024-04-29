@@ -3,7 +3,8 @@
 Function to create a new Relativity ARM archive job using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls Relativity's REST API, and processes the response to create a new ARM archive job.
+This function constructs the required request, calls Relativity's REST API, and processes the response to create a new
+ARM archive job.
 
 .PARAMETER ArtifactID
 The ArtifactId of the workspace to archive for the archive job. This is a mandatory parameter.
@@ -36,27 +37,34 @@ Indicates whether Structured Analytics sets will be included in the archive dire
 Indicates whether Data Grid application data will be present in the archive directory.
 
 .PARAMETER IncludeRepositoryFiles
- Indicates whether all files included in the workspace repository, including files from file fields, will be archived in the archive directory.
+ Indicates whether all files included in the workspace repository, including files from file fields, will be archived
+ in the archive directory.
 
 .PARAMETER IncludeLinkedFiles
-Indicates whether all linked files that do not exist in the workspace file repository will be archived in the archive directory.
+Indicates whether all linked files that do not exist in the workspace file repository will be archived in the archive
+directory.
 
 .PARAMETER MissingFileBehavior
-Indicates whether to skip ("SkipFile") or stop ("StopJob") when missing files are detected during the archiving process.
-If there is potential for any files to not be found while the job is running, skipping them will result in compiling a downloadable list of the files that were missing and allow the job to complete without error.
-Setting this to stop will immediately stop on the first missing file and cannot resume until the file is placed in the expected location.
+Indicates whether to skip ("SkipFile") or stop ("StopJob") when missing files are detected during the archiving
+process. If there is potential for any files to not be found while the job is running, skipping them will result in
+compiling a downloadable list of the files that were missing and allow the job to complete without error.
+Setting this to stop will immediately stop on the first missing file and cannot resume until the file is placed in the
+expected location.
 Default is "SkipFile".
 
 .PARAMETER IncludeProcessing
 Indicates whether Processing application data will be present in the archive directory.
 
 .PARAMETER IncludeProcessingFiles
-Indicates whether all the files and containers that have been discovered by Processing will be archived and placed in the Invariant directory.
+Indicates whether all the files and containers that have been discovered by Processing will be archived and placed in
+the Invariant directory.
 
 .PARAMETER ProcessingMissingFileBehavior
-Indicates whether to skip ("SkipFile") or stop ("StopJob") when missing Processing files are detected during the archiving process.
-If there is potential for any files to not be found while the job is running, skipping them will result in compiling a downloadable list of the files that were missing and allow the job to complete without error.
-Setting this to stop will immediately stop on the first missing file and cannot resume until the file is placed in the expected location.
+Indicates whether to skip ("SkipFile") or stop ("StopJob") when missing Processing files are detected during the
+archiving process. If there is potential for any files to not be found while the job is running, skipping them will
+result in compiling a downloadable list of the files that were missing and allow the job to complete without error.
+Setting this to stop will immediately stop on the first missing file and cannot resume until the file is placed in the
+expected location.
 Default is "SkipFile".
 
 .PARAMETER IncludeExtendedWorkspaceData
@@ -84,12 +92,18 @@ ARM will select the fist valid one from configuration.
 .EXAMPLE
 New-RelativityArmArchiveJob -WorkspaceId 1234567 -ArchiveDirectory "\\server\path" -IncludeDatabaseBackup
 
-This example creates a new archive job for workspace with the ArtifactId 1234567 in the specified directory and includes a database backup.
+This example creates a new archive job for workspace with the ArtifactId 1234567 in the specified directory and
+includes a database backup.
 
 .EXAMPLE
-New-RelativityArmArchiveJob -WorkspaceId 1234567 -IncludeDatabaseBackup -IncludeRepositoryFiles -UseDefaultArchiveDirectory
+New-RelativityArmArchiveJob `
+    -WorkspaceId 1234567 `
+    -IncludeDatabaseBackup `
+    -IncludeRepositoryFiles `
+    -UseDefaultArchiveDirectory
 
-This example creates a new archive job for workspace with the ArtifactId 1234567 using the default archive directory and includes a database backup and repository files.
+This example creates a new archive job for workspace with the ArtifactId 1234567 using the default archive directory
+and includes a database backup and repository files.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
@@ -113,12 +127,12 @@ function New-RelativityArmArchiveJob
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
-            $date = "1970-01-01"
-            [DateTime]::TryParse($_, [ref]$date)
-            if($_ -eq "") { return $true }
-            elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)."}
-            $true
-        })]
+                $date = "1970-01-01"
+                [DateTime]::TryParse($_, [ref]$date)
+                if ($_ -eq "") { return $true }
+                elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)." }
+                $true
+            })]
         [String] $ScheduledStartTime,
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
@@ -208,18 +222,24 @@ function New-RelativityArmArchiveJob
             }
 
             $Request = Get-RelativityArmArchiveJobCreateOrUpdateRequest @Params
-            
+
             $RequestBody = $Request.ToHashTable()
 
             [String[]] $Resources = @("archive-jobs")
 
-            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
+            $ApiEndpoint = Get-RelativityApiEndpoint `
+                -BusinessDomain "relativity-arm" `
+                -Version "v1" `
+                -Resources $Resources
 
             Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
-                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
+                $ApiResponse = Invoke-RelativityApiRequest `
+                    -ApiEndpoint $ApiEndpoint `
+                    -HttpMethod "Post" `
+                    -RequestBody $RequestBody
 
                 $Response = [RelativityArmJobCreateResponse]::New( [Int32] $ApiResponse )
                 Write-Verbose "Successfully created ARM archive job with ID: $($Response.JobID)"

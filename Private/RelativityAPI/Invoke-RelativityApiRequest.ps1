@@ -48,7 +48,7 @@ function Invoke-RelativityApiRequest
         }
 
         $RequestHeader = Get-RelativityApiRequestHeader
-        
+
         try
         {
             $RequestBodyJson = $RequestBody | ConvertTo-Json -Depth 10
@@ -57,24 +57,53 @@ function Invoke-RelativityApiRequest
         {
             throw "Error parsing request body to JSON: $($_.Exception.Message)"
         }
-        
 
         try
         {
             $Response = switch ($HttpMethod)
             {
-                "Post" { Invoke-WebRequest -Uri $ApiEndpoint -Method Post -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
-                "Get" { Invoke-WebRequest -Uri $ApiEndpoint -Method Get -Headers $RequestHeader }
-                "Put" { Invoke-WebRequest -Uri $ApiEndpoint -Method Put -Headers $RequestHeader -Body $RequestBodyJson -ContentType "application/json" }
+                "Post"
+                {
+                    Invoke-WebRequest `
+                        -Uri $ApiEndpoint `
+                        -Method Post `
+                        -Headers $RequestHeader `
+                        -Body $RequestBodyJson `
+                        -ContentType "application/json"
+                }
+                "Get"
+                {
+                    Invoke-WebRequest `
+                        -Uri $ApiEndpoint `
+                        -Method Get `
+                        -Headers $RequestHeader
+                }
+                "Put"
+                {
+                    Invoke-WebRequest `
+                        -Uri $ApiEndpoint `
+                        -Method Put `
+                        -Headers $RequestHeader `
+                        -Body $RequestBodyJson `
+                        -ContentType "application/json"
+                }
                 "Delete"
-                { 
+                {
                     if ($null -eq $RequestBody)
                     {
-                        Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader
+                        Invoke-WebRequest `
+                            -Uri $ApiEndpoint `
+                            -Method Delete `
+                            -Headers $RequestHeader
                     }
-                    else 
+                    else
                     {
-                        Invoke-WebRequest -Uri $ApiEndpoint -Method Delete -Headers $RequestHeader -Body $RequestBody -ContentType "application/json"
+                        Invoke-WebRequest `
+                            -Uri $ApiEndpoint `
+                            -Method Delete `
+                            -Headers $RequestHeader `
+                            -Body $RequestBody `
+                            -ContentType "application/json"
                     }
                 }
             }
@@ -87,7 +116,7 @@ function Invoke-RelativityApiRequest
 
                 if ($null -ne $ResponseStream)
                 {
-                    try 
+                    try
                     {
                         $StreamReader = [System.IO.StreamReader]::New($ResponseStream)
                         $ErrorMessage = $StreamReader.ReadToEnd()

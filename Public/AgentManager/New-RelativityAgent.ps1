@@ -3,7 +3,8 @@
 Function to create a new Relativity Agent using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls Relativity's REST API, and processes the response to create a new agent.
+This function constructs the required request, calls Relativity's REST API, and processes the response to create a new
+agent.
 
 .PARAMETER AgentTypeSecured
 Switch to indicate if the current user has permission to view the setting in the Value field for AgentType.
@@ -37,7 +38,8 @@ Number of agents to create. Default is 1.
 
 .EXAMPLE
 New-RelativityAgent -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
-This example creates two new Relativity agents with the given agent type on the given agent server and a check interval of 60 seconds.
+This example creates two new Relativity agents with the given agent type on the given agent server and a check interval
+of 60 seconds.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
@@ -96,7 +98,7 @@ function New-RelativityAgent
                 $Keywords,
                 $Notes
             )
-            
+
             $Request = [RelativityAgentCreateRequest]::New($AgentRequest, $Count)
 
             $RequestBody = $Request.ToHashTable()

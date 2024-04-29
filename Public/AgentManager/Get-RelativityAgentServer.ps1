@@ -1,12 +1,16 @@
 <#
 .SYNOPSIS
-Function to retrieve a list of agent servers or servers compatible with a specific agent type using Relativity's REST API.
+Function to retrieve a list of agent servers or servers compatible with a specific agent type using Relativity's REST
+API.
 
 .DESCRIPTION
-This function sends a GET request to the Relativity REST API to retrieve a list of all agent servers in a Relativity environment or servers compatible with a specific agent type. If the AgentTypeArtifactID parameter is provided, it fetches servers compatible with that agent type; otherwise, it retrieves all agent servers.
+This function sends a GET request to the Relativity REST API to retrieve a list of all agent servers in a Relativity
+environment or servers compatible with a specific agent type. If the AgentTypeArtifactID parameter is provided, it
+fetches servers compatible with that agent type; otherwise, it retrieves all agent servers.
 
 .PARAMETER AgentTypeArtifactID
-(Optional) The Artifact ID of the agent type to retrieve compatible agent servers for. If not specified, the function retrieves all agent servers.
+(Optional) The Artifact ID of the agent type to retrieve compatible agent servers for. If not specified, the function
+retrieves all agent servers.
 
 .EXAMPLE
 Get-RelativityAgentServer
@@ -28,7 +32,7 @@ function Get-RelativityAgentServer
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $AgentTypeArtifactID
     )
-    
+
     Begin
     {
         Write-Verbose "Starting Get-RelativityAgentServer"
@@ -45,7 +49,7 @@ function Get-RelativityAgentServer
                 $Resources += $AgentTypeArtifactID.ToString()
                 $Resources += "availableagentservers"
             }
-            else 
+            else
             {
                 $Resources += "agentservers"
             }
@@ -61,11 +65,11 @@ function Get-RelativityAgentServer
             $ApiResponse | ForEach-Object {
                 $Response.Add([RelativityAgentServerReadResponse]::New($_))
             }
-            
+
             Write-Verbose "Agent servers retrieved successfully."
             return $Response.ToArray()
         }
-        catch 
+        catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"

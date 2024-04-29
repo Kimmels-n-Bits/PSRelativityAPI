@@ -134,7 +134,7 @@
             Enable = $true
             NoEmptyLineBefore = $true
             IgnoreOneLineBlock = $true
-            NewLineAfter = $false
+            NewLineAfter = $true
         }
 
         PSPlaceOpenBrace = @{

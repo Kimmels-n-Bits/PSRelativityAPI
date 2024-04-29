@@ -39,7 +39,7 @@
 <#
     Inherit from RelativityObjectBase
     [RelativityObjectRef] $ParentObject
-    [RelativityFieldValuePair[]] $FieldValues  
+    [RelativityFieldValuePair[]] $FieldValues
 #>
 
 #TODO Implement RelativityFieldCategory enum
@@ -59,7 +59,7 @@
     MarkupSetMarker = 12
     GenericSystem = 13
     MultiReflected = 14
-    Batch = 15    
+    Batch = 15
 #>
 
 #TODO Implemenet RelativityFieldType enum
@@ -146,8 +146,18 @@
 #>
 
 #TODO Implement RelativityObjectQueryCondition class
+class RelativityObjectQueryCondition
+{
+    [String] $Condition
+
+    RelativityObjectQueryCondition (
+        [String] $Condition
+    )
+    {
+        $this.Condition = $Condition
+    }
+}
 <#
-    #https://platform.relativity.com/Server2023/Content/REST_API/Resource_Tasks/Querying_for_resources.htm#Syntaxforqueryconditions
     [String] $Condition
 #>
 

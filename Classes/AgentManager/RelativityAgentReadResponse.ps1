@@ -1,6 +1,6 @@
 class RelativityAgentReadResponseValue
 {
-    [Int32] $ArtifactID    
+    [Int32] $ArtifactID
     [String] $Name
 
     RelativityAgentReadResponseValue([Int32] $artifactID, [String] $name)
@@ -12,7 +12,7 @@ class RelativityAgentReadResponseValue
 
 class RelativityAgentReadResponseSecuredValue
 {
-    [Boolean] $Secured    
+    [Boolean] $Secured
     [RelativityAgentReadResponseValue] $Value
 
     RelativityAgentReadResponseSecuredValue([Boolean] $secured, [RelativityAgentReadResponseValue] $value)
@@ -26,7 +26,7 @@ class RelativityAgentReadResponseMeta
 {
     [String[]] $Unsupported
     [String[]] $ReadOnly
-    
+
     RelativityAgentReadResponseMeta([String[]] $unsupported, [String[]] $readOnly)
     {
         $this.Unsupported = $unsupported
@@ -42,7 +42,13 @@ class RelativityAgentReadResponseAction
     [Boolean] $IsAvailable
     [String[]] $Reason
 
-    RelativityAgentReadResponseAction([String] $name, [String] $href, [String] $verb, [Boolean] $isAvailable, [String[]] $reason)
+    RelativityAgentReadResponseAction(
+        [String] $name,
+        [String] $href,
+        [String] $verb,
+        [Boolean] $isAvailable,
+        [String[]] $reason
+    )
     {
         $this.Name = $name
         $this.Href = $href
@@ -104,7 +110,7 @@ class RelativityAgentReadResponse
         $this.DetailMessage = $ApiResponse.DetailMessage
         $this.EventLevel = $ApiResponse.EventLevel
         $this.CreatedOn = [DateTime]::Parse($ApiResponse.CreatedOn)
-        
+
         $this.CreatedBy = [RelativityAgentReadResponseValue]::New(
             $ApiResponse.CreatedBy.ArtifactID,
             $ApiResponse.CreatedBy.Name
@@ -128,9 +134,15 @@ class RelativityAgentReadResponse
         }
 
         $this.Actions = @()
-        
+
         $ApiResponse.Actions | ForEach-Object {
-            $this.Actions += [RelativityAgentReadResponseAction]::New($_.Name, $_.Href, $_.Verb, $_.IsAvailable, $_.Reason)
+            $this.Actions += [RelativityAgentReadResponseAction]::New(
+                $_.Name,
+                $_.Href,
+                $_.Verb,
+                $_.IsAvailable,
+                $_.Reason
+            )
         }
 
         $this.ArtifactID = $ApiResponse.ArtifactID
