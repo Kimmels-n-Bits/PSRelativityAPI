@@ -22,7 +22,7 @@ class RelativityArmRestoreJobMigratorsDestinationOptions
         $ReturnValue.Add("StructuredAnalyticsServerID", $this.StructuredAnalyticsServerID)
         $ReturnValue.Add("ConceptualAnalyticsServerID", $this.ConceptualAnalyticsServerID)
         $ReturnValue.Add("DtSearchLocationID", $this.DtSearchLocationID)
-        
+
         return $ReturnValue
     }
 }

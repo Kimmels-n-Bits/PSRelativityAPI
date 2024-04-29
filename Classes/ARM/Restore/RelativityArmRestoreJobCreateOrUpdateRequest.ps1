@@ -44,7 +44,7 @@ class RelativityArmRestoreJobOptions : RelativityArmJobOptionsBase
         $ReturnValue = ([RelativityArmJobOptionsBase] $this).ToHashTable()
 
         $ReturnValue.Add("ArchivePath", $this.ArchivePath)
-        
+
         if ([String]::IsNullOrEmpty($this.ExistingTargetDatabase))
         {
             $ReturnValue.Add("ExistingTargetDatabase", $null)
@@ -79,7 +79,7 @@ class RelativityArmRestoreJobCreateOrUpdateRequest
     [Hashtable] ToHashTable()
     {
         $ReturnValue = @{}
-        
+
         $ReturnValue.Add("Request", $this.Request.ToHashTable())
 
         return $ReturnValue

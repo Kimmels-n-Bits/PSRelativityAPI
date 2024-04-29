@@ -3,7 +3,8 @@
 Function to validate whether a Relativity Agent can be updated using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls Relativity's REST API, and processes the response to validate whether an agent can be updated.
+This function constructs the required request, calls Relativity's REST API, and processes the response to validate
+whether an agent can be updated.
 
 .PARAMETER ArtifactID
 The Artifact ID of the agent to update.
@@ -36,8 +37,15 @@ Optional words or phrases to describe the agent.
 Optional description or other information about the agent.
 
 .EXAMPLE
-Test-SetRelativityAgent -ArtifactID 1019521 -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
-This example validates whether a Relativity agent can be updated with the given agent type, agent server and a check interval of 60 seconds.
+Test-SetRelativityAgent `
+    -ArtifactID 1019521 `
+    -AgentTypeArtifactID 1015277 `
+    -AgentServerArtifactID 1016924 `
+    -Enabled `
+    -Interval 60 `
+    -Count 2
+This example validates whether a Relativity agent can be updated with the given agent type, agent server and a check
+interval of 60 seconds.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
@@ -87,8 +95,16 @@ function Test-SetRelativityAgent
         {
             $AgentType = [RelativityAgentRequestSecuredValue]::New($AgentTypeSecured, $AgentTypeArtifactID)
             $AgentServer = [RelativityAgentRequestSecuredValue]::New($AgentServerSecured, $AgentServerArtifactID)
-            $AgentRequest = [RelativityAgentRequestAgentRequest]::New($AgentType, $AgentServer, $Enabled, $Interval, $LoggingLevel, $Keywords, $Notes)
-            
+            $AgentRequest = [RelativityAgentRequestAgentRequest]::New(
+                $AgentType,
+                $AgentServer,
+                $Enabled,
+                $Interval,
+                $LoggingLevel,
+                $Keywords,
+                $Notes
+            )
+
             $Request = [RelativityAgentUpdateRequest]::New($AgentRequest, $null)
 
             $RequestBody = $Request.ToHashTable()

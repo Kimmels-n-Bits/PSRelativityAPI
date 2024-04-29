@@ -28,7 +28,7 @@ class RelativityArmJobCurrentJobStage
         {
             $this.TimeElapsed = [TimeSpan]::Parse($apiResponse.CurrentJobStage.TimeElapsed)
         }
-        
+
         $this.PercentComplete = $apiResponse.CurrentJobStage.PercentComplete
     }
 }
@@ -51,7 +51,7 @@ class RelativityArmJobStatusReadResponse
         $this.JobState = $apiResponse.JobState
         $this.CurrentJobStage = [RelativityArmJobCurrentJobStage]::New($apiResponse)
         $this.TotalNumberOfStages = $apiResponse.TotalNumberOfStages
-        
+
         if ($null -ne $apiResponse.TimeStarted)
         {
             $this.TimeStarted = [DateTime]::Parse($apiResponse.TimeStarted)

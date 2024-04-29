@@ -3,7 +3,8 @@
 Function to validate whether a new Relativity Agent can be created using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls Relativity's REST API, and processes the response to validate whether a new agent can be created.
+This function constructs the required request, calls Relativity's REST API, and processes the response to validate
+whether a new agent can be created.
 
 .PARAMETER AgentTypeSecured
 Switch to indicate if the current user has permission to view the setting in the Value field for AgentType.
@@ -37,7 +38,8 @@ Number of agents to create. Default is 1.
 
 .EXAMPLE
 Test-NewRelativityAgent -AgentTypeArtifactID 1015277 -AgentServerArtifactID 1016924 -Enabled -Interval 60 -Count 2
-This example validates whether two new Relativity agents with the given agent type, agent server and a check interval of 60 seconds can be created.
+This example validates whether two new Relativity agents with the given agent type, agent server and a check interval
+of 60 seconds can be created.
 
 .NOTES
 Ensure you have connectivity and appropriate permissions in Relativity before running this function.
@@ -95,7 +97,7 @@ function Test-NewRelativityAgent
                 $Keywords,
                 $Notes
             )
-            
+
             $Request = [RelativityAgentCreateRequest]::New($AgentRequest, $Count)
 
             $RequestBody = $Request.ToHashTable()

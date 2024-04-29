@@ -54,7 +54,7 @@ class RelativityArmDatabaseRestoreJobCreateOrUpdateRequest
     [Hashtable] ToHashTable()
     {
         $ReturnValue = @{}
-        
+
         $ReturnValue.Add("Request", $this.Request.ToHashTable())
 
         return $ReturnValue

@@ -119,12 +119,12 @@ function Set-RelativityArmArchiveJob
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
-            $date = "1970-01-01"
-            [DateTime]::TryParse($_, [ref]$date)
-            if($_ -eq "") { return $true }
-            elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)."}
-            $true
-        })]
+                $date = "1970-01-01"
+                [DateTime]::TryParse($_, [ref]$date)
+                if ($_ -eq "") { return $true }
+                elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)." }
+                $true
+            })]
         [String] $ScheduledStartTime,
         [Parameter(ParameterSetName = "ProvidedArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [Parameter(ParameterSetName = "DefaultArchiveDirectory", Mandatory = $false, ValueFromPipelineByPropertyName = $true)]

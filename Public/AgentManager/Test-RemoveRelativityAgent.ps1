@@ -3,7 +3,8 @@
 Function to validte whether a Relativity Agent can be deleted using Relativity's REST API.
 
 .DESCRIPTION
-This function constructs the required request, calls Relativity's REST API, and processes the response to validate whether an agent can be deleted.
+This function constructs the required request, calls Relativity's REST API, and processes the response to validate
+whether an agent can be deleted.
 
 .PARAMETER ArtifactID
 The Artifact ID of the agent to be deleted.
@@ -32,7 +33,7 @@ function Test-RemoveRelativityAgent
     }
     Process
     {
-        try 
+        try
         {
             [String[]] $Resources = @("workspace", "-1", "agents", $ArtifactID.ToString(), "validateinstancelimits")
 
@@ -43,12 +44,12 @@ function Test-RemoveRelativityAgent
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Delete"
 
             $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
-            
+
             Write-Verbose "Successfully deleted agent."
 
             return $Response
         }
-        catch 
+        catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"

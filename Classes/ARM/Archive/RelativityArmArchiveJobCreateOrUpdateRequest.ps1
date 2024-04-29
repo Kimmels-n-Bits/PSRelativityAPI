@@ -39,7 +39,7 @@ class RelativityArmArchiveJobOptions : RelativityArmJobOptionsBase
     [Hashtable] ToHashTable()
     {
         $ReturnValue = ([RelativityArmJobOptionsBase] $this).ToHashTable()
-        
+
         $ReturnValue.Add("WorkspaceID", $this.WorkspaceID)
         $ReturnValue.Add("ArchiveDirectory", $this.ArchiveDirectory)
         $ReturnValue.Add("MigratorOptions", $this.MigratorOptions.ToHashTable())
@@ -66,7 +66,7 @@ class RelativityArmArchiveJobCreateOrUpdateRequest
     [Hashtable] ToHashTable()
     {
         $ReturnValue = @{}
-        
+
         $ReturnValue.Add("Request", $this.Request.ToHashTable())
 
         return $ReturnValue

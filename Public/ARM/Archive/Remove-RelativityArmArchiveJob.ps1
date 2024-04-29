@@ -36,22 +36,28 @@ function Remove-RelativityArmArchiveJob
         {
             [String[]] $Resources = @("archive-jobs", $JobID.ToString())
 
-            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
+            $ApiEndpoint = Get-RelativityApiEndpoint `
+                -BusinessDomain "relativity-arm" `
+                -Version "v1" `
+                -Resources $Resources
 
             Write-Debug "Preparing to invoke DELETE method at Relativity API endpoint '$($ApiEndPoint)'"
             Write-Verbose "Invoking DELETE method at Relativity API endpoint: $($ApiEndpoint)"
             if ($PSCmdlet.ShouldProcess($ApiEndpoint))
             {
-                $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Delete" -RequestBody $RequestBody
+                $ApiResponse = Invoke-RelativityApiRequest `
+                    -ApiEndpoint $ApiEndpoint `
+                    -HttpMethod "Delete" `
+                    -RequestBody $RequestBody
 
                 $Response = [RelativityApiSuccessResponse]::New($ApiResponse.Success)
 
                 Write-Verbose "Successfully deleted ARM archive job."
             }
-            
+
             return $Response
         }
-        catch 
+        catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
             Write-Verbose "API Endpoint: $($ApiEndpoint)"

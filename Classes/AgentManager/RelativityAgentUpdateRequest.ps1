@@ -14,7 +14,7 @@ class RelativityAgentUpdateRequest
         {
             $this.LastModifiedOn = $lastModifiedOnResult
         }
-        elseif(-not [String]::IsNullOrEmpty($lastModifiedOn))
+        elseif (-not [String]::IsNullOrEmpty($lastModifiedOn))
         {
             throw "Error parsing LastModifiedOn value: $($lastModifiedOn)"
         }
@@ -26,7 +26,7 @@ class RelativityAgentUpdateRequest
 
         $ReturnValue.Add("AgentRequest", $this.AgentRequest.ToHashTable())
 
-        if($null -ne $this.LastModifiedOn)
+        if ($null -ne $this.LastModifiedOn)
         {
             $ReturnValue.Add("LastModifiedOn", $this.LastModifiedOn)
         }

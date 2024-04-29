@@ -23,7 +23,7 @@ function Get-RelativityArmJobLog
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [ValidateRange(1,[Int32]::MaxValue)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $JobID
     )
 
@@ -37,7 +37,10 @@ function Get-RelativityArmJobLog
         {
             [String[]] $Resources = @("jobs", $JobID.ToString(), "logs")
 
-            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "relativity-arm" -Version "v1" -Resources $Resources
+            $ApiEndpoint = Get-RelativityApiEndpoint `
+                -BusinessDomain "relativity-arm" `
+                -Version "v1" `
+                -Resources $Resources
 
             Write-Debug "Preparing to invoke GET method at Relativity API endpoint '$($ApiEndpoint)'"
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
@@ -45,7 +48,7 @@ function Get-RelativityArmJobLog
 
             $Response = ($ApiResponse | Select-Object -Skip 3 | ForEach-Object { [Char][Int32]$_ }) -join ""
             Write-Verbose "ARM job log retrieved successfully."
-            
+
             return $Response
         }
         catch

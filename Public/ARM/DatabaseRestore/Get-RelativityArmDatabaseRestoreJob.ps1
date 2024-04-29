@@ -23,7 +23,7 @@ function Get-RelativityArmDatabaseRestoreJob
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [ValidateRange(1,[Int32]::MaxValue)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $JobID
     )
 

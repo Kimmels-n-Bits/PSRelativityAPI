@@ -50,7 +50,7 @@ function Get-RelativityArmRestoreJobCreateOrUpdateRequest
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Boolean] $UiJobActionsLocked
     )
-    
+
     Begin
     {
         Write-Verbose "Starting Get-RelativityArmRestoreJobCreateOrUpdateRequest"
@@ -76,7 +76,7 @@ function Get-RelativityArmRestoreJobCreateOrUpdateRequest
             $UpdateRepositoryFilePaths,
             $UpdateLinkedFilePaths
         )
-        
+
         $UserMapping = [RelativityArmRestoreJobUserMappingOption]::New(
             $AutoMapUsers,
             $UserMappings
@@ -95,12 +95,12 @@ function Get-RelativityArmRestoreJobCreateOrUpdateRequest
                 {
                     throw "Applications hashtable array has at least one item missing a required key. Ensure all hashtables in the array contain both 'Guid' and 'ShouldRestore'."
                 }
-                else 
+                else
                 {
                     $ApplicationsValue.Add([RelativityArmRestoreJobApplication]::New(
-                        $_.Guid,
-                        $_.ShouldRestore
-                    ))
+                            $_.Guid,
+                            $_.ShouldRestore
+                        ))
                 }
             }
         }
