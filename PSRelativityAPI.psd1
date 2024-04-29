@@ -75,7 +75,11 @@
         "$PSScriptRoot\Public\ARM\Suspend-RelativityArmJob.ps1",
         "$PSScriptRoot\Public\ARM\Terminate-RelativityArmJob.ps1",
         "$PSScriptRoot\Public\ARM\Get-RelativityArmJobStatus.ps1",
-        "$PSScriptRoot\Public\ARM\Get-RelativityArmJobLog.ps1"
+        "$PSScriptRoot\Public\ARM\Get-RelativityArmJobLog.ps1",
+
+        ### ObjectManager API
+        "$PSScriptRoot\Classes\ObjectManager\CommonClasses.ps1",
+        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
     )
     FunctionsToExport = @(
         ### General
@@ -116,7 +120,10 @@
         "Terminate-RelativityArmJob",
         "Get-RelativityArmJobStatus",
         "Get-RelativityArmJobLog",
-        "Restart-RelativityArmJobTask"
+        "Restart-RelativityArmJobTask",
+
+        ### ObjectManager API
+        "New-RelativityObjectQueryCondition"
     )
     CmdletsToExport = @()
     VariablesToExport = @()

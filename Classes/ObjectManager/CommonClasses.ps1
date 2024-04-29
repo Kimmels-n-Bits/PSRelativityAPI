@@ -146,15 +146,85 @@
 #>
 
 #TODO Implement RelativityObjectQueryCondition class
+enum RelativityObjectQueryConditionComparisonOperator
+{
+    Eq,
+    Ne,
+    Gt,
+    Ge,
+    Lt,
+    Le,
+    In,
+    MonthOf,
+    StartsWith,
+    EndsWith,
+    Like,
+    Contains,
+    Intersect,
+    IsSet
+}
+
+enum RelativityObjectQueryConditionKeyword
+{
+    SavedSearch,
+    View,
+    Object,
+    MultiObject,
+    Choice,
+    MultiChoice,
+    User
+}
+
+enum RelativityObjectQueryConditionCombinationOperator
+{
+    And,
+    Or
+}
+
 class RelativityObjectQueryCondition
 {
     [String] $Condition
 
-    RelativityObjectQueryCondition (
-        [String] $Condition
-    )
+    RelativityObjectQueryCondition ([String] $Condition)
     {
         $this.Condition = $Condition
+    }
+
+    RelativityObjectQueryCondition (
+        [Boolean] $Negated,
+        [String] $Field,
+        [RelativityObjectQueryConditionComparisonOperator] $ActiveOperator,
+        [RelativityObjectQueryConditionKeyword] $ActiveKeyword,
+        [Object] $Value
+    )
+    {
+        #TODO: Combine inputs together to form a valid RelativityObjectQueryCondition.
+        throw "NotImplementedException: The method or operation is not implemented."
+
+        $this.Condtion = ""
+
+        if ($Negated)
+        {
+            $this.Condition += "NOT "
+        }
+
+        $this.Condition += "'$($Field)' "
+
+        switch ($ActiveOperator)
+        {
+
+        }
+    }
+
+    RelativityObjectQueryCondition (
+        [RelativityObjectQueryCondition] $LeftCondition,
+        [RelativityObjectQueryConditionCombinationOperator] $ActiveOperator,
+        [Boolean] $Negated,
+        [RelativityObjectQueryCondition] $RightCondition
+    )
+    {
+        #TODO: Combine inputs together to form a valid RelativityObjectQueryCondition.
+        throw "NotImplementedException: The method or operation is not implemented."
     }
 }
 <#
