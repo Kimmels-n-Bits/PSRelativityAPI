@@ -1,3 +1,4 @@
+#TODO: Replace all references to RelativityAgentRequestSecuredValue to RelativityObjectSecuredValue
 class RelativityAgentRequestSecuredValue
 {
     [Boolean] $Secured
