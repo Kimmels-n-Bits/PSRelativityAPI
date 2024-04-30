@@ -66,12 +66,13 @@ function New-RelativityObjectQueryCondition
         [String] $Field,
         [Parameter(Mandatory = $false, ParameterSetName = "FieldAndValue")]
         [ValidateScript({
-                [Object[]] $AllowedTypes = @(
+                $AllowedTypes = @(
                     [Int32],
                     [Int32[]],
                     [DateTime],
                     [Boolean],
                     [Decimal],
+                    [Decimal[]]
                     [String],
                     [String[]],
                     [Guid],
@@ -79,19 +80,23 @@ function New-RelativityObjectQueryCondition
                 )
                 [Boolean] $IsValidType = $false
 
-                foreach ($Type in $AllowedTypes)
+                if (-not ($_ -is [Array] -and $_.GetType() -eq [Object[]]))
                 {
-                    if ($_ -is $Type)
+                    foreach ($Type in $AllowedTypes)
                     {
-                        $IsValidType = $true
-                        break
+                        if ($_ -is $Type)
+                        {
+                            $IsValidType = $true
+                            break
+                        }
                     }
                 }
 
                 if (-not $IsValidType)
                 {
                     throw "Value must be one of the following types: Int32, Int32[], DateTime, Boolean, Decimal, " +
-                    "String, String[], Guid, Guid[]."
+                    "String, String[], Guid, Guid[]. If you are certain the value matches one of these types, try" +
+                    " explicitly casting the value to that type, e.g., [Int32[]] `$Value = @(42, 53)."
                 }
 
                 return $IsValidType
@@ -230,6 +235,8 @@ function New-RelativityObjectQueryCondition
         {
             # Map the selected comparison operator to an enum we can feed to the RelativityObjectQueryCondition
             # constructor.
+            Write-Verbose "Identifying active operator."
+
             $OperatorMap = @{
                 Eq = [RelativityObjectQueryConditionComparisonOperator]::Eq
                 Ne = [RelativityObjectQueryConditionComparisonOperator]::Ne
@@ -250,14 +257,18 @@ function New-RelativityObjectQueryCondition
             $ActiveOperator = $null
             foreach ($Key in $OperatorMap.Keys)
             {
-                if ((Get-Variable -Name $Key -ValueOnly) -eq $true)
+                if ((Get-Variable -Name $Key -ValueOnly))
                 {
                     [RelativityObjectQueryConditionComparisonOperator] $ActiveOperator = $OperatorMap[$Key]
                     break
                 }
             }
 
+            Write-Verbose "Active operator == '$($ActiveOperator)'."
+
             # Map the selected keyword to an enum we can feed to the RelativityObjectQueryCondition constructor.
+            Write-Verbose "Identifying active keyword."
+
             $KeywordMap = @{
                 SavedSearch = [RelativityObjectQueryConditionKeyword]::SavedSearch
                 View = [RelativityObjectQueryConditionKeyword]::View
@@ -271,64 +282,76 @@ function New-RelativityObjectQueryCondition
             $ActiveKeyword = $null
             foreach ($Key in $KeywordMap.Keys)
             {
-                if ((Get-Variable -Name $Key -ValueOnly) -eq $true)
+                if ((Get-Variable -Name $Key -ValueOnly))
                 {
                     [RelativityObjectQueryConditionKeyword] $ActiveKeyword = $KeywordMap[$Key]
                     break
                 }
             }
 
-            # Map each keyword to the valid comparison operators associated with it.
-            $KeywordValidOperators = @{
-                SavedSearch = @([RelativityObjectQueryConditionComparisonOperator]::In)
-                View = @([RelativityObjectQueryConditionComparisonOperator]::In)
-                Object = @(
-                    [RelativityObjectQueryConditionComparisonOperator]::Eq,
-                    [RelativityObjectQueryConditionComparisonOperator]::Ne,
-                    [RelativityObjectQueryConditionComparisonOperator]::In
-                )
-                MultiObject = @(
-                    [RelativityObjectQueryConditionComparisonOperator]::Contains,
-                    [RelativityObjectQueryConditionComparisonOperator]::Intersect
-                )
-                Choice = @(
-                    [RelativityObjectQueryConditionComparisonOperator]::Eq,
-                    [RelativityObjectQueryConditionComparisonOperator]::Ne,
-                    [RelativityObjectQueryConditionComparisonOperator]::In
-                )
-                MultiChoice = @(
-                    [RelativityObjectQueryConditionComparisonOperator]::Contains,
-                    [RelativityObjectQueryConditionComparisonOperator]::Intersect
-                )
-                User = @(
-                    [RelativityObjectQueryConditionComparisonOperator]::Eq,
-                    [RelativityObjectQueryConditionComparisonOperator]::Ne,
-                    [RelativityObjectQueryConditionComparisonOperator]::Like
-                )
-            }
-
-            # Validate the comparison operator associated with the provided keyword.
-            [Boolean] $IsValidOperatorForKeyword = $false
             if ($null -eq $ActiveKeyword)
             {
-                $IsValidOperatorForKeyword = $true
+                Write-Verbose "Active keyword == null."
             }
             else
             {
-                $IsValidOperatorForKeyword = ($KeywordValidOperators[$ActiveKeyword] |
+                Write-Verbose "Active keyword == '$($ActiveKeyword)'."
+
+                # Map each keyword to the valid comparison operators associated with it.
+                $VerboseMessage = "Validating '$($ActiveOperator)' is a valid comparison operator for keyword " +
+                "'$($ActiveKeyword)'."
+                Write-Verbose $VerboseMessage
+
+                $KeywordValidOperators = @{
+                    SavedSearch = @([RelativityObjectQueryConditionComparisonOperator]::In)
+                    View = @([RelativityObjectQueryConditionComparisonOperator]::In)
+                    Object = @(
+                        [RelativityObjectQueryConditionComparisonOperator]::Eq,
+                        [RelativityObjectQueryConditionComparisonOperator]::Ne,
+                        [RelativityObjectQueryConditionComparisonOperator]::In
+                    )
+                    MultiObject = @(
+                        [RelativityObjectQueryConditionComparisonOperator]::Contains,
+                        [RelativityObjectQueryConditionComparisonOperator]::Intersect
+                    )
+                    Choice = @(
+                        [RelativityObjectQueryConditionComparisonOperator]::Eq,
+                        [RelativityObjectQueryConditionComparisonOperator]::Ne,
+                        [RelativityObjectQueryConditionComparisonOperator]::In
+                    )
+                    MultiChoice = @(
+                        [RelativityObjectQueryConditionComparisonOperator]::Contains,
+                        [RelativityObjectQueryConditionComparisonOperator]::Intersect
+                    )
+                    User = @(
+                        [RelativityObjectQueryConditionComparisonOperator]::Eq,
+                        [RelativityObjectQueryConditionComparisonOperator]::Ne,
+                        [RelativityObjectQueryConditionComparisonOperator]::Like
+                    )
+                }
+
+                # Validate the comparison operator associated with the provided keyword.
+                [Boolean] $IsValidOperatorForKeyword = $false
+                [Boolean] $IsValidOperatorForKeyword = ($KeywordValidOperators[$ActiveKeyword.ToString()] |
                         Where-Object { $_ -eq $ActiveOperator }).Count
-            }
 
-            if (-not $IsValidOperatorForKeyowrd)
-            {
-                [String] $ErrorString = ""
-                $ErrorString += "Comparison operator must be one of the following for the selected keyword: " +
-                    (($KeywordValidOperators[$ActiveKeyword] | ForEach-Object { $_.ToString() }) -join ", ") + "."
+                if (-not $IsValidOperatorForKeyword)
+                {
+                    [String] $ErrorString = ""
+                    $ErrorString += "Comparison operator must be one of the following for the selected keyword: " +
+                    (($KeywordValidOperators[$ActiveKeyword.ToString()] | ForEach-Object { $_.ToString() }) -join ", ") + "."
 
-                throw $ErrorString
+                    throw $ErrorString
+                }
+
+                Write-Verbose "'$($ActiveOperator)' is a valid comparison operator for the selected keyword."
             }
 
             # Map each comparison operator to the valid types associated with it.
+            $VerboseMessage = "Validating '$($Value.GetType().Name)' is a valid type for operator " +
+            "'$($ActiveOperator)'."
+            Write-Verbose $VerboseMessage
+
             $OperatorValidTypes = @{
                 Eq = @([Int32], [DateTime], [Boolean], [Decimal], [String], [Guid])
                 Ne = @([Int32], [DateTime], [Boolean], [Decimal], [String], [Guid])
@@ -341,16 +364,17 @@ function New-RelativityObjectQueryCondition
                 StartsWith = @([String])
                 EndsWith = @([String])
                 Like = @([String])
-                Contains = @([Int32], [Int32[]], [String], [String[]])
-                Intersect = @([Int32])
+                Contains = @([Int32], [Int32[]], [String], [Guid], [Guid[]])
+                Intersect = @([Int32], [Int32[]])
             }
 
             # Validate that the type associated with the provided value is an approved type for the operator.
             [Boolean] $IsValidTypeForOperator = $false
+
             if ($ActiveOperator -ne [RelativityObjectQueryConditionComparisonOperator]::IsSet)
             {
-                $IsValidTypeForOperator = ($OperatorValidTypes[$ActiveOperator] |
-                        Where-Object { $Value -is $_ }).Count
+                [Boolean] $IsValidTypeForOperator = ($OperatorValidTypes[$ActiveOperator.ToString()] |
+                        Where-Object { $Value.GetType() -eq $_ }).Count
             }
             elseif ($null -eq $Value)
             {
@@ -363,7 +387,7 @@ function New-RelativityObjectQueryCondition
                 if ($ActiveOperator -ne [RelativityObjectQueryConditionComparisonOperator]::IsSet)
                 {
                     $ErrorString += "Value must be one of the following types for the selected comparison operator: " +
-                    (($OperatorValidTypes[$ActiveOperator] | ForEach-Object { $_.Name }) -join ", ") + "."
+                    (($OperatorValidTypes[$ActiveOperator.ToString()] | ForEach-Object { $_ }) -join ", ") + "."
                 }
                 else
                 {
@@ -373,36 +397,128 @@ function New-RelativityObjectQueryCondition
                 throw $ErrorString
             }
 
-            # Map each keyword to the valid types associated with it.
-            $KeywordValidTypes = @{
-                SavedSearch = @([Int32])
-                View = @([Int32])
-                Object = @([Int32], [Int32[]])
-                MultiObject = @([Int32], [Int32[]])
-                Choice = @([Int32], [Int32[]], [Guid], [Guid[]])
-                MultiChoice = @([Int32], [Int32[]], [Guid], [Guid[]])
-                User = @([String])
+            Write-Verbose "'$($Value.GetType().Name)' is a valid type for the selected operator."
+
+            if ($null -ne $ActiveKeyword)
+            {
+                # Map each keyword to the valid types associated with it.
+                $VerboseMessage = "Validating '$($Value.GetType().Name)' is a valid type for keyword " +
+                "'$($ActiveKeyword)'."
+                Write-Verbose $VerboseMessage
+
+                $KeywordValidTypes = @{
+                    SavedSearch = @([Int32])
+                    View = @([Int32])
+                    Object = @([Int32], [Int32[]])
+                    MultiObject = @([Int32], [Int32[]])
+                    Choice = @([Int32], [Int32[]], [Guid], [Guid[]])
+                    MultiChoice = @([Int32], [Int32[]], [Guid], [Guid[]])
+                    User = @([String])
+                }
+
+                # Validate that the type associated with the provided value is an approved type for the keyword.
+                [Boolean] $IsValidTypeForKeyword = $false
+
+                if ($null -eq $ActiveKeyword)
+                {
+                    $IsValidTypeForKeyword = $true
+                }
+                else
+                {
+                    [Boolean] $IsValidTypeForKeyword = ($KeywordValidTypes[$ActiveKeyword.ToString()] |
+                            Where-Object { $Value.GetType() -eq $_ }).Count
+                }
+
+                if (-not $IsValidTypeForKeyword)
+                {
+                    [String] $ErrorString = ""
+                    $ErrorString += "Value must be one of the following types for the selected keyword: " +
+                    (($KeywordValidTypes[$ActiveKeyword.ToString()] | ForEach-Object { $_ }) -join ", ") + "."
+
+                    throw $ErrorString
+                }
+
+                Write-Verbose "'$($Value.GetType().Name)' is a valid type for the selected keyword."
+
+                # Map each keyword to the valid field names associated with it.
+                $VerboseMessage = "Validating '$($Field)' is a valid field name for keyword " +
+                "'$($ActiveKeyword)'."
+                Write-Verbose $VerboseMessage
+
+                $KeywordValidFields = @{
+                    SavedSearch = @("ArtifactID")
+                    View = @("ArtifactID")
+                }
+
+                # Validate that the field name provided is an approved field name for the keyword.
+                [Boolean] $IsValidFieldForKeyword = $false
+
+                if ($null -eq $ActiveKeyword -or -not ($KeywordValidFields.ContainsKey($ActiveKeyword.ToString())))
+                {
+                    $IsValidFieldForKeyword = $true
+                }
+                else
+                {
+                    [Boolean] $IsValidFieldForKeyword = ($KeywordValidFields[$ActiveKeyword.ToString()] |
+                            Where-Object { $Field -eq $_ }).Count
+                }
+
+                if (-not $IsValidFieldForKeyword)
+                {
+                    [String] $ErrorString = ""
+                    $ErrorString += "Field name must be one of the following for the selected keyword: " +
+                    (($KeywordValidFields[$ActiveKeyword.ToString()] | ForEach-Object { $_ }) -join ", ") + "."
+
+                    throw $ErrorString
+                }
+
+                Write-Verbose "'$($Field)' is a valid field name for the selected keyword."
             }
 
-            # Validate that the type associated with the provided value is an approved type for the keyword.
-            [Boolean] $IsValidTypeForKeyword = $false
+            #Map each operator to the valid values associated with it.
+            $VerboseMessage = "Validating Value is valid for operator '$($ActiveOperator)'."
+            Write-Verbose $VerboseMessage
 
-            if ($null -eq $ActiveKeyword)
+            $OperatorValidValues = @{
+                MonthOf = @(
+                    [RelativityObjectQueryConditionMonthOf]::January,
+                    [RelativityObjectQueryConditionMonthOf]::February,
+                    [RelativityObjectQueryConditionMonthOf]::March,
+                    [RelativityObjectQueryConditionMonthOf]::April,
+                    [RelativityObjectQueryConditionMonthOf]::May,
+                    [RelativityObjectQueryConditionMonthOf]::June,
+                    [RelativityObjectQueryConditionMonthOf]::July,
+                    [RelativityObjectQueryConditionMonthOf]::August,
+                    [RelativityObjectQueryConditionMonthOf]::September,
+                    [RelativityObjectQueryConditionMonthOf]::October,
+                    [RelativityObjectQueryConditionMonthOf]::November,
+                    [RelativityObjectQueryConditionMonthOf]::December
+                )
+            }
+
+            # Validate that the value provided is an approved value for the operator.
+            [Boolean] $IsValidValueForOperator = $false
+
+            if (-not $OperatorValidValues.ContainsKey($ActiveOperator.ToString()))
             {
-                $IsValidTypeForKeyword = $true
+                $IsValidValueForOperator = $true
             }
             else
             {
-                $IsValidTypeForKeyword = ($KeywordValidTypes[$ActiveKeyword] |
-                        Where-Object { $Value -is $_ }).Count
+                [Boolean] $IsValidValueForOperator = ($OperatorValidValues[$ActiveOperator.ToString()] |
+                        Where-Object { $Value -eq $_ }).Count
             }
 
-            if (-not $IsValidTypeForKeyword)
+            if (-not $IsValidValueForOperator)
             {
                 [String] $ErrorString = ""
-                $ErrorString += "Value must be one of the following types for the selected keyword: " +
-                    (($KeywordValidTypes[$ActiveKeyword] | ForEach-Object { $_.Name }) -join ", ") + "."
+                $ErrorString += "Value must be one of the following for the selected operator: " +
+                (($OperatorValidValues[$ActiveOperator.ToString()] | ForEach-Object { $_ }) -join ", ") + "."
+
+                throw $ErrorString
             }
+
+            Write-Verbose "Value is valid for the selected operator."
 
             # Validation checks are passed, construct the RelativityObjectQueryCondition
             $QueryCondition = [RelativityObjectQueryCondition]::New(
@@ -415,6 +531,23 @@ function New-RelativityObjectQueryCondition
         }
         elseif ($PSCmdlet.ParameterSetName -eq "ConditionAndCondition")
         {
+            # Map the selected combination operator to an enum we can feed to the RelativityObjectQueryCondition
+            # constructor.
+            $OperatorMap = @{
+                And = [RelativityObjectQueryConditionCombinationOperator]::And
+                Or = [RelativityObjectQueryConditionCombinationOperator]::Or
+            }
+
+            $ActiveOperator = $null
+            foreach ($Key in $OperatorMap.Keys)
+            {
+                if ((Get-Variable -Name $Key -ValueOnly) -eq $true)
+                {
+                    [RelativityObjectQueryConditionCombinationOperator] $ActiveOperator = $OperatorMap[$Key]
+                    break
+                }
+            }
+
             $QueryCondition = [RelativityObjectQueryCondition]::New(
                 $LeftCondition,
                 $ActiveOperator,
