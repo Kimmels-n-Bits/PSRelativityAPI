@@ -1,0 +1,24 @@
+name: Check-ModuleManifest
+
+on:
+  push:
+    branches: [ "main", "development" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  check-manifest:
+    permissions:
+      contents: read
+    name: Check-ModuleManifest
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Check-ModuleManifest
+        run: .\.github\scripts\Check-ModuleManifest.ps1
+        shell: pwsh
+
