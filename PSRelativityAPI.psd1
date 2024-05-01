@@ -10,6 +10,7 @@
     PowerShellVersion = '5.1'
     NestedModules = @(
         ### General
+        "$PSScriptRoot\Classes\CommonClasses.ps1",
         "$PSScriptRoot\Classes\RelativityAPI.ps1",
         "$PSScriptRoot\Public\RelativityAPI\Set-RelativityBaseUri.ps1",
         "$PSScriptRoot\Public\RelativityAPI\Set-RelativityCredential.ps1",
@@ -77,6 +78,11 @@
         "$PSScriptRoot\Public\ARM\Get-RelativityArmJobStatus.ps1",
         "$PSScriptRoot\Public\ARM\Get-RelativityArmJobLog.ps1",
 
+        ### Identity API
+        "$PSScriptRoot\Classes\Identity\RelativityClientMeta.ps1",
+        "$PSScriptRoot\Classes\Identity\RelativityClientReadResponse.ps1",
+        "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
+        
         ### ObjectManager API
         "$PSScriptRoot\Classes\ObjectManager\CommonClasses.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
@@ -121,6 +127,9 @@
         "Get-RelativityArmJobStatus",
         "Get-RelativityArmJobLog",
         "Restart-RelativityArmJobTask",
+
+        ### Identity API
+        "Get-RelativityClient",
 
         ### ObjectManager API
         "New-RelativityObjectQueryCondition"

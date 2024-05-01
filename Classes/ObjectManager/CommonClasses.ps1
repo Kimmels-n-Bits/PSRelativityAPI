@@ -1,16 +1,5 @@
 #https://platform.relativity.com/Server2023/Content/BD_Object_Manager/Object_Manager_service.htm
 
-#TODO Implement RelativityObjectRef class
-<#
-    [Int32] $ArtifactID
-
-    Will want to refactor pre-existing class stucture so that that classes under there that are
-    Relativity object ArtifactID references use RelativityObjectRef as a base class. Then move this to
-    CommonClasses.ps1 at the root of the "Classes" folder.
-
-    ToHashValue() method should just return ArtifactID: {Int32}
-#>
-
 #TODO Implement RelativityObjectTypeRef class
 <#
     [Int32] $ArtifactTypeID
@@ -22,24 +11,6 @@
     [Int32] $ArtifactID
     [String] $Name
     [Guid[]] $Guids
-#>
-
-#TODO Implement RelativityObjectBase class
-<#
-    Inherit from RelativityObjectRef
-    [Guid[]] $Guids
-    [String] $Name
-
-    Will want to refactor pre-existing class structure so that classes that are Relativity object
-    base references use RelativityObjectBase as a base class. Then move this to CommonClasses.ps1
-    at the root of the "Classes" folder.
-#>
-
-#TODO Implement RelativityObject class
-<#
-    Inherit from RelativityObjectBase
-    [RelativityObjectRef] $ParentObject
-    [RelativityFieldValuePair[]] $FieldValues
 #>
 
 #TODO Implement RelativityFieldCategory enum
