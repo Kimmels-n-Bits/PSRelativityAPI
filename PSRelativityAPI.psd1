@@ -1,6 +1,6 @@
 @{
     RootModule = 'PSRelativityAPI.psm1'
-    ModuleVersion = '0.0.9'
+    ModuleVersion = '0.1.0'
     CompatiblePSEditions = @('Desktop')
     GUID = '95225073-9a03-4ec2-b71b-b97afe87f9ac'
     Author = 'Jarrod Kimmel'
@@ -82,7 +82,7 @@
         "$PSScriptRoot\Classes\Identity\RelativityClientMeta.ps1",
         "$PSScriptRoot\Classes\Identity\RelativityClientReadResponse.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
-        
+
         ### ObjectManager API
         "$PSScriptRoot\Classes\ObjectManager\CommonClasses.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
