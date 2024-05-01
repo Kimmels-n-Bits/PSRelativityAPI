@@ -7,46 +7,9 @@
     [Object] $Value
 #>
 
-class RelativityObjectRef
-{
-    [Int32] $ArtifactID
 
-    RelativityObjectRef([Int32] $ArtifactID)
-    {
-        $this.ArtifactID = $ArtifactID
-    }
-}
 
-class RelativityObjectBase : RelativityObjectRef
-{
-    [String] $Name
-    [Guid[]] $Guids
 
-    RelativityObjectBase(
-        [Int32] $ArtifactID,
-        [String] $Name,
-        [Guid[]] $Guids
-    ) : base ($ArtifactID)
-    {
-        $this.Name = $Name
-        $this.Guids = $Guids
-    }
-}
-
-#TODO: Modify the Relativity AgentManager class structure to use the RelativityObjectAction class instead of its own.
-class RelativityObjectAction
-{
-    [String] $Name
-    [Boolean] $IsAvailable
-    [String[]] $Reason
-
-    RelativityObjectAction([String] $Name, [Boolean] $IsAvailable, [String[]] $Reason)
-    {
-        $this.Name = $Name
-        $this.IsAvailable = $IsAvailable
-        $this.Reason = $Reason
-    }
-}
 
 #TODO Implement RelativityObject class
 <#

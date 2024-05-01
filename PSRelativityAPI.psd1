@@ -79,12 +79,17 @@
         "$PSScriptRoot\Public\ARM\Get-RelativityArmJobLog.ps1",
 
         ### Identity API
-        "$PSScriptRoot\Classes\Identity\RelativityClientMeta.ps1",
-        "$PSScriptRoot\Classes\Identity\RelativityClientReadResponse.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedAction.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedMeta.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedObjectIdentifier.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedDisplayableObjectIdentifier.ps1",
+
+        "$PSScriptRoot\Classes\Identity\V1\ClientModels\RelativityIdentityV1ClientModelsClientResponse.ps1",
+        
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
 
         ### ObjectManager API
-        "$PSScriptRoot\Classes\ObjectManager\CommonClasses.ps1",
+        #"$PSScriptRoot\Classes\ObjectManager\CommonClasses.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
     )
     FunctionsToExport = @(

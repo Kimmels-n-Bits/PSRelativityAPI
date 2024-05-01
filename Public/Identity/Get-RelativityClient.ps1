@@ -59,7 +59,7 @@ function Get-RelativityClient
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            $Response = [RelativityClientReadResponse]::New($ApiResponse)
+            $Response = [RelativityIdentityV1ClientModelsClientResponse]::New($ApiResponse)
 
             Write-Verbose "Client details retrieved successfully."
             return $Response
