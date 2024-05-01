@@ -16,7 +16,7 @@ foreach ($Folder in $FoldersToScan)
 [String[]] $MissingReferencedFiles = $ManifestFiles | Where-Object { $_ -notin $ScannedFiles }
 if ($MissingReferencedFiles)
 {
-    $WarningMessage = "Warning: The following files exist in the module manifest but are not found in the scanned " +
+    $WarningMessage = "The following files exist in the module manifest but are not found in the scanned " +
     "folders: '$($FoldersToScan -join "', '")'."
     Write-Warning $WarningMessage
 
@@ -27,7 +27,7 @@ if ($MissingReferencedFiles)
 [String[]] $MissingScannedFiles = $ScannedFiles | Where-Object { $_ -notin $ManifestFiles }
 if ($MissingScannedFiles)
 {
-    $WarningMessage = "Warning: The following files exist in the scanned directories but are not referenced in the " +
+    $WarningMessage = "The following files exist in the scanned directories but are not referenced in the " +
     "module manifest."
     Write-Warning $WarningMessage
 
