@@ -15,7 +15,6 @@ function Get-RelativityClient
             Get-RelativityClient -ArtifactID 1234567 -IncludeMetadata -IncludeActions
             This returns the Relativity Client with the ArtifactID value 1234567 and includes extended metadata and
             actions.
-
     #>
     [CmdletBinding()]
     Param

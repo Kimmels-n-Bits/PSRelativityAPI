@@ -1,5 +1,0 @@
-enum RelativityObjectQueryConditionCombinationOperator
-{
-    And
-    Or
-}

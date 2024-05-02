@@ -1,5 +1,13 @@
 class RelativityIdentityV1SharedObjectIdentifier
 {
+    <#
+        .SYNOPSIS
+            Represents a way to uniquely identify Rlativity Objects.
+        .PARAMETER ArtifactID
+            Unique identifier for the object.
+        .PARAMETER Guids
+            A list of unique Guids identifying the object.
+    #>
     [Int32] $ArtifactID
     [Collections.Generic.List[Guid]] $Guids
 

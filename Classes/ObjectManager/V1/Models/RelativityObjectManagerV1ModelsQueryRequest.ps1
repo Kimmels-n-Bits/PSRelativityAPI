@@ -1,5 +1,51 @@
 class RelativityObjectManagerV1ModelsQueryRequest
 {
+    <#
+        .SYNOPSIS
+            Describes conditions, sorts and fields to be returned for a query.
+        .PARAMETER ActiveArtifactID
+            Gets or sets the Artifact ID of an item when available in the query results. This item is used to override
+            the start position for the result page.
+        .PARAMETER Condition
+            Gets or sets the search criteria. It can be a simple, single-field condition or a complex expression made
+            by combining conditions.
+        .PARAMETER ConvertNumberFieldValuesToString
+            Gets or sets a Boolean value indicating whether to convert the numbers returned in the query to text.
+        .PARAMETER ExecutingSavedSearchID
+            Gets or sets the ID of the currently executing saved search.
+        .PARAMETER ExecutingViewID
+            Gets or sets the ID of the currently executing view.
+        .PARAMETER Fields
+            Gets or sets a collection of fields like a SELECT statement in an SQL query.
+        .PARAMETER IncludeIDWindow
+            Gets or sets Boolean value indicating whether the query results should include the IDs of the objects
+            included in the current results set.
+        .PARAMETER IncludeNameInQueryResult
+            Gets or sets Boolean value indicating whether the Name property on the result objects is populated.
+        .PARAMETER IsAdhocQuery
+            Gets or sets a Boolean value indicating whether the query engine should handle the search or view
+            condition as a query type or simple condition.
+        .PARAMETER LongTextBehavior
+            Gets or sets the behavior used when a long text field exceeds the configured character limit.
+        .PARAMETER MaxCharactersForLongTextValues
+            Gets or sets the maximum number of characters returned in the query results for long text fields.
+        .PARAMETER ObjectType
+            Gets or sets the ObjectTypeRef for the type of object the query will run against.
+        .PARAMETER QueryHint
+            Gets or sets the QueryHint of the currently executing search. It is used to optimize the view.
+        .PARAMETER RankSortOrder
+            Gets or sets the sorting direction of Rank column in the Relativity UI, as either ascending or descending.
+        .PARAMETER RelationalField
+            Gets or sets the FieldRef used to include related items in query result.
+        .PARAMETER RowCondition
+            Gets or sets the row condition criteria.
+        .PARAMETER SampleParameters
+            Gets or sets the SampleParameters used to take a sample of the query result set.
+        .PARAMETER SearchProviderConditions
+            Gets or sets the search provider search condition.
+        .PARAMETER Sorts
+            Gets or sets the sort order for view results specified as a collection of Sort objects.
+    #>
     [Int32] $ActiveArtifactID
     [String] $Condition
     [Boolean] $ConvertNumberFieldValuesToString
@@ -43,7 +89,7 @@ class RelativityObjectManagerV1ModelsQueryRequest
         [String] $RowCondition,
         [RelativityObjectManagerV1ModelsSampleParameters] $SampleParameters,
         [RelativityObjectManagerV1ModelsSearchProviderConditions] $SearchProviderConditions,
-        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $Sorts,
+        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $Sorts
     )
     {
         $this.ActiveArtifactID = $ActiveArtifactID

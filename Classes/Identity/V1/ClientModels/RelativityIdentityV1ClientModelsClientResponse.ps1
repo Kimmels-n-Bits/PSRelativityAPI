@@ -1,5 +1,33 @@
 class RelativityIdentityV1ClientModelsClientResponse : RelativityIdentityV1SharedObjectIdentifier
 {
+    <#
+        .SYNOPSIS
+            Represents the results of a read operation on a client.
+        .PARAMETER Actions
+            Gets a list of RESTful operations that a user has permissions to perform on the artifact.
+        .PARAMETER CreatedBy
+            Gets the Artifact ID and name of the user who created the artifact.
+        .PARAMETER CreatedOnDate
+            Gets the date and time when the artifact was added to Relativity.
+        .PARAMETER IsClientDomain
+            Gets or sets the client's domain status.
+        .PARAMETER Keywords
+            Gets or sets any keywords associated with the artifact.
+        .PARAMETER LastModifiedBy
+            Gets the Artifact ID and name of the user who recently updated the artifact.
+        .PARAMETER LastModifiedOnDate
+            Gets the date and time when the artifact was most recently updated.
+        .PARAMETER Meta
+            Gets a list of unsupported and read-only properties on the current artifact.
+        .PARAMETER Name
+            Gets or sets the client's name.
+        .PARAMETER Notes
+            Gets or sets an optional description or other information about the artifact.
+        .PARAMETER Number
+            Gets or sets the client's number.
+        .PARAMETER Status
+            Gets or sets the client's status.
+    #>
     [Collections.Generic.List[RelativityIdentityV1SharedAction]] $Actions
     [RelativityIdentityV1SharedDisplayableObjectIdentifier] $CreatedBy
     [DateTime] $CreatedOnDate
