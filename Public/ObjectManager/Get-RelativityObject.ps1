@@ -1,5 +1,6 @@
 function Get-RelativityObject
 {
+    [CmdletBinding()]
     Param
     (
         [Parameter(Mandatory = $false)]
@@ -20,48 +21,20 @@ function Get-RelativityObject
         [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         [ValidateScript({
-                $AllowedTypes = @(
+                [Object[]] $AllowedTypes = @(
                     [Int32],
                     [String],
                     [Guid]
                 )
 
-                function Confirm-ValidType
-                {
-                    Param
-                    (
-                        [Parameter(Mandatory = $true)]
-                        [Object] $Item
-                    )
-
-                    foreach ($Type in $AllowedTypes)
-                    {
-                        if ($Item -is $Type)
-                        {
-                            return $true
-                        }
-                    }
-
-                    return $false
-                }
-
                 [Boolean] $IsValidType = $false
 
-                if ($_ -is [System.Collections.IEnumerable] -and ($_ -isnot [String]))
+                foreach ($Type in $AllowedTypes)
                 {
-                    $IsValidType = $true
-                    foreach ($Item in $_)
+                    if ($_ -is $Type)
                     {
-                        if (-not (Confirm-ValidType -Item $Item))
-                        {
-                            $IsValidType = $false
-                            break
-                        }
+                        return $true
                     }
-                }
-                else
-                {
-                    $IsValidType = Confirm-ValidType -Item $_
                 }
 
                 if (-not $IsValidType)
@@ -77,13 +50,13 @@ function Get-RelativityObject
         [Object] $Fields = [String] "*",
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
-        [Boolean] $IncludeIDWindow,
+        [Switch] $IncludeIDWindow,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
-        [Boolean] $IncludeNameInQueryResult,
+        [Switch] $IncludeNameInQueryResult,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
-        [Boolean] $IsAdhocQuery,
+        [Switch] $IsAdhocQuery,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior = 0,
@@ -94,11 +67,12 @@ function Get-RelativityObject
         [Parameter(Mandatory = $true)]
         [ValidateNotNull()]
         [ValidateScript({
-                $AllowedTypes = @(
+                [Object[]] $AllowedTypes = @(
                     [Int32],
                     [String],
                     [Guid]
                 )
+
                 [Boolean] $IsValidType = $false
 
                 foreach ($Type in $AllowedTypes)
@@ -129,11 +103,12 @@ function Get-RelativityObject
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [ValidateScript({
-                $AllowedTypes = @(
+                [Object[]] $AllowedTypes = @(
                     [Int32],
                     [String],
                     [Guid]
                 )
+
                 [Boolean] $IsValidType = $false
 
                 foreach ($Type in $AllowedTypes)
@@ -169,24 +144,9 @@ function Get-RelativityObject
         [ValidateScript({
                 [Boolean] $IsValidType = $false
 
-                if ($_ -is [System.Collections.IEnumerable] -and ($_ -isnot [String]))
+                if ($_ -is [RelativityObjectManagerV1ModelsSort])
                 {
                     $IsValidType = $true
-                    foreach ($Item in $_)
-                    {
-                        if (-not $_ -is [RelativityObjectManagerV1ModelsSort])
-                        {
-                            $IsValidType = $false
-                            break
-                        }
-                    }
-                }
-                else
-                {
-                    if ($_ -is [RelativityObjectManagerV1ModelsSort])
-                    {
-                        $IsValidType = $true
-                    }
                 }
 
                 if (-not $IsValidType)
@@ -198,19 +158,78 @@ function Get-RelativityObject
 
                 return $IsValidType
             })]
-        [Object] $Sorts
+        [Object] $Sorts,
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNull()]
+        [ValidateScript({
+                $IsValidValue = $false
+
+                if ($_ -eq -1 -or ($_ -ge 1000000 -and $_ -le [Int32]::MaxValue))
+                {
+                    $IsValidValue = $true
+                }
+
+                if (-not $IsValidValue)
+                {
+                    throw "WorkspaceID must be either -1 or greater than 1000000."
+                }
+                return $IsValidValue
+            })]
+        [Int32] $WorkspaceID
     )
 
     Begin
     {
+        Write-Verbose "Starting Get-RelativityObject"
 
+        # Since we accept [Object] type in the parameters above for $ObjectType and $RelationalField we want to
+        # validate that passed values in the ValidateScript() block are of the types we're expecting to work with.
+        # However, ValidateScript() runs per item of an enumerable that is passed as the parameter and not on the
+        # collection itself. So, to ensure we weren't provided enumerable types we're double checking below and
+        # throwing an error in the event of an issue.
+        if ($ObjectType -is [System.Collections.IEnumerable] -and $ObjectType -isnot [String])
+        {
+            throw "ObjectType must be one of the following types: Int32, String, Guid. If you are certain " +
+            "the value matches one of these types, try explicitly casting the value to that type, e.g., " +
+            "[Int32] `$ObjectType = 1234567."
+        }
+
+        if ($RelationalField -is [System.Collections.IEnumerable] -and $RelationalField -isnot [String])
+        {
+            throw "RelationalField must be one of the following types: Int32, String, Guid. If you are " +
+            "certain the value matches one of these types, try explicitly casting the value to that type, " +
+            "e.g., [Int32] `$RelationalField = 1234567."
+        }
     }
     Process
     {
+        try
+        {
+            throw "An error occurred."
+        }
+        catch
+        {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Verbose "Logging parameter values:"
 
+            (Get-Command -Name $PSCmdlet.MyInvocation.InvocationName).Parameters | ForEach-Object {
+                $_.Values | ForEach-Object {
+                    $Parameter = Get-Variable -Name $_.Name -ErrorAction SilentlyContinue
+
+                    if ($null -ne $Parameter)
+                    {
+                        Write-Verbose "$($Parameter.Name): $($Parameter.Value)"
+                    }
+                }
+            }
+
+            Write-Verbose "API Endpoint: $($ApiEndpoint)"
+
+            throw
+        }
     }
     End
     {
-        
+        Write-Verbose "Completed Get-RelativityObject"
     }
 }

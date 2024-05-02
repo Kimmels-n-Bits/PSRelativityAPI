@@ -100,8 +100,8 @@
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSampleParameters.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSearchIndexRef.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSearchProviderConditions.ps1",
-        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSort.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSortEnum.ps1",
+        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSort.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsQueryRequest.ps1",
         "$PSScriptRoot\Public\ObjectManager\Get-RelativityObject.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
