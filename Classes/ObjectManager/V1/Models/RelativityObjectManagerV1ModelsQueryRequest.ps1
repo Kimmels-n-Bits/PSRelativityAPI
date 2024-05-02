@@ -25,6 +25,8 @@ class RelativityObjectManagerV1ModelsQueryRequest
         .PARAMETER IsAdhocQuery
             Gets or sets a Boolean value indicating whether the query engine should handle the search or view
             condition as a query type or simple condition.
+        .PARAMETER Length
+            Gets or sets the number of items to return in the query set, starting with the index of the Start property.
         .PARAMETER LongTextBehavior
             Gets or sets the behavior used when a long text field exceeds the configured character limit.
         .PARAMETER MaxCharactersForLongTextValues
@@ -45,6 +47,8 @@ class RelativityObjectManagerV1ModelsQueryRequest
             Gets or sets the search provider search condition.
         .PARAMETER Sorts
             Gets or sets the sort order for view results specified as a collection of Sort objects.
+        .PARAMETER Start
+            Gets or sets the one-based index of the first artifact in the result set.
     #>
     [Int32] $ActiveArtifactID
     [String] $Condition
@@ -55,6 +59,7 @@ class RelativityObjectManagerV1ModelsQueryRequest
     [Boolean] $IncludeIDWindow
     [Boolean] $IncludeNameInQueryResult
     [Boolean] $IsAdhocQuery
+    [Int32] $Length
     [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior
     [Int32] $MaxCharactersForLongTextValues
     [RelativityObjectManagerV1ModelsObjectTypeRef] $ObjectType
@@ -65,6 +70,7 @@ class RelativityObjectManagerV1ModelsQueryRequest
     [RelativityObjectManagerV1ModelsSampleParameters] $SampleParameters
     [RelativityObjectManagerV1ModelsSearchProviderConditions] $SearchProviderConditions
     [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $Sorts
+    [Int32] $Start
 
     RelativityObjectManagerV1ModelsQueryRequest()
     {
@@ -80,6 +86,7 @@ class RelativityObjectManagerV1ModelsQueryRequest
         [Boolean] $IncludeIDWindow,
         [Boolean] $IncludeNameInQueryResult,
         [Boolean] $IsAdhocQuery,
+        [Int32] $Length,
         [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior,
         [Int32] $MaxCharactersForLongTextValues,
         [RelativityObjectManagerV1ModelsObjectTypeRef] $ObjectType,
@@ -89,7 +96,8 @@ class RelativityObjectManagerV1ModelsQueryRequest
         [String] $RowCondition,
         [RelativityObjectManagerV1ModelsSampleParameters] $SampleParameters,
         [RelativityObjectManagerV1ModelsSearchProviderConditions] $SearchProviderConditions,
-        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $Sorts
+        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $Sorts,
+        [Int32] $Start
     )
     {
         $this.ActiveArtifactID = $ActiveArtifactID
@@ -101,6 +109,7 @@ class RelativityObjectManagerV1ModelsQueryRequest
         $this.IncludeIDWindow = $IncludeIDWindow
         $this.IncludeNameInQueryResult = $IncludeNameInQueryResult
         $this.IsAdhocQuery = $IsAdhocQuery
+        $this.Length = $Length
         $this.LongTextBehavior = $LongTextBehavior
         $this.MaxCharactersForLongTextValues = $MaxCharactersForLongTextValues
         $this.ObjectType = $ObjectType
@@ -111,5 +120,6 @@ class RelativityObjectManagerV1ModelsQueryRequest
         $this.SampleParameters = $SampleParameters
         $this.SearchProviderConditions = $SearchProviderConditions
         $this.Sorts = $Sorts
+        $this.Start = $Start
     }
 }

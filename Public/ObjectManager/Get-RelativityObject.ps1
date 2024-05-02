@@ -4,22 +4,18 @@ function Get-RelativityObject
     Param
     (
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ActiveArtifactID,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [RelativityObjectQueryCondition] $Condition,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ExecutingSavedSearchID,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
         [ValidateRange(1000000, [Int32]::MaxValue)]
         [Int32] $ExecutingViewID,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
         [ValidateScript({
                 [Object[]] $AllowedTypes = @(
                     [Int32],
@@ -58,14 +54,15 @@ function Get-RelativityObject
         [ValidateNotNull()]
         [Switch] $IsAdhocQuery,
         [Parameter(Mandatory = $false)]
+        [ValidateRange(-1, [Int32]::MaxValue)]
+        [Int32] $Length = -1,
+        [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior = 0,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
         [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $MaxCharactersForLongTextValues,
         [Parameter(Mandatory = $true)]
-        [ValidateNotNull()]
         [ValidateScript({
                 [Object[]] $AllowedTypes = @(
                     [Int32],
@@ -99,9 +96,8 @@ function Get-RelativityObject
         [String] $QueryHint,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
-        [RelativityObjectManagerV1ModelsSortEnum] $RankSortOrder,
+        [RelativityObjectManagerV1ModelsSortEnum] $RankSortOrder = 0,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
         [ValidateScript({
                 [Object[]] $AllowedTypes = @(
                     [Int32],
@@ -140,7 +136,6 @@ function Get-RelativityObject
         [ValidateNotNull()]
         [RelativityObjectManagerV1ModelsSearchProviderConditions] $SearchProviderCondition,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNullOrEmpty()]
         [ValidateScript({
                 [Boolean] $IsValidType = $false
 
@@ -159,8 +154,10 @@ function Get-RelativityObject
                 return $IsValidType
             })]
         [Object] $Sorts,
+        [Parameter(Mandatory = $false)]
+        [ValidateRange(1, [Int32]::MaxValue)]
+        [Int32] $Start = 1,
         [Parameter(Mandatory = $true)]
-        [ValidateNotNull()]
         [ValidateScript({
                 $IsValidValue = $false
 
@@ -205,7 +202,21 @@ function Get-RelativityObject
     {
         try
         {
-            throw "An error occurred."
+            [Hashtable] $Params = @{}
+
+            (Get-Command -Name $PSCmdlet.MyInvocation.InvocationName).Parameters | ForEach-Object {
+                $_.Values | ForEach-Object {
+                    $Parameter = Get-Variable -Name $_.Name -ErrorAction SilentlyContinue
+
+                    if ($Parameter.Name -ne "WorkspaceID" -and $null -ne $Parameter.Value)
+                    {
+                        Write-Verbose "$($Parameter.Name): $($Parameter.Value)"
+                        $Params.Add($Parameter.Name, $Parameter.Value)
+                    }
+                }
+            }
+
+            $Request = Get-RelativityObjectReadRequest @Params
         }
         catch
         {

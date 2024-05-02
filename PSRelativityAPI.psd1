@@ -95,18 +95,20 @@
         "$PSScriptRoot\Classes\ObjectManager\Custom\RelativityObjectQueryConditionMonthOf.ps1",
         "$PSScriptRoot\Classes\ObjectManager\Custom\RelativityObjectQueryCondition.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsFieldRef.ps1",
-        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsLongTextBehavior.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsObjectTypeRef.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSampleParameters.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSearchIndexRef.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSearchProviderConditions.ps1",
-        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSortEnum.ps1",
+        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsLongTextBehavior.ps1"
+        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSortEnum.ps1"
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSort.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsQueryRequest.ps1",
+        "$PSScriptRoot\Private\ObjectManager\Get-RelativityObjectReadRequest.ps1",
         "$PSScriptRoot\Public\ObjectManager\Get-RelativityObject.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySampleParameterSet.ps1",
-        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySearchProviderCondition.ps1"
+        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySearchProviderCondition.ps1",
+        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1"
     )
     FunctionsToExport = @(
         ### General
