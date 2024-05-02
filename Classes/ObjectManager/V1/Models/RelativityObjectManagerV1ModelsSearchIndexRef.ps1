@@ -23,4 +23,14 @@ class RelativityObjectManagerV1ModelsSearchIndexRef
         $this.ArtifactID = $ArtifactID
         $this.Name = $Name
     }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+
+        $ReturnValue.Add("ArtifactID", $this.ArtifactID)
+        $ReturnValue.Add("Name", $this.Name)
+
+        return $ReturnValue
+    }
 }

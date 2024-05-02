@@ -122,4 +122,58 @@ class RelativityObjectManagerV1ModelsQueryRequest
         $this.Sorts = $Sorts
         $this.Start = $Start
     }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+        $Request = @{}
+
+        if ($this.ActiveArtifactID -ne 0) { $Request.Add("ActiveArtifactID", $this.ActiveArtifactID) }
+        if (-not [String]::IsNullOrEmpty($this.Condition)) { $Request.Add("Condition", $this.Condition) }
+        $Request.Add("ConvertNumberFieldValuesToString", $this.ConvertNumberFieldValuesToString)
+
+        if ($this.ExecutingSavedSearchID -ne 0)
+        {
+            $Request.Add("ExecutingSavedSearchID", $this.ExecutingSavedSearchID)
+        }
+
+        if ($this.ExecutingViewID -ne 0) { $Request.Add("ExecutingViewID", $this.ExecutingViewID) }
+        $Request.Add("Fields", ($this.Fields | ForEach-Object { $_.ToHashTable() }))
+        $Request.Add("IncludeIDWindow", $this.IncludeIDWindow)
+        $Request.Add("IncludeNameInQueryResult", $this.IncludeNameInQueryResult)
+        $Request.Add("IsAdhocQuery", $this.IsAdhocQuery)
+        $Request.Add("LongTextBehavior", $this.LongTextBehavior)
+
+        if ($this.MaxCharactersForLongTextValues -ne 0)
+        {
+            $Request.Add("MaxCharactersForLongTextValues", $this.MaxCharactersForLongTextValues)
+        }
+
+        $Request.Add("ObjectType", $this.ObjectType.ToHashTable())
+        if (-not [String]::IsNullOrEmpty($this.QueryHint)) { $Request.Add("QueryHint", $this.QueryHint) }
+        $Request.Add("RankSortOrder", $this.RankSortOrder)
+        if ($null -ne $this.RelationalField) { $Request.Add("RelationalField", $this.RelationalField.ToHashTable()) }
+        if (-not [String]::IsNullOrEmpty($this.RowCondition)) { $Request.Add("RowCondition", $this.RowCondition) }
+        
+        if ($null -ne $this.SampleParameters)
+        {
+            $Request.Add("SampleParameters", $this.SampleParameters.ToHashTable())
+        }
+
+        if ($null -ne $this.SearchProviderConditions)
+        {
+            $Request.Add("SearchProviderConditions", $this.SearchProviderConditions.ToHashTable())
+        }
+
+        if ($this.Sorts.Count -gt 0)
+        {
+            $Request.Add("Sorts", ($this.Sorts | ForEach-Object { $_.ToHashTable() }))
+        }
+
+        $ReturnValue.Add("Length", $this.Length)
+        $ReturnValue.Add("Request", $Request)
+        $ReturnValue.Add("Start", $this.Start)
+
+        return $ReturnValue
+    }
 }

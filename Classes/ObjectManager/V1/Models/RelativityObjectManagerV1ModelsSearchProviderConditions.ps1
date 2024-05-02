@@ -23,4 +23,14 @@ class RelativityObjectManagerV1ModelsSearchProviderConditions
         $this.Input = $Input
         $this.SearchIndex = $SearchIndex
     }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+
+        $ReturnValue.Add("Input", $this.Input)
+        $ReturnValue.Add("SearchIndex", $this.SearchIndex.ToHashTable())
+
+        return $ReturnValue
+    }
 }

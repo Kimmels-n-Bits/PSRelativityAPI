@@ -217,6 +217,7 @@ function Get-RelativityObject
             }
 
             $Request = Get-RelativityObjectReadRequest @Params
+            return $Request.ToHashTable()
         }
         catch
         {

@@ -68,16 +68,23 @@ function Get-RelativityObjectReadRequest
         elseif ($ObjectType -Is [String]) { $ObjectTypeValue.Name = $ObjectType }
         elseif ($ObjectType -Is [Guid]) { $ObjectTypeValue.Guid = $ObjectType }
 
-        $RelationalFieldValue = [RelativityObjectManagerV1ModelsFieldRef]::New()
+        if ($null -ne $RelationalField)
+        {
+            $RelationalFieldValue = [RelativityObjectManagerV1ModelsFieldRef]::New()
 
-        if ($RelationalField -Is [Int32]) { $RelationalFieldValue.ArtifactID = $RelationalField }
-        elseif ($RelationalField -Is [String]) { $RelationalFieldValue.Name = $RelationalField }
-        elseif ($RelationalField -Is [Guid]) { $RelationalFieldValue.Guid = $RelationalField }
+            if ($RelationalField -Is [Int32]) { $RelationalFieldValue.ArtifactID = $RelationalField }
+            elseif ($RelationalField -Is [String]) { $RelationalFieldValue.Name = $RelationalField }
+            elseif ($RelationalField -Is [Guid]) { $RelationalFieldValue.Guid = $RelationalField }
+        }
 
-        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $SortsValue = @()
+        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]] $SortsValue = `
+        [Collections.Generic.List[RelativityObjectManagerV1ModelsSort]]::New()
 
         $Sorts | ForEach-Object {
-            $SortsValue.Add($Sort)
+            if ($null -ne $_)
+            {
+                $SortsValue.Add($Sort)
+            }
         }
 
         $Request = [RelativityObjectManagerV1ModelsQueryRequest]::New()
