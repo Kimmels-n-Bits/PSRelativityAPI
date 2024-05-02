@@ -23,7 +23,7 @@ function Get-RelativityArmRestoreJob
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [ValidateRange(1,[Int32]::MaxValue)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $JobID
     )
 
@@ -51,8 +51,21 @@ function Get-RelativityArmRestoreJob
         catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Verbose "Logging parameter values:"
+
+            (Get-Command -Name $PSCmdlet.MyInvocation.InvocationName).Parameters | ForEach-Object {
+                $_.Values | ForEach-Object {
+                    $Parameter = Get-Variable -Name $_.Name -ErrorAction SilentlyContinue
+
+                    if ($null -ne $Parameter)
+                    {
+                        Write-Verbose "$($Parameter.Name): $($Parameter.Value)"
+                    }
+                }
+            }
+
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "JobID: $($JobID)"
+
             throw
         }
     }

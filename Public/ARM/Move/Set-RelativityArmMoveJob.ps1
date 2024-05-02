@@ -173,23 +173,21 @@ function Set-RelativityArmMoveJob
         catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Verbose "Logging parameter values:"
+
+            (Get-Command -Name $PSCmdlet.MyInvocation.InvocationName).Parameters | ForEach-Object {
+                $_.Values | ForEach-Object {
+                    $Parameter = Get-Variable -Name $_.Name -ErrorAction SilentlyContinue
+
+                    if ($null -ne $Parameter)
+                    {
+                        Write-Verbose "$($Parameter.Name): $($Parameter.Value)"
+                    }
+                }
+            }
+
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "JobID: $($JobID)"
-            Write-Verbose "ArtifactID: $($ArtifactID)"
-            Write-Verbose "JobPriority: $($JobPriority)"
-            Write-Verbose "ScheduledStartTime: $($ScheduledStartTime)"
-            Write-Verbose "LinkToExistingDocuments: $($LinkToExistingDocuments)"
-            Write-Verbose "MissingFileBehavior: $($MissingFileBehavior)"
-            Write-Verbose "LinkedFileBehavior: $($LinkedFileBehavior)"
-            Write-Verbose "IncludeDatabaseBackup: $($IncludeDatabaseBackup)"
-            Write-Verbose "CustomDatabasePath: $($CustomDatabasePath)"
-            Write-Verbose "DatabaseServerID: $($DatabaseServerID)"
-            Write-Verbose "ResourcePoolID: $($ResourcePoolID)"
-            Write-Verbose "CacheLocationID: $($CacheLocationID)"
-            Write-Verbose "FileRepositoryID: $($FileRepositoryID)"
-            Write-Verbose "NotifyJobCreator: $($NotifyJobCreator)"
-            Write-Verbose "NotifyJobExecutor: $($NotifyJobExecutor)"
-            Write-Verbose "UiJobActionsLocked: $($UiJobActionsLocked)"
+
             throw
         }
     }
