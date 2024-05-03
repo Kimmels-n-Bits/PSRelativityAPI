@@ -138,7 +138,7 @@ class RelativityObjectManagerV1ModelsQueryRequest
         }
 
         if ($this.ExecutingViewID -ne 0) { $Request.Add("ExecutingViewID", $this.ExecutingViewID) }
-        $Request.Add("Fields", ($this.Fields | ForEach-Object { $_.ToHashTable() }))
+        $Request.Add("Fields", @($this.Fields | ForEach-Object { $_.ToHashTable() }))
         $Request.Add("IncludeIDWindow", $this.IncludeIDWindow)
         $Request.Add("IncludeNameInQueryResult", $this.IncludeNameInQueryResult)
         $Request.Add("IsAdhocQuery", $this.IsAdhocQuery)
