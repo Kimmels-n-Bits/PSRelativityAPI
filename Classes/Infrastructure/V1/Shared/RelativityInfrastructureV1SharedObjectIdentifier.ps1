@@ -1,6 +1,13 @@
 class RelativityInfrastructureV1SharedObjectIdentifier
 {
-    [String] $Name
+    <#
+        .SYNOPSIS
+            Represents a way to uniquely identify Relativity Objects.
+        .PARAMETER ArtifactID
+            Unique identifier for the object.
+        .PARAMETER Guids
+            A list of unique Guids identifying the object.
+    #>
     [Int32] $ArtifactID
     [Collections.Generic.List[Guid]] $Guids
 
@@ -9,12 +16,10 @@ class RelativityInfrastructureV1SharedObjectIdentifier
     }
 
     RelativityInfrastructureV1SharedObjectIdentifier(
-        [String] $Name
         [Int32] $ArtifactID,
         [Collections.Generic.List[Guid]] $Guids
     )
     {
-        $this.Name = $Name
         $this.ArtifactID = $ArtifactID
         $this.Guids = $Guids
     }
@@ -23,7 +28,6 @@ class RelativityInfrastructureV1SharedObjectIdentifier
         [PSCustomObject] $ApiResponse
     )
     {
-        $this.Name = $ApiResponse.Name
         $this.ArtifactID = $ApiResponse.ArtifactID
         
         [Collections.Generic.List[Guid]] $ObjectGuids = @()

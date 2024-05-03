@@ -1,12 +1,12 @@
-class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastructureV1SharedObjectIdentifier
+class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastructureV1SharedDisplayableObjectIdentifier
 {
     [Collections.Generic.List[RelativityInfrastructureV1SharedAction]] $Actions
-    [RelativityInfrastructureV1SharedDisplayableObjectIdentifier] $Client
-    [RelativityInfrastructureV1SharedDisplayableObjectIdentifier] $CreatedBy
+    [RelativitySharedV1ModelsSecurable[RelativityInfrastructureV1SharedDisplayableObjectIdentifier]] $Client
+    [RelativitySharedV1ModelsSecurable[RelativityInfrastructureV1SharedDisplayableObjectIdentifier]] $CreatedBy
     [DateTime] $CreatedOnDate
     [Boolean] $IsVisible
     [String] $Keywords
-    [RelativityInfrastructureV1SharedDisplayableObjectIdentifier] $LastModifiedBy
+    [RelativitySharedV1ModelsSecurable[RelativityInfrastructureV1SharedDisplayableObjectIdentifier]] $LastModifiedBy
     [DateTime] $LastModifiedOnDate
     [RelativityInfrastructureV1SharedMeta] $Meta
     [String] $Notes
@@ -38,7 +38,8 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastru
             $CreatedByGuids.Add($_)
         }
 
-        $this.CreatedBy = [RelativityIdentityV1SharedDisplayableObjectIdentifier]::New(
+        $this.CreatedBy = [RelativityInfrastructureV1SharedDisplayableObjectIdentifier]::New(
+            $ApiResponse.Secured,
             $ApiResponse.CreatedBy.ArtifactID,
             $CreatedByGuids,
             $ApiResponse.CreatedBy.Name
