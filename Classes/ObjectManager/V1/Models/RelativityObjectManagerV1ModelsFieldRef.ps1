@@ -33,4 +33,15 @@ class RelativityObjectManagerV1ModelsFieldRef
         $this.Name = $Name
         $this.ViewFieldID = $ViewFieldID
     }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+
+        if ($this.ArtifactID -ne 0) { $ReturnValue.Add("ArtifactID", $this.ArtifactID) }
+        if ($this.Guid -ne ([Guid]"00000000-0000-0000-0000-000000000000")) { $ReturnValue.Add("Guid", $this.Guid) }
+        if (-not [String]::IsNullOrEmpty($this.Name)) { $ReturnValue.Add("Name", $this.Name) }
+
+        return $ReturnValue
+    }
 }

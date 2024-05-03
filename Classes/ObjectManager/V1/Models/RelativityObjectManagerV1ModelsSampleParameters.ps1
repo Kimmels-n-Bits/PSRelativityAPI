@@ -40,4 +40,22 @@ class RelativityObjectManagerV1ModelsSampleParameters
         $this.MarginOfError = $MarginOfError
         $this.SamplingPercentage = $SamplingPercentage
     }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+        
+        $ReturnValue.Add("ConfidenceLevel", $this.ConfidenceLevel)
+
+        if ($this.ExistingToken -ne ([Guid]"00000000-0000-0000-0000-000000000000"))
+        {
+                $ReturnValue.Add("ExistingToken", $this.ExistingToken)
+        }
+        
+        $ReturnValue.Add("FixedSampleSize", $this.FixedSampleSize)
+        $ReturnValue.Add("MarginOfError", $this.MarginOfError)
+        $ReturnValue.Add("SamplingPercentage", $this.SamplingPercentage)
+
+        return $ReturnValue
+    }
 }

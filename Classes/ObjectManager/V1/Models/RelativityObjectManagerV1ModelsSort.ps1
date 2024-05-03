@@ -28,4 +28,15 @@ class RelativityObjectManagerV1ModelsSort
         $this.FieldIdentifier = $FieldIdentifier
         $this.Order = $Order
     }
+
+    [Hashtable] ToHashTable()
+    {
+        $ReturnValue = @{}
+
+        $ReturnValue.Add("Direction", $this.Direction)
+        $ReturnValue.Add("FieldIdentifier", $this.FieldIdentifier.ToHashTable())
+        $ReturnValue.Add("Order", $this.Order)
+
+        return $ReturnValue
+    }
 }

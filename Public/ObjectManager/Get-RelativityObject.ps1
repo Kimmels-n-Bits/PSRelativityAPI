@@ -45,17 +45,16 @@ function Get-RelativityObject
             })]
         [Object] $Fields = [String] "*",
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
+        [Switch] $Full,
+        [Parameter(Mandatory = $false)]
         [Switch] $IncludeIDWindow,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
         [Switch] $IncludeNameInQueryResult,
         [Parameter(Mandatory = $false)]
-        [ValidateNotNull()]
         [Switch] $IsAdhocQuery,
         [Parameter(Mandatory = $false)]
-        [ValidateRange(-1, [Int32]::MaxValue)]
-        [Int32] $Length = -1,
+        [ValidateRange(0, [Int32]::MaxValue)]
+        [Int32] $Length = 0,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior = 0,
@@ -202,21 +201,41 @@ function Get-RelativityObject
     {
         try
         {
-            [Hashtable] $Params = @{}
+            [String[]] $NonRequestParameters = @("Full", "WorkspaceID")
+            [Hashtable] $Parameters = @{}
 
             (Get-Command -Name $PSCmdlet.MyInvocation.InvocationName).Parameters | ForEach-Object {
                 $_.Values | ForEach-Object {
                     $Parameter = Get-Variable -Name $_.Name -ErrorAction SilentlyContinue
 
-                    if ($Parameter.Name -ne "WorkspaceID" -and $null -ne $Parameter.Value)
+                    if ($Parameter.Name -notin $NonRequestParameters -and $null -ne $Parameter.Value)
                     {
                         Write-Verbose "$($Parameter.Name): $($Parameter.Value)"
-                        $Params.Add($Parameter.Name, $Parameter.Value)
+                        $Parameters.Add($Parameter.Name, $Parameter.Value)
                     }
                 }
             }
 
-            $Request = Get-RelativityObjectReadRequest @Params
+            $Request = Get-RelativityObjectReadRequest @Parameters
+            $RequestBody = $Request.ToHashTable()
+
+            [String[]] $Resources = @("workspace", $WorkspaceID.ToString(), "object")
+
+            if ($Full) { $Resources = $Resources += "query" }
+            else { $Resources = $Resources += "queryslim" }
+
+            $ApiEndpoint = Get-RelativityApiEndpoint -BusinessDomain "Relativity.ObjectManager" -Version "v1" -Resources $Resources
+
+            Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndPoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
+            Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndPoint)"
+            
+            $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
+
+            $Response = $ApiResponse #TODO: Create a response object and parse the response into that.
+
+            Write-Verbose "Objects retrieved successfully"
+
+            return $Response
         }
         catch
         {

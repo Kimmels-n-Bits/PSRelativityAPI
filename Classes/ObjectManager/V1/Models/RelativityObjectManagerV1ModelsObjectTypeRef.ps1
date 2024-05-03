@@ -34,4 +34,16 @@ class RelativityObjectManagerV1ModelsObjectTypeRef
         $this.Guid = $Guid
         $this.Name = $Name
     }
+
+    [HashTable] ToHashTable()
+    {
+        $ReturnValue = @{}
+
+        if ($this.ArtifactID -ne 0) { $ReturnValue.Add("ArtifactID", $this.ArtifactID) }
+        if ($this.ArtifactTypeID -ne 0) { $ReturnValue.Add("ArtifactTypeID", $this.ArtifactTypeID) }
+        if ($this.Guid -ne ([Guid]"00000000-0000-0000-0000-000000000000")) { $ReturnValue.Add("Guid", $this.Guid) }
+        if (-not [String]::IsNullOrEmpty($this.Name)) { $ReturnValue.Add("Name", $this.Name) }
+
+        return $ReturnValue
+    }
 }
