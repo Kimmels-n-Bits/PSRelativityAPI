@@ -19,7 +19,7 @@
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsAction.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsMeta.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsSecurable.ps1",
-        "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1SharedObjectIdentifier.ps1",
+        "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsObjectIdentifier.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsDisplayableObjectIdentifier.ps1",
 
         ### Agent Manager API
