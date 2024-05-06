@@ -13,7 +13,7 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastru
 
     RelativityInfrastructureV1ResourcePoolModelsResponse (
         [PSCustomObject] $ApiResponse
-    ):base ($ApiResponse)
+    ):base ($ApiResponse.ArtifactID, $ApiResponse.Guids, $ApiResponse.Name)
     {
         $this.Actions = @()
         $ApiResponse.Actions | ForEach-Object {
@@ -31,72 +31,46 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastru
                     $_.Verb
                 ))
         }
-        
-        # [Collections.Generic.List[Guid]] $CreatedByGuids = @()
-        # $ApiResponse.CreatedBy.Guids | ForEach-Object {
-        #     $CreatedByGuids.Add($_)
-        # }
+
+        $this.Client = [RelativitySharedV1ModelsSecurable]::New(
+            $ApiResponse.Client.Secured,
+            $ApiResponse.Client.Value
+        )
 
         $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.CreatedBy.Secured,
             $ApiResponse.CreatedBy.Value
         )
 
-        <#
-        $this.CreatedOnDate = $ApiResponse.CreatedOnDate
+        $this.CreatedOnDate = $ApiResponse.CreatedOn
 
-        $this.IsClientDomain = $ApiResponse.IsClientDomain
+        $this.IsVisible = $ApiResponse.IsVisible
 
         $this.Keywords = $ApiResponse.Keywords
 
-        [Collections.Generic.List[Guid]] $LastModifiedByGuids = @()
-
-        $ApiResponse.LastModifiedBy.Guids | ForEach-Object {
-            $LastModifiedByGuids.Add($_)
-        }
-
-        $this.LastModifiedBy = [RelativityIdentityV1SharedDisplayableObjectIdentifier]::New(
-            $ApiResponse.LastModifiedBy.ArtifactID,
-            $LastModifiedByGuids,
-            $ApiResponse.LastModifiedBy.Name
+        $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
+            $ApiResponse.LastModifiedBy.Secured,
+            $ApiResponse.LastModifiedBy.Value
         )
 
-        $this.LastModifiedOnDate = $ApiResponse.LastModifiedOnDate
+        $this.LastModifiedOnDate = $ApiResponse.LastModifiedOn
+
 
         [Collections.Generic.List[String]] $MetaReadOnly = @()
-
         $ApiResponse.Meta.ReadOnly | ForEach-Object {
             $MetaReadOnly.Add($_)
         }
 
         [Collections.Generic.List[String]] $MetaUnsupported = @()
-
         $ApiResponse.Meta.Unsupported | ForEach-Object {
             $MetaUnsupported.Add($_)
         }
 
-        $this.Meta = [RelativityIdentityV1SharedMeta]::New(
+        $this.Meta = [RelativityInfrastructureV1SharedMeta]::New(
             $MetaReadOnly,
             $MetaUnsupported
         )
 
-        $this.Name = $ApiResponse.Name
-
         $this.Notes = $ApiResponse.Notes
-
-        $this.Number = $ApiResponse.Number
-        
-        [Collections.Generic.List[Guid]] $StatusGuids = @()
-
-        $ApiResponse.Status.Guids | ForEach-Object {
-            $StatusGuids.Add($_)
-        }
-
-        $this.Status = [RelativityIdentityV1SharedDisplayableObjectIdentifier]::New(
-            $ApiResponse.Status.ArtifactID,
-            $StatusGuids,
-            $ApiResponse.Status.Name
-        )
-        #>
     }
 }

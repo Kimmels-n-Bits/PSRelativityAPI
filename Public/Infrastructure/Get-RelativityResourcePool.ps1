@@ -48,7 +48,7 @@ function Get-RelativityResourcePool
             }
 
             $ApiEndpoint = Get-RelativityApiEndpoint `
-                -BusinessDomain "relativity-identity" `
+                -BusinessDomain "relativity-infrastructure" `
                 -Version "v1" `
                 -Resources $Resources `
                 -QueryString $QueryString

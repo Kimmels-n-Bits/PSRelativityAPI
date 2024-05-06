@@ -10,7 +10,6 @@
     PowerShellVersion = '5.1'
     NestedModules = @(
         ### General
-        #"$PSScriptRoot\Classes\CommonClasses.ps1",
         "$PSScriptRoot\Classes\RelativityAPI.ps1",
         "$PSScriptRoot\Public\RelativityAPI\Set-RelativityBaseUri.ps1",
         "$PSScriptRoot\Public\RelativityAPI\Set-RelativityCredential.ps1",
