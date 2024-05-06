@@ -16,6 +16,8 @@
         "$PSScriptRoot\Private\RelativityAPI\Get-RelativityApiEndpoint.ps1",
         "$PSScriptRoot\Private\RelativityAPI\Get-RelativityApiRequestHeader.ps1",
         "$PSScriptRoot\Private\RelativityAPI\Invoke-RelativityApiRequest.ps1",
+
+        ### Shared
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsAction.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsMeta.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsSecurable.ps1",
@@ -93,7 +95,10 @@
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
 
         ### Infrastructure
+        "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
+
+        "$PSScriptRoot\Public\Infrastructure\Get-RelativityFileRepository.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
 
         ### ObjectManager API
@@ -163,6 +168,7 @@
         "Get-RelativityClient",
 
         ### Infrastructure
+        "Get-RelativityFileRepository",
         "Get-RelativityResourcePool",
 
         ### ObjectManager API

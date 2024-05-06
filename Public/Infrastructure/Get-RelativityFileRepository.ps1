@@ -1,19 +1,19 @@
-function Get-RelativityResourcePool
+function Get-RelativityFileRepository
 {
     <#
         .SYNOPSIS
-            Returns a Relativity Resource Pool Object
+            Returns a Relativity FileRepositoryResponse Object
         .DESCRIPTION
-            Get-RelativityResourcePool returns the properties of a Relativity [ResourcePoolResponse] object using Relativity's REST API.
+            Get-RelativityFileRepository returns the properties of a Relativity [FileRepositoryResponse] object using Relativity's REST API.
         .PARAMETER ArtifactID
-            The ArtifactID of the Relativity ResourcePool object.
+            The ArtifactID of the Relativity FileRepository object.
         .PARAMETER IncludeMetadata
-            Determines whether to include extended metadata for the returned ResourcePool object.
+            Determines whether to include extended metadata for the returned FileRepository object.
         .PARAMETER IncludeActions
-            Determines whether to include actions associated with the returned ResourcePool object.
+            Determines whether to include actions associated with the returned FileRepository object.
         .EXAMPLE
-            Get-RelativityResourcePool -ArtifactID 1234567 -IncludeMetadata -IncludeActions
-            This returns a Relativity ResourcePoolResponse with the ArtifactID value 1234567 and includes extended metadata and
+            Get-RelativityFileRepository -ArtifactID 1234567 -IncludeMetadata -IncludeActions
+            This returns a Relativity FileRepositoryResponse with the ArtifactID value 1234567 and includes extended metadata and
             actions.
     #>
     [CmdletBinding()]
@@ -37,7 +37,7 @@ function Get-RelativityResourcePool
     {
         try
         {
-            [String[]] $Resources = @("workspaces", "-1", "resource-pools", $ArtifactID.ToString())
+            [String[]] $Resources = @("workspaces", "-1", "file-repository-servers", $ArtifactID.ToString())
 
             [String] $QueryString = ""
             if ($IncludeMetadata -or $IncludeActions)
@@ -58,7 +58,7 @@ function Get-RelativityResourcePool
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            $Response = [RelativityInfrastructureV1ResourcePoolModelsResponse]::New($ApiResponse)
+            $Response = [RelativityInfrastructureV1FileRespositoryServerModelsResponse]::New($ApiResponse)
 
             Write-Verbose "Client details retrieved successfully."
             return $Response
