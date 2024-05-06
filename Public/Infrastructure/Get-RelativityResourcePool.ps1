@@ -1,4 +1,4 @@
-function Get-FUNCTION_NAME
+function Get-RelativityResourcePool
 {
     <#
         .SYNOPSIS
@@ -30,13 +30,13 @@ function Get-FUNCTION_NAME
 
     Begin
     {
-        Write-Verbose "Starting Get-FUNCTION_NAME"
+        Write-Verbose "Starting Get-RelativityResourcePool"
     }
     Process
     {
         try
         {
-            [String[]] $Resources = @("workspaces", "-1", "clients", $ArtifactID.ToString())
+            [String[]] $Resources = @("workspaces", "-1", "resource-pools", $ArtifactID.ToString())
 
             [String] $QueryString = ""
             if ($IncludeMetadata -or $IncludeActions)
@@ -57,7 +57,7 @@ function Get-FUNCTION_NAME
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
 
-            $Response = [RelativityIdentityV1ClientModelsClientResponse]::New($ApiResponse)
+            $Response = [RelativityInfrastructureV1ResourcePoolModelsResponse]::New($ApiResponse)
 
             Write-Verbose "Client details retrieved successfully."
             return $Response
@@ -85,6 +85,6 @@ function Get-FUNCTION_NAME
     }
     End
     {
-        Write-Verbose "Completed Get-RelativityClient"
+        Write-Verbose "Completed Get-RelativityResourcePool"
     }
 }

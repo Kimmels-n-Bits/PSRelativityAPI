@@ -1,4 +1,4 @@
-class RelativitySharedV1ModelsSecurable[System.Object]
+class RelativitySharedV1ModelsSecurable
 {
     [Boolean] $Secured
     [System.Object] $Value

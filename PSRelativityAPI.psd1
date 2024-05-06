@@ -10,13 +10,14 @@
     PowerShellVersion = '5.1'
     NestedModules = @(
         ### General
-        "$PSScriptRoot\Classes\CommonClasses.ps1",
+        #"$PSScriptRoot\Classes\CommonClasses.ps1",
         "$PSScriptRoot\Classes\RelativityAPI.ps1",
         "$PSScriptRoot\Public\RelativityAPI\Set-RelativityBaseUri.ps1",
         "$PSScriptRoot\Public\RelativityAPI\Set-RelativityCredential.ps1",
         "$PSScriptRoot\Private\RelativityAPI\Get-RelativityApiEndpoint.ps1",
         "$PSScriptRoot\Private\RelativityAPI\Get-RelativityApiRequestHeader.ps1",
         "$PSScriptRoot\Private\RelativityAPI\Invoke-RelativityApiRequest.ps1",
+        "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsSecurable.ps1",
 
         ### Agent Manager API
         "$PSScriptRoot\Classes\AgentManager\CommonClasses.ps1",
@@ -40,8 +41,8 @@
         ### ARM API
         "$PSScriptRoot\Classes\ARM\CommonClasses.ps1",
         "$PSScriptRoot\Classes\ARM\Archive\CommonClasses.ps1",
-        "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobCreateOrUpdateRequest.ps1"
-        "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobReadResponse.ps1"
+        "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobCreateOrUpdateRequest.ps1",
+        "$PSScriptRoot\Classes\ARM\Archive\RelativityArmArchiveJobReadResponse.ps1",
         "$PSScriptRoot\Classes\ARM\Restore\CommonClasses.ps1",
         "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobCreateOrUpdateRequest.ps1",
         "$PSScriptRoot\Classes\ARM\Restore\RelativityArmRestoreJobReadResponse.ps1",
@@ -88,6 +89,16 @@
         
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
 
+        ### Infrastructure
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedAction.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedMeta.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedObjectIdentifier.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedDisplayableObjectIdentifier.ps1",
+
+        "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
+        
+        "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
+
         ### ObjectManager API
         "$PSScriptRoot\Classes\ObjectManager\Custom\RelativityObjectQueryConditionCombinationOperator.ps1",
         "$PSScriptRoot\Classes\ObjectManager\Custom\RelativityObjectQueryConditionComparisonOperator.ps1",
@@ -99,13 +110,13 @@
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSampleParameters.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSearchIndexRef.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSearchProviderConditions.ps1",
-        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsLongTextBehavior.ps1"
-        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSortEnum.ps1"
+        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsLongTextBehavior.ps1",
+        "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSortEnum.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSort.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsQueryRequest.ps1",
         "$PSScriptRoot\Private\ObjectManager\Get-RelativityObjectReadRequest.ps1",
         "$PSScriptRoot\Public\ObjectManager\Get-RelativityObject.ps1",
-        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1"
+        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySampleParameterSet.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySearchProviderCondition.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1"
@@ -153,6 +164,9 @@
 
         ### Identity API
         "Get-RelativityClient",
+
+        ### Infrastructure
+        "Get-RelativityResourcePool",
 
         ### ObjectManager API
         "Get-RelativityObject",

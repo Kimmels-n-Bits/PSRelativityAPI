@@ -1,12 +1,12 @@
 class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastructureV1SharedDisplayableObjectIdentifier
 {
     [Collections.Generic.List[RelativityInfrastructureV1SharedAction]] $Actions
-    [RelativitySharedV1ModelsSecurable[RelativityInfrastructureV1SharedDisplayableObjectIdentifier]] $Client
-    [RelativitySharedV1ModelsSecurable[RelativityInfrastructureV1SharedDisplayableObjectIdentifier]] $CreatedBy
+    [RelativitySharedV1ModelsSecurable] $Client
+    [RelativitySharedV1ModelsSecurable] $CreatedBy
     [DateTime] $CreatedOnDate
     [Boolean] $IsVisible
     [String] $Keywords
-    [RelativitySharedV1ModelsSecurable[RelativityInfrastructureV1SharedDisplayableObjectIdentifier]] $LastModifiedBy
+    [RelativitySharedV1ModelsSecurable] $LastModifiedBy
     [DateTime] $LastModifiedOnDate
     [RelativityInfrastructureV1SharedMeta] $Meta
     [String] $Notes
@@ -23,7 +23,7 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastru
                 $ActionReasons.Add($_)
             }
 
-            $this.Actions.Add([RelativityIdentityV1SharedAction]::New(
+            $this.Actions.Add([RelativityInfrastructureV1SharedAction]::New(
                     $_.Href,
                     $_.IsAvailable,
                     $_.Name,
@@ -31,20 +31,18 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastru
                     $_.Verb
                 ))
         }
+        
+        # [Collections.Generic.List[Guid]] $CreatedByGuids = @()
+        # $ApiResponse.CreatedBy.Guids | ForEach-Object {
+        #     $CreatedByGuids.Add($_)
+        # }
 
-        [Collections.Generic.List[Guid]] $CreatedByGuids = @()
-
-        $ApiResponse.CreatedBy.Guids | ForEach-Object {
-            $CreatedByGuids.Add($_)
-        }
-
-        $this.CreatedBy = [RelativityInfrastructureV1SharedDisplayableObjectIdentifier]::New(
-            $ApiResponse.Secured,
-            $ApiResponse.CreatedBy.ArtifactID,
-            $CreatedByGuids,
-            $ApiResponse.CreatedBy.Name
+        $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
+            $ApiResponse.CreatedBy.Secured,
+            $ApiResponse.CreatedBy.Value
         )
 
+        <#
         $this.CreatedOnDate = $ApiResponse.CreatedOnDate
 
         $this.IsClientDomain = $ApiResponse.IsClientDomain
@@ -99,5 +97,6 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativityInfrastru
             $StatusGuids,
             $ApiResponse.Status.Name
         )
+        #>
     }
 }
