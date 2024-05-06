@@ -1,4 +1,4 @@
-class RelativityInfrastructureV1SharedMeta
+class RelativitySharedV1ModelsMeta
 {
     <#
         .SYNOPSIS
@@ -11,11 +11,11 @@ class RelativityInfrastructureV1SharedMeta
     [Collections.Generic.List[String]] $ReadOnly
     [Collections.Generic.List[String]] $Unsupported
 
-    RelativityInfrastructureV1SharedMeta()
+    RelativitySharedV1ModelsMeta()
     {
     }
 
-    RelativityInfrastructureV1SharedMeta(
+    RelativitySharedV1ModelsMeta(
         [Collections.Generic.List[String]] $ReadOnly,
         [Collections.Generic.List[String]] $Unsupported
     )

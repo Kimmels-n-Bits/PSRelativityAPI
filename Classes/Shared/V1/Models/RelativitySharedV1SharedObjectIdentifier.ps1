@@ -1,4 +1,4 @@
-class RelativityInfrastructureV1SharedObjectIdentifier
+class RelativitySharedV1ModelsObjectIdentifier
 {
     <#
         .SYNOPSIS
@@ -11,11 +11,11 @@ class RelativityInfrastructureV1SharedObjectIdentifier
     [Int32] $ArtifactID
     [Collections.Generic.List[Guid]] $Guids
 
-    RelativityInfrastructureV1SharedObjectIdentifier()
+    RelativitySharedV1ModelsObjectIdentifier()
     {
     }
 
-    RelativityInfrastructureV1SharedObjectIdentifier(
+    RelativitySharedV1ModelsObjectIdentifier(
         [Int32] $ArtifactID,
         [Collections.Generic.List[Guid]] $Guids
     )
@@ -24,7 +24,7 @@ class RelativityInfrastructureV1SharedObjectIdentifier
         $this.Guids = $Guids
     }
 
-    RelativityInfrastructureV1SharedObjectIdentifier(
+    RelativitySharedV1ModelsObjectIdentifier(
         [PSCustomObject] $ApiResponse
     )
     {

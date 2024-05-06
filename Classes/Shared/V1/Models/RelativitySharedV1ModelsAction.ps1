@@ -1,4 +1,4 @@
-class RelativityInfrastructureV1SharedAction
+class RelativitySharedV1ModelsAction
 {
     <#
         .SYNOPSIS
@@ -20,11 +20,11 @@ class RelativityInfrastructureV1SharedAction
     [Collections.Generic.List[String]] $Reason
     [String] $Verb
 
-    RelativityInfrastructureV1SharedAction()
+    RelativitySharedV1ModelsAction()
     {
     }
 
-    RelativityInfrastructureV1SharedAction(
+    RelativitySharedV1ModelsAction(
         [String] $Href,
         [Boolean] $IsAvailable,
         [String] $Name,

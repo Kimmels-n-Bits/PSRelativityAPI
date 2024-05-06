@@ -2,18 +2,19 @@ function Get-RelativityResourcePool
 {
     <#
         .SYNOPSIS
-
+            Returns a Relativity Resource Pool Object
         .DESCRIPTION
-
+            Get-RelativityResourcePool returns the properties of a Relativity [ResourcePoolResponse] object using Relativity's REST API.
         .PARAMETER ArtifactID
-
+            The ArtifactID of the Relativity ResourcePool object.
         .PARAMETER IncludeMetadata
-
+            Determines whether to include extended metadata for the returned ResourcePool object.
         .PARAMETER IncludeActions
-
+            Determines whether to include actions associated with the returned ResourcePool object.
         .EXAMPLE
-
-
+            Get-RelativityResourcePool -ArtifactID 1234567 -IncludeMetadata -IncludeActions
+            This returns a Relativity ResourcePoolResponse with the ArtifactID value 1234567 and includes extended metadata and
+            actions.
     #>
     [CmdletBinding()]
     Param

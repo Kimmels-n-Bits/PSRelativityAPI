@@ -1,4 +1,4 @@
-class RelativityInfrastructureV1SharedDisplayableObjectIdentifier : RelativityInfrastructureV1SharedObjectIdentifier
+class RelativitySharedV1ModelsDisplayableObjectIdentifier : RelativitySharedV1ModelsObjectIdentifier
 {
     <#
         .SYNOPSIS
@@ -8,11 +8,11 @@ class RelativityInfrastructureV1SharedDisplayableObjectIdentifier : RelativityIn
     #>
     [String] $Name
 
-    RelativityInfrastructureV1SharedDisplayableObjectIdentifier()
+    RelativitySharedV1ModelsDisplayableObjectIdentifier()
     {
     }
 
-    RelativityInfrastructureV1SharedDisplayableObjectIdentifier(
+    RelativitySharedV1ModelsDisplayableObjectIdentifier(
         [Int32] $ArtifactID,
         [Collections.Generic.List[Guid]] $Guids,
         [String] $Name
