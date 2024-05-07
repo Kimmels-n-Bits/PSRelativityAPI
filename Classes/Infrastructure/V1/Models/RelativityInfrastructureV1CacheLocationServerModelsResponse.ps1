@@ -47,8 +47,8 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
     [RelativitySharedV1ModelsDisplayableObjectIdentifier] $CacheLocationCleanUpStatus
     [Int32] $CacheLocationFreeSpaceInGigabytes
     [Int32] $CacheLocationFreeSpaceInPercents
-    [Int32] $CacheLocationLowerThresholdInPercents
-    [Int32] $CacheLocationUpperThresholdInPercents
+    [Nullable[Int32]] $CacheLocationLowerThresholdInPercents
+    [Nullable[Int32]] $CacheLocationUpperThresholdInPercents
     [RelativitySharedV1ModelsSecurable] $CreatedBy
     [DateTime] $CreatedOn
     [RelativitySharedV1ModelsSecurable] $FileAccessCredentials
@@ -86,24 +86,28 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
         
         $this.CacheLocationCapacityInGigabytes = $ApiResponse.CacheLocationCapacityInGigabytes
 
-        # TODO consider that this object is not present in json response
-        <#
-        $this.CacheLocationCleanUpStatus = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-            $ApiResponse.CacheLocationCleanUpStatus.ArtifactId, 
-            $ApiResponse.CacheLocationCleanUpStatus.Guids,
-            $ApiResponse.CacheLocationCleanUpStatus.Name
-        )
-        #>
+        if($ApiResponse.CacheLocationCleanUpStatus -ne $null)
+        {
+            $this.CacheLocationCleanUpStatus = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.CacheLocationCleanUpStatus.ArtifactId, 
+                $ApiResponse.CacheLocationCleanUpStatus.Guids,
+                $ApiResponse.CacheLocationCleanUpStatus.Name
+            )
+        }
 
         $this.CacheLocationFreeSpaceInGigabytes = $ApiResponse.CacheLocationFreeSpaceInGigabytes
 
         $this.CacheLocationFreeSpaceInPercents = $ApiResponse.CacheLocationFreeSpaceInPercents
 
-        # TODO make this a nullable value
-        $this.CacheLocationLowerThresholdInPercents = $ApiResponse.CacheLocationLowerThresholdInPercents
+        if($ApiResponse.CacheLocationLowerThresholdInPercents -ne $null)
+        {
+            $this.CacheLocationLowerThresholdInPercents = $ApiResponse.CacheLocationLowerThresholdInPercents
+        }
 
-        # TODO make this a nullable value
-        $this.CacheLocationUpperThresholdInPercents = $ApiResponse.CacheLocationUpperThresholdInPercents
+        if($ApiResponse.CacheLocationUpperThresholdInPercents -ne $null)
+        {
+            $this.CacheLocationUpperThresholdInPercents = $ApiResponse.CacheLocationUpperThresholdInPercents
+        }
 
         $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.CreatedBy.Secured,
