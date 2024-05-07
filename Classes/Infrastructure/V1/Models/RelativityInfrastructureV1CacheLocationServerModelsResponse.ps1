@@ -67,15 +67,13 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
     ):base ($ApiResponse.ArtifactID, $ApiResponse.Guids, $ApiResponse.Name)
     {
         $this.Actions = @()
-        $ApiResponse.Actions | ForEach-Object
-        {
+        $ApiResponse.Actions | ForEach-Object {
             [Collections.Generic.List[String]] $ActionReasons = @()
             
-            $_.Reason | ForEach-Object
-            {
+            $_.Reason | ForEach-Object {
                 $ActionReasons.Add($_)
             }
-
+            
             $this.Actions.Add([RelativitySharedV1ModelsAction]::New(
                     $_.Href,
                     $_.IsAvailable,
@@ -85,16 +83,19 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
                 ))
         }
 
+        
         $this.CacheLocationCapacityInGigabytes = $ApiResponse.CacheLocationCapacityInGigabytes
 
         # TODO consider that this object is not present in json response
+        <#
         $this.CacheLocationCleanUpStatus = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-            $ApiResponse.Type.ArtifactId, 
-            $ApiResponse.Type.Guids,
-            $ApiResponse.Type.Name
+            $ApiResponse.CacheLocationCleanUpStatus.ArtifactId, 
+            $ApiResponse.CacheLocationCleanUpStatus.Guids,
+            $ApiResponse.CacheLocationCleanUpStatus.Name
         )
+        #>
 
-        $this.CacheLocationFreeSpaceInGigabytes - $ApiResponse.CacheLocationFreeSpaceInGigabytes
+        $this.CacheLocationFreeSpaceInGigabytes = $ApiResponse.CacheLocationFreeSpaceInGigabytes
 
         $this.CacheLocationFreeSpaceInPercents = $ApiResponse.CacheLocationFreeSpaceInPercents
 
@@ -133,15 +134,15 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
 
         [Collections.Generic.List[String]] $MetaReadOnly = @()
-        $ApiResponse.Meta.ReadOnly | ForEach-Object
-        {
+        $ApiResponse.Meta.ReadOnly | ForEach-Object {
             $MetaReadOnly.Add($_)
         }
+
         [Collections.Generic.List[String]] $MetaUnsupported = @()
-        $ApiResponse.Meta.Unsupported | ForEach-Object
-        {
+        $ApiResponse.Meta.Unsupported | ForEach-Object {
             $MetaUnsupported.Add($_)
         }
+        
         $this.Meta = [RelativitySharedV1ModelsMeta]::New(
             $MetaReadOnly,
             $MetaUnsupported

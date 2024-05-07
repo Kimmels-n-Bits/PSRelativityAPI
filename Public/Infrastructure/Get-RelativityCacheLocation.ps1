@@ -57,8 +57,9 @@ function Get-RelativityCacheLocation
             Write-Debug "Preparing to invoke GET method at Relativity API endpoint '$($ApiEndpoint)'"
             Write-Verbose "Invoking GET method at Relativity API endpoint: $($ApiEndpoint)"
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
+            Write-Debug "ApiResponse`n$($ApiResponse)"
 
-            $Response = [RelativityInfrastructureV1FileRespositoryServerModelsResponse]::New($ApiResponse)
+            $Response = [RelativityInfrastructureV1CacheLocationServerModelsResponse]::New($ApiResponse)
 
             Write-Verbose "Client details retrieved successfully."
             return $Response
