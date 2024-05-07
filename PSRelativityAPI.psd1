@@ -124,6 +124,9 @@
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySampleParameterSet.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySearchProviderCondition.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1"
+
+        ### TODO ObjectModel API
+
     )
     FunctionsToExport = @(
         ### General
@@ -179,6 +182,8 @@
         "New-RelativityObjectQueryCondition"<#,
         "New-RelativityObjectQuerySampleParameterSet",
         "New-RelativityObjectQuerySearchProviderCondition"#>
+
+        ### TODO ObjectModel API
     )
     CmdletsToExport = @()
     VariablesToExport = @()
