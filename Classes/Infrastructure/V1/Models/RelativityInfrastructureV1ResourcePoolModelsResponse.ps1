@@ -58,12 +58,20 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
 
         $this.Client = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.Client.Secured,
-            $ApiResponse.Client.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.Client.Value.ArtifactID, 
+                $ApiResponse.Client.Value.Guids,
+                $ApiResponse.Client.Value.Name
+            )
         )
 
         $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.CreatedBy.Secured,
-            $ApiResponse.CreatedBy.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.CreatedBy.Value.ArtifactID, 
+                $ApiResponse.CreatedBy.Value.Guids,
+                $ApiResponse.CreatedBy.Value.Name
+            )
         )
 
         $this.CreatedOnDate = $ApiResponse.CreatedOn
@@ -74,7 +82,11 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
 
         $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.LastModifiedBy.Secured,
-            $ApiResponse.LastModifiedBy.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.LastModifiedBy.Value.ArtifactID, 
+                $ApiResponse.LastModifiedBy.Value.Guids,
+                $ApiResponse.LastModifiedBy.Value.Name
+            )
         )
 
         $this.LastModifiedOnDate = $ApiResponse.LastModifiedOn

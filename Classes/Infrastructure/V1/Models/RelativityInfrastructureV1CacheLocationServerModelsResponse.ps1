@@ -111,7 +111,11 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
 
         $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.CreatedBy.Secured,
-            $ApiResponse.CreatedBy.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.CreatedBy.Value.ArtifactID, 
+                $ApiResponse.CreatedBy.Value.Guids,
+                $ApiResponse.CreatedBy.Value.Name
+            )
         )
 
         $this.CreatedOn = $ApiResponse.CreatedOn
@@ -120,7 +124,11 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
         {
             $this.FileAccessCredentials = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.FileAccessCredentials.Secured,
-                $ApiResponse.FileAccessCredentials.Value
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.FileAccessCredentials.Value.ArtifactID, 
+                $ApiResponse.FileAccessCredentials.Value.Guids,
+                $ApiResponse.FileAccessCredentials.Value.Name
+            )
             )
         }
 
@@ -132,7 +140,11 @@ class RelativityInfrastructureV1CacheLocationServerModelsResponse : RelativitySh
 
         $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.LastModifiedBy.Secured,
-            $ApiResponse.LastModifiedBy.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.LastModifiedBy.Value.ArtifactID, 
+                $ApiResponse.LastModifiedBy.Value.Guids,
+                $ApiResponse.LastModifiedBy.Value.Name
+            )
         )
 
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
