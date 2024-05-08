@@ -1,19 +1,21 @@
 function Get-RelativityParentObjectType
 {
-    <# TODO
+    <#
         .SYNOPSIS
-            Returns a Relativity CacheLocationResponse Object
+            Returns a Relativity RelativityObjectModelV1ObjectTypeModelsResponse Object
         .DESCRIPTION
-            Get-RelativityCacheLocation returns the properties of a Relativity [CacheLocationResponse] object using Relativity's REST API.
-        .PARAMETER ArtifactID
-            The ArtifactID of the Relativity CacheLocation object.
+            Get-RelativityParentObjectType returns the properties of a Relativity [RelativityObjectModelV1ObjectTypeModelsResponse] object using Relativity's REST API.
+        .PARAMETER WorkspaceID
+            {workspaceID} to the Artifact ID of the workspace containing the object type to retrieve.
+        .PARAMETER ObjectTypeID
+            {objectTypeArtifactID} to the Artifact ID of the object type.
         .PARAMETER IncludeMetadata
             Determines whether to include extended metadata for the returned CacheLocation object.
         .PARAMETER IncludeActions
             Determines whether to include actions associated with the returned CacheLocation object.
         .EXAMPLE
-            Get-RelativityCacheLocation -ArtifactID 1234567 -IncludeMetadata -IncludeActions
-            This returns a Relativity CacheLocationResponse with the ArtifactID value 1234567 and includes extended metadata and
+            Get-RelativityParentObjectType -WorkspaceID 1234567 -ObjectTypeID 100 -IncludeMetadata -IncludeActions
+            This returns a Relativity RelativityObjectModelV1ObjectTypeModelsResponse with the -WorkspaceID value 1234567 and includes extended metadata and
             actions.
     #>
     [CmdletBinding()]
@@ -22,7 +24,11 @@ function Get-RelativityParentObjectType
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [ValidateRange(1000000, [Int32]::MaxValue)]
-        [Int32] $ArtifactID,
+        [Int32] $WorkspaceID,
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [ValidateNotNull()]
+        [ValidateRange(0, [Int32]::MaxValue)]
+        [Int32] $ObjectTypeID,
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeMetadata,
         [Parameter(Mandatory = $false)]
@@ -37,7 +43,7 @@ function Get-RelativityParentObjectType
     {
         try
         {
-            [String[]] $Resources = @("workspaces", "-1", "cache-location-servers", $ArtifactID.ToString())
+            [String[]] $Resources = @("workspaces", $WorkspaceID.ToString(), "object-types", $ObjectTypeID.ToString())
 
             [String] $QueryString = ""
             if ($IncludeMetadata -or $IncludeActions)
@@ -49,7 +55,7 @@ function Get-RelativityParentObjectType
             }
 
             $ApiEndpoint = Get-RelativityApiEndpoint `
-                -BusinessDomain "relativity-infrastructure" `
+                -BusinessDomain "relativity-object-model" `
                 -Version "v1" `
                 -Resources $Resources `
                 -QueryString $QueryString
@@ -59,7 +65,7 @@ function Get-RelativityParentObjectType
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
             Write-Debug "ApiResponse`n$($ApiResponse)"
 
-            $Response = [RelativityInfrastructureV1CacheLocationServerModelsResponse]::New($ApiResponse)
+            $Response = [RelativityObjectModelV1ObjectTypeModelsResponse]::New($ApiResponse)
 
             Write-Verbose "Client details retrieved successfully."
             return $Response

@@ -21,8 +21,10 @@
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsAction.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsMeta.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsSecurable.ps1",
+        "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsSecurableList.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsObjectIdentifier.ps1",
         "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsDisplayableObjectIdentifier.ps1",
+        "$PSScriptRoot\Classes\Shared\V1\Models\RelativitySharedV1ModelsDisplayableObjectTypeIdentifier.ps1",
 
         ### Agent Manager API
         "$PSScriptRoot\Classes\AgentManager\CommonClasses.ps1",
@@ -123,10 +125,12 @@
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySampleParameterSet.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySearchProviderCondition.ps1",
-        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1"
+        "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1",
 
-        ### TODO ObjectModel API
+        ### ObjectModel API
+        "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ObjectTypeModelsResponse.ps1",
 
+        "$PSScriptRoot\Public\ObjectModel\Get-RelativityParentObjectType.ps1"
     )
     FunctionsToExport = @(
         ### General
@@ -179,11 +183,12 @@
 
         ### ObjectManager API
         "Get-RelativityObject",
-        "New-RelativityObjectQueryCondition"<#,
+        "New-RelativityObjectQueryCondition",<#,
         "New-RelativityObjectQuerySampleParameterSet",
         "New-RelativityObjectQuerySearchProviderCondition"#>
 
-        ### TODO ObjectModel API
+        ### ObjectModel API
+        "Get-RelativityParentObjectType"
     )
     CmdletsToExport = @()
     VariablesToExport = @()

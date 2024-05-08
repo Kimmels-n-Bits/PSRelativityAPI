@@ -1,13 +1,13 @@
 class RelativitySharedV1ModelsSecurableList
 {
-    <# TODO
+    <#
         .SYNOPSIS
-            Generic class that indicates whether or not the given value is secured from the current user
-        .PARAMETER Secured
-            Whether or not the current user has permission to view the given value
-        .PARAMETER Value
-            A Generic [System.Object]
-            The value that may or may not be secured
+            Generic class that indicates whether a list has items secured from the current user.
+        .PARAMETER HasSecuredItems
+            Whether or not there are any number of items secured away from the user.
+        .PARAMETER ViewableItems
+            A Generic [Collections.Generic.List[System.Object]]
+            List of items that are accessible to the user.
     #>
     [Boolean] $HasSecuredItems
     [Collections.Generic.List[System.Object]] $ViewableItems
@@ -21,7 +21,7 @@ class RelativitySharedV1ModelsSecurableList
         [Collections.Generic.List[System.Object]] $ViewableItems
     )
     {
-        $this.Secured = $HasSecuredItems
+        $this.HasSecuredItems = $HasSecuredItems
         $this.ViewableItems = $ViewableItems
     }
 }

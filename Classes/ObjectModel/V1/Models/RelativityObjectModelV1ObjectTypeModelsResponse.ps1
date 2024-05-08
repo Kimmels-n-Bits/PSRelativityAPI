@@ -1,11 +1,26 @@
 class RelativityObjectModelV1ObjectTypeModelsResponse
 {
-    <# TODO
+    <# Partial parameter list - This assembly is poorly documented.
         .SYNOPSIS
             Represents the results of a read operation on a cache location server.
         .PARAMETER Actions
             Gets or sets a list of RESTful operations that a user has permissions to perform on the artifact.
-        .PARAMETER 
+        .PARAMETER ArtifactTypeID
+            ID for the artifact type.
+        .PARAMETER CreatedBy
+            Gets or sets the ID and name of the user who created the artifact.
+        .PARAMETER CreatedOn
+            Gets or sets the date and time when the artifact was added to Relativity.
+        .PARAMETER Keywords
+            Gets or sets the keywords associated with the artifact.
+        .PARAMETER LastModifiedBy
+            Gets or sets the ID and name of the user who recently updated the artifact.
+        .PARAMETER LastModifiedOn
+            Gets or sets the date and time when the artifact was most recently updated.
+        .PARAMETER Meta
+            Gets or sets a list of unsupported and read-only properties on the current artifact.
+        .PARAMETER Notes
+            Gets or sets an optional description or other information about the artifact.
     #>
     [Collections.Generic.List[RelativitySharedV1ModelsAction]] $Actions
     [Int32] $ArtifactTypeID
@@ -28,14 +43,16 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
     [RelativitySharedV1ModelsSecurable] $ParentObjectType
     [Boolean] $PersistentListsEnabled
     [Boolean] $PivotEnabled
-    [System.Object] $RelativityApplications # TODO create type [SecurableList<DisplayableObjectIdentifier]
+    [RelativitySharedV1ModelsSecurableList] $RelativityApplications
     [Boolean] $SamplingEnabled
     [Nullable[Boolean]] $UseRelativityForms
 
     RelativityObjectModelV1ObjectTypeModelsResponse (
         [PSCustomObject] $ApiResponse
-    ):base ($ApiResponse.ArtifactID, $ApiResponse.Guids, $ApiResponse.Name)
+    )
     {
+        [Collections.Generic.List[Guid]] $_guids = @() # Ephemeral Data
+
         $this.Actions = @()
         $ApiResponse.Actions | ForEach-Object {
             [Collections.Generic.List[String]] $ActionReasons = @()
@@ -52,61 +69,58 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
                     $_.Verb
                 ))
         }
-
         
-        $this.CacheLocationCapacityInGigabytes = $ApiResponse.CacheLocationCapacityInGigabytes
+        $this.ArtifactTypeID = $ApiResponse.ArtifactTypeID
 
-        if($ApiResponse.CacheLocationCleanUpStatus -ne $null)
-        {
-            $this.CacheLocationCleanUpStatus = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.CacheLocationCleanUpStatus.ArtifactId, 
-                $ApiResponse.CacheLocationCleanUpStatus.Guids,
-                $ApiResponse.CacheLocationCleanUpStatus.Name
-            )
+        $this.CopyInstancesOnCaseCreation = $ApiResponse.CopyInstancesOnCaseCreation
+
+        $this.CopyInstancesOnParentCopy = $ApiResponse.CopyInstancesOnParentCopy
+
+        $_guids = @()
+        $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
+            $_guids.Add($_)
         }
-
-        $this.CacheLocationFreeSpaceInGigabytes = $ApiResponse.CacheLocationFreeSpaceInGigabytes
-
-        $this.CacheLocationFreeSpaceInPercents = $ApiResponse.CacheLocationFreeSpaceInPercents
-
-        if($ApiResponse.CacheLocationLowerThresholdInPercents -ne $null)
-        {
-            $this.CacheLocationLowerThresholdInPercents = $ApiResponse.CacheLocationLowerThresholdInPercents
-        }
-
-        if($ApiResponse.CacheLocationUpperThresholdInPercents -ne $null)
-        {
-            $this.CacheLocationUpperThresholdInPercents = $ApiResponse.CacheLocationUpperThresholdInPercents
-        }
-
         $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.CreatedBy.Secured,
-            $ApiResponse.CreatedBy.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.CreatedBy.Value.ArtifactID, 
+                $_guids,
+                $ApiResponse.CreatedBy.Value.Name
+            )
         )
 
         $this.CreatedOn = $ApiResponse.CreatedOn
 
-        if (-not($ApiResponse.Meta.Unsupported -contains "FileAccessCredentials"))
-        {
-            $this.FileAccessCredentials = [RelativitySharedV1ModelsSecurable]::New(
-                $ApiResponse.FileAccessCredentials.Secured,
-                $ApiResponse.FileAccessCredentials.Value
-            )
-        }
+        $this.EnableSnapshotAuditingOnDelete = $ApiResponse.EnableSnapshotAuditingOnDelete
 
-        $this.IsDocumentCacheTimeBased = $ApiResponse.IsDocumentCacheTimeBased
+        $this.FieldByteUsage = $ApiResponse.FieldByteUsage
 
-        $this.IsVisible = $ApiResponse.IsVisible
+        $this.IsDynamic = $ApiResponse.IsDynamic
+
+        $this.IsExtensible = $ApiResponse.IsExtensible
+
+        $this.IsSystem = $ApiResponse.IsSystem
+
+        $this.IsViewEnabled = $ApiResponse.IsViewEnabled
 
         $this.Keywords = $ApiResponse.Keywords
 
+        $_guids = @()
+        $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
+            $_guids.Add($_)
+        }
         $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.LastModifiedBy.Secured,
-            $ApiResponse.LastModifiedBy.Value
+            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.LastModifiedBy.Value.ArtifactID, 
+                $_guids,
+                $ApiResponse.LastModifiedBy.Value.Name
+            )
         )
 
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
 
+        #region Meta
         [Collections.Generic.List[String]] $MetaReadOnly = @()
         $ApiResponse.Meta.ReadOnly | ForEach-Object {
             $MetaReadOnly.Add($_)
@@ -121,15 +135,65 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
             $MetaReadOnly,
             $MetaUnsupported
         )
+        #endregion Meta
 
         $this.Notes = $ApiResponse.Notes
 
-        $this.Type = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-            $ApiResponse.Type.ArtifactId, 
-            $ApiResponse.Type.Guids,
-            $ApiResponse.Type.Name
+        $_guids = @()
+        $ApiResponse.ObjectIdentifier.Guids | ForEach-Object {
+            $_guids.Add($_)
+        }
+        $this.ObjectIdentifier = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $ApiResponse.ObjectIdentifier.ArtifactID, 
+                $_guids,
+                $ApiResponse.ObjectIdentifier.Name
+            )
+        
+        $_guids = @()
+        $ApiResponse.ParentObjectType.Value.Guids | ForEach-Object {
+            $_guids.Add($_)
+        }
+        $this.ParentObjectType = [RelativitySharedV1ModelsSecurable]::New(
+            $ApiResponse.ParentObjectType.Secured,
+            [RelativitySharedV1ModelsDisplayableObjectTypeIdentifier]::New(
+                $ApiResponse.ParentObjectType.Value.ArtifactTypeID,
+                $ApiResponse.ParentObjectType.Value.ArtifactID, 
+                $_guids,
+                $ApiResponse.ParentObjectType.Value.Name
+            )
         )
 
-        $this.UncPath = $ApiResponse.UncPath
+        $this.PersistentListsEnabled = $ApiResponse.PersistentListsEnabled
+
+        $this.PivotEnabled = $ApiResponse.PivotEnabled
+
+        #region RelativityApplications
+        [Collections.Generic.List[RelativitySharedV1ModelsDisplayableObjectIdentifier]] $_viewableItems = @()
+        $ApiResponse.RelativityApplications.ViewableItems | ForEach-Object {
+            
+            $_guids = @()
+            $_.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+
+            $_viewableItems.Add([RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                $_.ArtifactID, 
+                $_guids,
+                $_.Name
+            ))
+        }
+
+        $this.RelativityApplications = [RelativitySharedV1ModelsSecurableList]::New(
+                $ApiResponse.RelativityApplications.HasSecuredItems,
+                $_viewableItems 
+            )
+        #endregion RelativityApplications
+
+        $this.SamplingEnabled = $ApiResponse.SamplingEnabled
+
+        if($ApiResponse.UseRelativityForms -ne $null)
+        {
+            $this.UseRelativityForms = $ApiResponse.UseRelativityForms
+        }
     }
 }
