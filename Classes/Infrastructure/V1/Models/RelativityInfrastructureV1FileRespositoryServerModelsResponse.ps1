@@ -45,6 +45,8 @@ class RelativityInfrastructureV1FileRespositoryServerModelsResponse : Relativity
         [PSCustomObject] $ApiResponse
     ):base ($ApiResponse.ArtifactID, $ApiResponse.Guids, $ApiResponse.Name)
     {
+        [Collections.Generic.List[Guid]] $_guids = @() # Ephemeral Data
+        
         $this.Actions = @()
         $ApiResponse.Actions | ForEach-Object {
             [Collections.Generic.List[String]] $ActionReasons = @()
@@ -62,11 +64,15 @@ class RelativityInfrastructureV1FileRespositoryServerModelsResponse : Relativity
                 ))
         }
 
+        $_guids = @()
+        $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
+            $_guids.Add($_)
+        }
         $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.CreatedBy.Secured,
             [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
                 $ApiResponse.CreatedBy.Value.ArtifactID, 
-                $ApiResponse.CreatedBy.Value.Guids,
+                $_guids,
                 $ApiResponse.CreatedBy.Value.Name
             )
         )
@@ -75,11 +81,16 @@ class RelativityInfrastructureV1FileRespositoryServerModelsResponse : Relativity
 
         if (-not($ApiResponse.Meta.Unsupported -contains "FileAccessCredentials"))
         {
+            $_guids = @()
+            $ApiResponse.FileAccessCredentials.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+
             $this.FileAccessCredentials = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.FileAccessCredentials.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
                     $ApiResponse.FileAccessCredentials.Value.ArtifactID, 
-                    $ApiResponse.FileAccessCredentials.Value.Guids,
+                    $_guids,
                     $ApiResponse.FileAccessCredentials.Value.Name
                 )
             )
@@ -89,17 +100,22 @@ class RelativityInfrastructureV1FileRespositoryServerModelsResponse : Relativity
 
         $this.Keywords = $ApiResponse.Keywords
 
+        $_guids = @()
+        $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
+            $_guids.Add($_)
+        }
         $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
             $ApiResponse.LastModifiedBy.Secured,
             [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
                 $ApiResponse.LastModifiedBy.Value.ArtifactID, 
-                $ApiResponse.LastModifiedBy.Value.Guids,
+                $_guids,
                 $ApiResponse.LastModifiedBy.Value.Name
             )
         )
 
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
 
+        #region Meta
         [Collections.Generic.List[String]] $MetaReadOnly = @()
         $ApiResponse.Meta.ReadOnly | ForEach-Object {
             $MetaReadOnly.Add($_)
@@ -112,12 +128,17 @@ class RelativityInfrastructureV1FileRespositoryServerModelsResponse : Relativity
             $MetaReadOnly,
             $MetaUnsupported
         )
+        #endregion Meta
 
         $this.Notes = $ApiResponse.Notes
 
+        $_guids = @()
+        $ApiResponse.Type.Guids | ForEach-Object {
+            $_guids.Add($_)
+        }
         $this.Type = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
             $ApiResponse.Type.ArtifactId, 
-            $ApiResponse.Type.Guids,
+            $_guids,
             $ApiResponse.Type.Name
         )
 
