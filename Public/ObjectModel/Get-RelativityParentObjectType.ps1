@@ -6,7 +6,7 @@ function Get-RelativityParentObjectType
         .DESCRIPTION
             Get-RelativityParentObjectType returns the properties of a Relativity [RelativityObjectModelV1ObjectTypeModelsResponse] object using Relativity's REST API.
         .PARAMETER WorkspaceID
-            {workspaceID} to the Artifact ID of the workspace containing the object type to retrieve.
+            {WorkspaceID} variable to the Artifact ID of a workspace, or use -1 to indicate the admin-level context.
         .PARAMETER ObjectTypeID
             {objectTypeArtifactID} to the Artifact ID of the object type.
         .PARAMETER IncludeMetadata
@@ -23,11 +23,11 @@ function Get-RelativityParentObjectType
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [ValidateRange(1000000, [Int32]::MaxValue)]
+        [ValidateScript({ $_ -is [Int32] })]
         [Int32] $WorkspaceID,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
-        [ValidateRange(0, [Int32]::MaxValue)]
+        [ValidateRange(1, [Int32]::MaxValue)]
         [Int32] $ObjectTypeID,
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeMetadata,
