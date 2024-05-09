@@ -58,31 +58,51 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
                 ))
         }
 
-        $_guids = @()
-        $ApiResponse.Client.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.Client = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.Client.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.Client.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.Client.Value.Name
-            )
-        )
+        #region Client
+        if($ApiResponse.Client.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.Client.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
 
-        $_guids = @()
-        $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.CreatedBy.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.CreatedBy.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.CreatedBy.Value.Name
+            $this.Client = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.Client.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                    $ApiResponse.Client.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.Client.Value.Name
+                )
             )
-        )
+        }
+        else
+        {
+            $this.Client = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.Client.Secured, $null)
+        }
+        #endregion Client
+
+        #region CreatedBy
+        if($ApiResponse.CreatedBy.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+
+            $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.CreatedBy.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                    $ApiResponse.CreatedBy.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.CreatedBy.Value.Name
+                )
+            )
+        }
+        else
+        {
+            $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.CreatedBy.Secured, $null)
+        }
+        #endregion CreatedBy
 
         $this.CreatedOnDate = $ApiResponse.CreatedOn
 
@@ -90,18 +110,27 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
 
         $this.Keywords = $ApiResponse.Keywords
 
-        $_guids = @()
-        $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.LastModifiedBy.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.LastModifiedBy.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.LastModifiedBy.Value.Name
+        #region LastModifiedBy
+        if($ApiResponse.LastModifiedBy.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+            $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.LastModifiedBy.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                    $ApiResponse.LastModifiedBy.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.LastModifiedBy.Value.Name
+                )
             )
-        )
+        }
+        else
+        {
+            $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.LastModifiedBy.Secured, $null)
+        }
+        #endregion LastModifiedBy
 
         $this.LastModifiedOnDate = $ApiResponse.LastModifiedOn
 

@@ -76,18 +76,28 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
 
         $this.CopyInstancesOnParentCopy = $ApiResponse.CopyInstancesOnParentCopy
 
-        $_guids = @()
-        $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.CreatedBy.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.CreatedBy.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.CreatedBy.Value.Name
+        #region CreatedBy
+        if($ApiResponse.CreatedBy.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+
+            $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.CreatedBy.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                    $ApiResponse.CreatedBy.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.CreatedBy.Value.Name
+                )
             )
-        )
+        }
+        else
+        {
+            $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.CreatedBy.Secured, $null)
+        }
+        #endregion CreatedBy
 
         $this.CreatedOn = $ApiResponse.CreatedOn
 
@@ -105,18 +115,27 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
 
         $this.Keywords = $ApiResponse.Keywords
 
-        $_guids = @()
-        $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.LastModifiedBy.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.LastModifiedBy.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.LastModifiedBy.Value.Name
+        #region LastModifiedBy
+        if($ApiResponse.LastModifiedBy.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+            $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.LastModifiedBy.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                    $ApiResponse.LastModifiedBy.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.LastModifiedBy.Value.Name
+                )
             )
-        )
+        }
+        else
+        {
+            $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.LastModifiedBy.Secured, $null)
+        }
+        #endregion LastModifiedBy
 
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
 
@@ -149,20 +168,30 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
                 $ApiResponse.ObjectIdentifier.Name
             )
         
-        $_guids = @()
-        $ApiResponse.ParentObjectType.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.ParentObjectType = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.ParentObjectType.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectTypeIdentifier]::New(
-                $ApiResponse.ParentObjectType.Value.ArtifactTypeID,
-                $ApiResponse.ParentObjectType.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.ParentObjectType.Value.Name
-            )
-        )
 
+        #region ParentObjectType
+        if($ApiResponse.ParentObjectType.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.ParentObjectType.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+            $this.ParentObjectType = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.ParentObjectType.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectTypeIdentifier]::New(
+                    $ApiResponse.ParentObjectType.Value.ArtifactTypeID,
+                    $ApiResponse.ParentObjectType.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.ParentObjectType.Value.Name
+                )
+            )
+        }
+        else
+        {
+            $this.ParentObjectType = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.ParentObjectType.Secured, $null)
+        }
+        #endregion ParentObjectType
+        
         $this.PersistentListsEnabled = $ApiResponse.PersistentListsEnabled
 
         $this.PivotEnabled = $ApiResponse.PivotEnabled

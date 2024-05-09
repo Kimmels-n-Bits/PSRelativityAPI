@@ -64,54 +64,83 @@ class RelativityInfrastructureV1FileRespositoryServerModelsResponse : Relativity
                 ))
         }
 
-        $_guids = @()
-        $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.CreatedBy.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.CreatedBy.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.CreatedBy.Value.Name
-            )
-        )
-
-        $this.CreatedOn = $ApiResponse.CreatedOn
-
-        if (-not($ApiResponse.Meta.Unsupported -contains "FileAccessCredentials"))
+        #region CreatedBy
+        if($ApiResponse.CreatedBy.Value -ne $null)
         {
             $_guids = @()
-            $ApiResponse.FileAccessCredentials.Value.Guids | ForEach-Object {
+            $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
                 $_guids.Add($_)
             }
 
-            $this.FileAccessCredentials = [RelativitySharedV1ModelsSecurable]::New(
-                $ApiResponse.FileAccessCredentials.Secured,
+            $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.CreatedBy.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                    $ApiResponse.FileAccessCredentials.Value.ArtifactID, 
+                    $ApiResponse.CreatedBy.Value.ArtifactID, 
                     $_guids,
-                    $ApiResponse.FileAccessCredentials.Value.Name
+                    $ApiResponse.CreatedBy.Value.Name
                 )
             )
         }
+        else
+        {
+            $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.CreatedBy.Secured, $null)
+        }
+        #endregion CreatedBy
+
+        $this.CreatedOn = $ApiResponse.CreatedOn
+
+
+        #region FileAccessCredentials
+        if($ApiResponse.FileAccessCredentials -ne $null)
+        {
+            if($ApiResponse.FileAccessCredentials.Value -ne $null)
+            {
+                $_guids = @()
+                $ApiResponse.FileAccessCredentials.Value.Guids | ForEach-Object {
+                    $_guids.Add($_)
+                }
+
+                $this.FileAccessCredentials = [RelativitySharedV1ModelsSecurable]::New(
+                    $ApiResponse.FileAccessCredentials.Secured,
+                    [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                        $ApiResponse.FileAccessCredentials.Value.ArtifactID, 
+                        $_guids,
+                        $ApiResponse.FileAccessCredentials.Value.Name
+                    )
+                )
+            }
+            else
+            {
+                $this.FileAccessCredentials = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.FileAccessCredentials.Secured, $null)
+            }
+        }
+        #endregion FileAccessCredentials
 
         $this.IsVisible = $ApiResponse.IsVisible
 
         $this.Keywords = $ApiResponse.Keywords
 
-        $_guids = @()
-        $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
-            $ApiResponse.LastModifiedBy.Secured,
-            [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.LastModifiedBy.Value.ArtifactID, 
-                $_guids,
-                $ApiResponse.LastModifiedBy.Value.Name
+        #region LastModifiedBy
+        if($ApiResponse.LastModifiedBy.Value -ne $null)
+        {
+            $_guids = @()
+            $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+            $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
+                $ApiResponse.LastModifiedBy.Secured,
+                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
+                    $ApiResponse.LastModifiedBy.Value.ArtifactID, 
+                    $_guids,
+                    $ApiResponse.LastModifiedBy.Value.Name
+                )
             )
-        )
+        }
+        else
+        {
+            $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New($ApiResponse.LastModifiedBy.Secured, $null)
+        }
+        #endregion LastModifiedBy
 
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
 
