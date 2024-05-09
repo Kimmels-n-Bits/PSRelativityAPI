@@ -99,6 +99,7 @@ class RelativityObjectModelV1FieldModelsResponse
         $this.AllowSortTally = $ApiResponse.AllowSortTally
 
         #region AssociativeObjectType
+        Write-Verbose "Processing [AssociativeObjectType]"
         if($ApiResponse.AssociativeObjectType.Value -ne $null)
         {
             $_guids = @()
@@ -162,7 +163,7 @@ class RelativityObjectModelV1FieldModelsResponse
         $this.EnableDataGrid = $ApiResponse.EnableDataGrid
 
         #region FieldTreeView
-        # This object is not always returned
+        Write-Verbose "Processing [FieldTreeView]"
         if($ApiResponse.FieldTreeView -ne $null)
         {
             if($ApiResponse.FieldTreeView.Value -ne $null)
@@ -257,6 +258,7 @@ class RelativityObjectModelV1FieldModelsResponse
         $this.Length = $ApiResponse.Length
 
         #region Meta
+        Write-Verbose "Processing [Meta]"
         [Collections.Generic.List[String]] $MetaReadOnly = @()
         $ApiResponse.Meta.ReadOnly | ForEach-Object {
             $MetaReadOnly.Add($_)
@@ -287,6 +289,7 @@ class RelativityObjectModelV1FieldModelsResponse
         
 
         #region ObjectType
+        Write-Verbose "Processing [ObjectType]"
         if($ApiResponse.ObjectType.Value -ne $null)
         {
             $_guids = @()
@@ -328,6 +331,7 @@ class RelativityObjectModelV1FieldModelsResponse
         }
         
         #region PopupPickerView
+        Write-Verbose "Processing [PopupPickerView]"
         if($ApiResponse.PopupPickerView -ne $null)
         {
             if($ApiResponse.PopupPickerView.Value -ne $null)
@@ -355,6 +359,7 @@ class RelativityObjectModelV1FieldModelsResponse
         #endregion PopupPickerView
 
         #region PropagateTo
+        Write-Verbose "Processing [PropagateTo]"
         if($ApiResponse.PropagateTo -ne $null)
         {
             [Collections.Generic.List[RelativitySharedV1ModelsDisplayableObjectIdentifier]] $_viewableItems = @()
@@ -380,6 +385,7 @@ class RelativityObjectModelV1FieldModelsResponse
         #endregion PropagateTo
 
         #region RelationalView
+        Write-Verbose "Processing [RelationalView]"
         if($ApiResponse.RelationalView -ne $null)
         {
             if($ApiResponse.RelationalView.Value -ne $null)
@@ -407,6 +413,7 @@ class RelativityObjectModelV1FieldModelsResponse
         #endregion RelationalView
 
         #region RelativityApplications
+        Write-Verbose "Processing [RelativityApplications]"
         [Collections.Generic.List[RelativitySharedV1ModelsDisplayableObjectIdentifier]] $_viewableItems = @()
         $ApiResponse.RelativityApplications.ViewableItems | ForEach-Object {
             
@@ -429,6 +436,7 @@ class RelativityObjectModelV1FieldModelsResponse
         #endregion RelativityApplications
 
         #region Shortcut
+        Write-Verbose "Processing [Shortcut]"
         [Collections.Generic.List[RelativityObjectModelV1SharedModelsModifierKey]] $_modifierKeys = @()
         $ApiResponse.Shortcut.ModifierKeys | ForEach-Object {
             if ([Enum]::IsDefined([RelativityObjectModelV1SharedModelsModifierKey], $_)) {
