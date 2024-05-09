@@ -2,7 +2,7 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
 {
     <# Partial parameter list - This assembly is poorly documented.
         .SYNOPSIS
-            Represents the results of a read operation on a cache location server.
+            Represents the results of a read operation on an ObjectType.
         .PARAMETER Actions
             Gets or sets a list of RESTful operations that a user has permissions to perform on the artifact.
         .PARAMETER ArtifactTypeID

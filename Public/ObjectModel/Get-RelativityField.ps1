@@ -1,21 +1,21 @@
-function Get-RelativityParentObjectType
+function Get-RelativityField
 {
     <#
         .SYNOPSIS
-            Returns a Relativity RelativityObjectModelV1ObjectTypeModelsResponse Object
+            Returns a Relativity RelativityObjectModelV1FieldModelsResponse Object
         .DESCRIPTION
-            Get-RelativityParentObjectType returns the properties of a Relativity [RelativityObjectModelV1ObjectTypeModelsResponse] object using Relativity's REST API.
+            Get-RelativityField returns the properties of a Relativity [RelativityObjectModelV1FieldModelsResponse] object using Relativity's REST API.
         .PARAMETER WorkspaceID
             {WorkspaceID} variable to the Artifact ID of a workspace, or use -1 to indicate the admin-level context.
-        .PARAMETER ObjectTypeID
-            {objectTypeArtifactID} to the Artifact ID of the object type.
+        .PARAMETER FieldArtifactID
+            {fieldArtifactID} variable to the Artifact ID of the field that you want to delete.
         .PARAMETER IncludeMetadata
-            Determines whether to include extended metadata for the returned ParentObjectType object.
+            Determines whether to include extended metadata for the returned FieldResponse object.
         .PARAMETER IncludeActions
-            Determines whether to include actions associated with the returned ParentObjectType object.
+            Determines whether to include actions associated with the returned FieldResponse object.
         .EXAMPLE
-            Get-RelativityParentObjectType -WorkspaceID 1234567 -ObjectTypeID 100 -IncludeMetadata -IncludeActions
-            This returns a Relativity RelativityObjectModelV1ObjectTypeModelsResponse with the -WorkspaceID value 1234567 and includes extended metadata and
+            Get-RelativityField -WorkspaceID 1234567 -FieldArtifactID 100000 -IncludeMetadata -IncludeActions
+            This returns a Relativity RelativityObjectModelV1FieldModelsResponse with the -WorkspaceID value 1234567 and includes extended metadata and
             actions.
     #>
     [CmdletBinding()]
@@ -28,7 +28,7 @@ function Get-RelativityParentObjectType
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [ValidateRange(1, [Int32]::MaxValue)]
-        [Int32] $ObjectTypeID,
+        [Int32] $FieldArtifactID,
         [Parameter(Mandatory = $false)]
         [Switch] $IncludeMetadata,
         [Parameter(Mandatory = $false)]
@@ -43,7 +43,7 @@ function Get-RelativityParentObjectType
     {
         try
         {
-            [String[]] $Resources = @("workspaces", $WorkspaceID.ToString(), "object-types", $ObjectTypeID.ToString())
+            [String[]] $Resources = @("workspaces", $WorkspaceID.ToString(), "fields", $FieldArtifactID.ToString())
 
             [String] $QueryString = ""
             if ($IncludeMetadata -or $IncludeActions)
@@ -65,7 +65,7 @@ function Get-RelativityParentObjectType
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Get"
             Write-Debug "ApiResponse`n$($ApiResponse)"
 
-            $Response = [RelativityObjectModelV1ObjectTypeModelsResponse]::New($ApiResponse)
+            $Response = [RelativityObjectModelV1FieldModelsResponse]::New($ApiResponse)
 
             Write-Verbose "Client details retrieved successfully."
             return $Response
