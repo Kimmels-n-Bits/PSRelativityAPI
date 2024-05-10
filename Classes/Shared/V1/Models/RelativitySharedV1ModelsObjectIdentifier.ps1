@@ -31,10 +31,10 @@ class RelativitySharedV1ModelsObjectIdentifier
         $this.ArtifactID = $ApiResponse.ArtifactID
         
         [Collections.Generic.List[Guid]] $ObjectGuids = @()
-
-        $ApiResponse.Guids | ForEach-Object
-        {
+        $ApiResponse.Guids | ForEach-Object {
             $ObjectGuids.Add($_)
         }
+
+        $this.Guids = $ObjectGuids
     }
 }
