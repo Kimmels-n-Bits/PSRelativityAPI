@@ -51,24 +51,7 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
         [PSCustomObject] $ApiResponse
     )
     {
-        [Collections.Generic.List[Guid]] $_guids = @() # Ephemeral Data
-
-        $this.Actions = @()
-        $ApiResponse.Actions | ForEach-Object {
-            [Collections.Generic.List[String]] $ActionReasons = @()
-            
-            $_.Reason | ForEach-Object {
-                $ActionReasons.Add($_)
-            }
-            
-            $this.Actions.Add([RelativitySharedV1ModelsAction]::New(
-                    $_.Href,
-                    $_.IsAvailable,
-                    $_.Name,
-                    $ActionReasons,
-                    $_.Verb
-                ))
-        }
+        $this.Actions = $ApiResponse.Actions
         
         $this.ArtifactTypeID = $ApiResponse.ArtifactTypeID
 
@@ -79,17 +62,10 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
         #region CreatedBy
         if($ApiResponse.CreatedBy.Value -ne $null)
         {
-            $_guids = @()
-            $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
-
             $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.CreatedBy.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                    $ApiResponse.CreatedBy.Value.ArtifactID, 
-                    $_guids,
-                    $ApiResponse.CreatedBy.Value.Name
+                    $ApiResponse.CreatedBy.Value
                 )
             )
         }
@@ -118,16 +94,10 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
         #region LastModifiedBy
         if($ApiResponse.LastModifiedBy.Value -ne $null)
         {
-            $_guids = @()
-            $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
             $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.LastModifiedBy.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                    $ApiResponse.LastModifiedBy.Value.ArtifactID, 
-                    $_guids,
-                    $ApiResponse.LastModifiedBy.Value.Name
+                    $ApiResponse.LastModifiedBy.Value
                 )
             )
         }
@@ -139,50 +109,19 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
 
         $this.LastModifiedOn = $ApiResponse.LastModifiedOn
 
-        #region Meta
-        [Collections.Generic.List[String]] $MetaReadOnly = @()
-        $ApiResponse.Meta.ReadOnly | ForEach-Object {
-            $MetaReadOnly.Add($_)
-        }
-
-        [Collections.Generic.List[String]] $MetaUnsupported = @()
-        $ApiResponse.Meta.Unsupported | ForEach-Object {
-            $MetaUnsupported.Add($_)
-        }
-        
-        $this.Meta = [RelativitySharedV1ModelsMeta]::New(
-            $MetaReadOnly,
-            $MetaUnsupported
-        )
-        #endregion Meta
+        $this.Meta = $ApiResponse.Meta
 
         $this.Notes = $ApiResponse.Notes
 
-        $_guids = @()
-        $ApiResponse.ObjectIdentifier.Guids | ForEach-Object {
-            $_guids.Add($_)
-        }
-        $this.ObjectIdentifier = [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $ApiResponse.ObjectIdentifier.ArtifactID, 
-                $_guids,
-                $ApiResponse.ObjectIdentifier.Name
-            )
-        
+        $this.ObjectIdentifier = $ApiResponse.ObjectIdentifier
 
         #region ParentObjectType
         if($ApiResponse.ParentObjectType.Value -ne $null)
         {
-            $_guids = @()
-            $ApiResponse.ParentObjectType.Value.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
             $this.ParentObjectType = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.ParentObjectType.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectTypeIdentifier]::New(
-                    $ApiResponse.ParentObjectType.Value.ArtifactTypeID,
-                    $ApiResponse.ParentObjectType.Value.ArtifactID, 
-                    $_guids,
-                    $ApiResponse.ParentObjectType.Value.Name
+                    $ApiResponse.ParentObjectType.Value
                 )
             )
         }
@@ -199,17 +138,7 @@ class RelativityObjectModelV1ObjectTypeModelsResponse
         #region RelativityApplications
         [Collections.Generic.List[RelativitySharedV1ModelsDisplayableObjectIdentifier]] $_viewableItems = @()
         $ApiResponse.RelativityApplications.ViewableItems | ForEach-Object {
-            
-            $_guids = @()
-            $_.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
-
-            $_viewableItems.Add([RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                $_.ArtifactID, 
-                $_guids,
-                $_.Name
-            ))
+            $_viewableItems.Add([RelativitySharedV1ModelsDisplayableObjectIdentifier]::New($_))
         }
 
         $this.RelativityApplications = [RelativitySharedV1ModelsSecurableList]::New(

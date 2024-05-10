@@ -20,4 +20,25 @@ class RelativitySharedV1ModelsDisplayableObjectIdentifier : RelativitySharedV1Mo
     {
         $this.Name = $Name
     }
+
+    RelativitySharedV1ModelsDisplayableObjectIdentifier(
+        [PSCustomObject] $ApiResponse
+    )
+    {
+        [Collections.Generic.List[Guid]] $_guids = @()
+        if($ApiResponse.Guids -ne $null)
+        {
+            $ApiResponse.Guids | ForEach-Object {
+                $_guids.Add($_)
+            }
+        }
+        else
+        {
+            $_guids = $null
+        }
+
+        $this.ArtifactID = $ApiResponse.ArtifactID
+        $this.Name = $ApiResponse.Name
+        $this.Guids = $_guids
+    }
 }

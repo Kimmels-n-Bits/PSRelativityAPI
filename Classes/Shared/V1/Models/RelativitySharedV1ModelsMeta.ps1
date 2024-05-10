@@ -23,4 +23,22 @@ class RelativitySharedV1ModelsMeta
         $this.ReadOnly = $ReadOnly
         $this.Unsupported = $Unsupported
     }
+
+    RelativitySharedV1ModelsMeta(
+        [PSCustomObject] $ApiResponse
+    )
+    {
+        [Collections.Generic.List[String]] $_readOnly = @()
+        $ApiResponse.ReadOnly | ForEach-Object {
+            $_readOnly.Add($_)
+        }
+
+        [Collections.Generic.List[String]] $_unsupported = @()
+        $ApiResponse.Unsupported | ForEach-Object {
+            $_unsupported.Add($_)
+        }
+        
+        $this.ReadOnly = $_readOnly
+        $this.Unsupported = $_unsupported
+    }
 }

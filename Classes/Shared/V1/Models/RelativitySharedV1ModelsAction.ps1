@@ -38,4 +38,27 @@ class RelativitySharedV1ModelsAction
         $this.Reason = $Reason
         $this.Verb = $Verb
     }
+
+    RelativitySharedV1ModelsAction(
+        [PSCustomObject] $ApiResponse
+    )
+    {
+        [Collections.Generic.List[String]] $_reasons = @()
+        if($ApiResponse.Reason -ne $null)
+        {
+            $ApiResponse.Reason | ForEach-Object {
+                $_reasons.Add($_)
+            }
+        }
+        else
+        {
+            $_reasons = $null
+        }
+
+        $this.Href = $ApiResponse.Href
+        $this.IsAvailable = $ApiResponse.IsAvailable
+        $this.Name = $ApiResponse.Name
+        $this.Reason = $_reasons
+        $this.Verb = $ApiResponse.Verb
+    }
 }

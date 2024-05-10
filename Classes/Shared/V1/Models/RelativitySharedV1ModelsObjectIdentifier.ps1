@@ -28,13 +28,12 @@ class RelativitySharedV1ModelsObjectIdentifier
         [PSCustomObject] $ApiResponse
     )
     {
-        $this.ArtifactID = $ApiResponse.ArtifactID
-        
-        [Collections.Generic.List[Guid]] $ObjectGuids = @()
+        [Collections.Generic.List[Guid]] $_guids = @()
         $ApiResponse.Guids | ForEach-Object {
-            $ObjectGuids.Add($_)
+            $_guids.Add($_)
         }
 
-        $this.Guids = $ObjectGuids
+        $this.ArtifactID = $ApiResponse.ArtifactID
+        $this.Guids = $_guids
     }
 }

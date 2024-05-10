@@ -39,39 +39,15 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
         [PSCustomObject] $ApiResponse
     ):base ($ApiResponse.ArtifactID, $ApiResponse.Guids, $ApiResponse.Name)
     {
-        [Collections.Generic.List[Guid]] $_guids = @() # Ephemeral Data
-
-        $this.Actions = @()
-        $ApiResponse.Actions | ForEach-Object {
-            [Collections.Generic.List[String]] $ActionReasons = @()
-            
-            $_.Reason | ForEach-Object {
-                $ActionReasons.Add($_)
-            }
-
-            $this.Actions.Add([RelativitySharedV1ModelsAction]::New(
-                    $_.Href,
-                    $_.IsAvailable,
-                    $_.Name,
-                    $ActionReasons,
-                    $_.Verb
-                ))
-        }
+        $this.Actions = $ApiResponse.Actions
 
         #region Client
         if($ApiResponse.Client.Value -ne $null)
         {
-            $_guids = @()
-            $ApiResponse.Client.Value.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
-
             $this.Client = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.Client.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                    $ApiResponse.Client.Value.ArtifactID, 
-                    $_guids,
-                    $ApiResponse.Client.Value.Name
+                    $ApiResponse.Client.Value
                 )
             )
         }
@@ -84,17 +60,10 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
         #region CreatedBy
         if($ApiResponse.CreatedBy.Value -ne $null)
         {
-            $_guids = @()
-            $ApiResponse.CreatedBy.Value.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
-
             $this.CreatedBy = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.CreatedBy.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                    $ApiResponse.CreatedBy.Value.ArtifactID, 
-                    $_guids,
-                    $ApiResponse.CreatedBy.Value.Name
+                    $ApiResponse.CreatedBy.Value
                 )
             )
         }
@@ -113,16 +82,10 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
         #region LastModifiedBy
         if($ApiResponse.LastModifiedBy.Value -ne $null)
         {
-            $_guids = @()
-            $ApiResponse.LastModifiedBy.Value.Guids | ForEach-Object {
-                $_guids.Add($_)
-            }
             $this.LastModifiedBy = [RelativitySharedV1ModelsSecurable]::New(
                 $ApiResponse.LastModifiedBy.Secured,
                 [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New(
-                    $ApiResponse.LastModifiedBy.Value.ArtifactID, 
-                    $_guids,
-                    $ApiResponse.LastModifiedBy.Value.Name
+                    $ApiResponse.LastModifiedBy.Value
                 )
             )
         }
@@ -134,22 +97,7 @@ class RelativityInfrastructureV1ResourcePoolModelsResponse : RelativitySharedV1M
 
         $this.LastModifiedOnDate = $ApiResponse.LastModifiedOn
 
-        #region Meta
-        [Collections.Generic.List[String]] $MetaReadOnly = @()
-        $ApiResponse.Meta.ReadOnly | ForEach-Object {
-            $MetaReadOnly.Add($_)
-        }
-
-        [Collections.Generic.List[String]] $MetaUnsupported = @()
-        $ApiResponse.Meta.Unsupported | ForEach-Object {
-            $MetaUnsupported.Add($_)
-        }
-
-        $this.Meta = [RelativitySharedV1ModelsMeta]::New(
-            $MetaReadOnly,
-            $MetaUnsupported
-        )
-        #endregion Meta
+        $this.Meta = $ApiResponse.Meta
 
         $this.Notes = $ApiResponse.Notes
     }

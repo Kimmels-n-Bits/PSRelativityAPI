@@ -23,4 +23,12 @@ class RelativityObjectModelV1FieldModelsPaneIcon
         $this.FileName = $FileName
         $this.ImageBase64 = $ImageBase64
     }
+
+    RelativityObjectModelV1FieldModelsPaneIcon(
+        [PSCustomObject] $ApiResponse
+    )
+    {
+        $this.FileName = $ApiResponse.FileName
+        $this.ImageBase64 = $ApiResponse.ImageBase64
+    }
 }

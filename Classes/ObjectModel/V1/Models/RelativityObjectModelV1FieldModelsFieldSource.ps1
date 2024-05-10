@@ -23,4 +23,12 @@ class RelativityObjectModelV1FieldModelsFieldSource
         $this.FriendlyName = $FriendlyName
         $this.SourceName = $SourceName
     }
+
+    RelativityObjectModelV1FieldModelsFieldSource(
+        [PSCustomObject] $ApiResponse
+    )
+    {
+        $this.FriendlyName = $ApiResponse.FriendlyName
+        $this.SourceName = $ApiResponse.SourceName
+    }
 }

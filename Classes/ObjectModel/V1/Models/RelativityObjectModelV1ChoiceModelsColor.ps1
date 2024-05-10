@@ -23,4 +23,12 @@ class RelativityObjectModelV1ChoiceModelsColor
         $this.ID = $ID
         $this.Name = $Name
     }
+
+    RelativityObjectModelV1ChoiceModelsColor(
+        [PSCustomObject] $ApiResponse
+    )
+    {
+        $this.ID = $ApiResponse.ID
+        $this.Name = $ApiResponse.Name
+    }
 }
