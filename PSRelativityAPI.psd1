@@ -97,11 +97,13 @@
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
 
         ### Infrastructure
+        "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1AnalyticsServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1CacheLocationServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourceServerModelsServerTypeResponse.ps1",
 
+        "$PSScriptRoot\Public\Infrastructure\Get-RelativityAnalyticsServer.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityCacheLocation.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityFileRepository.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
@@ -190,6 +192,7 @@
         "Get-RelativityClient",
 
         ### Infrastructure
+        "Get-RelativityAnalyticsServer",
         "Get-RelativityCacheLocation",
         "Get-RelativityFileRepository",
         "Get-RelativityResourcePool",
@@ -197,7 +200,7 @@
 
         ### ObjectManager API
         "Get-RelativityObject",
-        "New-RelativityObjectQueryCondition",<#,
+        "New-RelativityObjectQueryCondition", <#,
         "New-RelativityObjectQuerySampleParameterSet",
         "New-RelativityObjectQuerySearchProviderCondition"#>
 
