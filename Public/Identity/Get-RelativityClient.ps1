@@ -31,7 +31,7 @@ function Get-RelativityClient
 
     Begin
     {
-        Write-Verbose "Starting Get-RelativityClient"
+        Write-Verbose "Starting $($MyInvocation.MyCommand.Name)"
     }
     Process
     {
@@ -86,6 +86,6 @@ function Get-RelativityClient
     }
     End
     {
-        Write-Verbose "Completed Get-RelativityClient"
+        Write-Verbose "Completed $($MyInvocation.MyCommand.Name)"
     }
 }
