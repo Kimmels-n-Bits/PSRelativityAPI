@@ -60,7 +60,7 @@ function Get-RelativityClient
 
             $Response = [RelativityIdentityV1ClientModelsClientResponse]::New($ApiResponse)
 
-            Write-Verbose "Client details retrieved successfully."
+            Write-Verbose "REST call details retrieved successfully."
             return $Response
         }
         catch

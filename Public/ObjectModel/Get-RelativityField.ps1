@@ -67,7 +67,7 @@ function Get-RelativityField
 
             $Response = [RelativityObjectModelV1FieldModelsResponse]::New($ApiResponse)
 
-            Write-Verbose "Client details retrieved successfully."
+            Write-Verbose "REST call details retrieved successfully."
             return $Response
         }
         catch

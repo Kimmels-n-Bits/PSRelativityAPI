@@ -61,7 +61,7 @@ function Get-RelativityCacheLocation
 
             $Response = [RelativityInfrastructureV1CacheLocationServerModelsResponse]::New($ApiResponse)
 
-            Write-Verbose "Client details retrieved successfully."
+            Write-Verbose "REST call details retrieved successfully."
             return $Response
         }
         catch

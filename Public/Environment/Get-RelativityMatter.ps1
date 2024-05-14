@@ -54,7 +54,7 @@ function Get-RelativityMatter
 
             $Response = [RelativityEnvironmentV1MatterModelsResponse]::New($ApiResponse)
 
-            Write-Verbose "Client details retrieved successfully."
+            Write-Verbose "REST call details retrieved successfully."
             return $Response
         }
         catch

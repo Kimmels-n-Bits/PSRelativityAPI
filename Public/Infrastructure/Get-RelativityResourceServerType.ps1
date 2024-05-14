@@ -32,7 +32,7 @@ function Get-RelativityResourceServerType
 
             $Response = [RelativityInfrastructureV1ResourceServerModelsServerTypeResponse]::New($ApiResponse)
 
-            Write-Verbose "Client details retrieved successfully."
+            Write-Verbose "REST call details retrieved successfully."
             return $Response.Types
         }
         catch

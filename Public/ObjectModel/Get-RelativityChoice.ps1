@@ -67,7 +67,7 @@ function Get-RelativityChoice
 
             $Response = [RelativityObjectModelV1ChoiceModelsResponse]::New($ApiResponse)
 
-            Write-Verbose "Client details retrieved successfully."
+            Write-Verbose "REST call details retrieved successfully."
             return $Response
         }
         catch
