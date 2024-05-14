@@ -86,6 +86,11 @@
         "$PSScriptRoot\Public\ARM\Get-RelativityArmJobStatus.ps1",
         "$PSScriptRoot\Public\ARM\Get-RelativityArmJobLog.ps1",
 
+        ### Environment API
+        "$PSScriptRoot\Classes\Environment\RelativityEnvironmentV1MatterModelsResponse.ps1",
+
+        "$PSScriptRoot\Public\Environment\Get-RelativityMatter.ps1",
+
         ### Identity API
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedAction.ps1",
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedMeta.ps1",
@@ -187,6 +192,9 @@
         "Get-RelativityArmJobStatus",
         "Get-RelativityArmJobLog",
         "Restart-RelativityArmJobTask",
+
+        ### Environment API
+        "Get-RelativityMatter",
 
         ### Identity API
         "Get-RelativityClient",
