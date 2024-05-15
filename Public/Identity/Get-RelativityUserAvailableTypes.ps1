@@ -1,14 +1,12 @@
 function Get-RelativityUserAvailableTypes
 {
-    <# TODO
+    <#
         .SYNOPSIS
             Returns a Rlist of available user types.
         .DESCRIPTION
             Get-RelativityUserAvailableTypes returns the properties of a Relativity User object using Relativity's REST API.
         .EXAMPLE
-            Get-RelativityUserAvailableTypes -ArtifactID 1234567 -IncludeMetadata -IncludeActions
-            This returns the Relativity User with the ArtifactID value 1234567 and includes extended metadata and
-            actions.
+            Get-RelativityUserAvailableTypes 
     #>
     [CmdletBinding()]
     Param ( )
