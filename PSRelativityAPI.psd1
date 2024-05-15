@@ -100,10 +100,12 @@
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsDocumentViewerProperties.ps1",
 
         "$PSScriptRoot\Classes\Identity\V1\ClientModels\RelativityIdentityV1ClientModelsClientResponse.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserAvailableTypesResponse.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserResponse.ps1",
         
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUser.ps1",
+        "$PSScriptRoot\Public\Identity\Get-RelativityUserAvailableTypes.ps1",
 
         ### Infrastructure
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1AnalyticsServerModelsResponse.ps1",
@@ -203,6 +205,7 @@
         ### Identity API
         "Get-RelativityClient",
         "Get-RelativityUser",
+        "Get-RelativityUserAvailableTypes",
 
         ### Infrastructure
         "Get-RelativityAnalyticsServer",
