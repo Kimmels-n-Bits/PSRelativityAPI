@@ -109,12 +109,12 @@ function Set-RelativityArmRestoreJob
         [String] $JobPriority = "Medium",
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
-            $date = "1970-01-01"
-            [DateTime]::TryParse($_, [ref]$date)
-            if($_ -eq "") { return $true }
-            elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)."}
-            $true
-        })]
+                $date = "1970-01-01"
+                [DateTime]::TryParse($_, [ref]$date)
+                if ($_ -eq "") { return $true }
+                elseif ($date -eq [DateTime]::MinValue) { throw "Invalid DateTime for ScheduledStartTime: $($_)." }
+                $true
+            })]
         [String] $ScheduledStartTime,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [String] $ExistingTargetDatabase,
@@ -223,31 +223,21 @@ function Set-RelativityArmRestoreJob
         catch
         {
             Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Verbose "Logging parameter values:"
+
+            (Get-Command -Name $PSCmdlet.MyInvocation.InvocationName).Parameters | ForEach-Object {
+                $_.Values | ForEach-Object {
+                    $Parameter = Get-Variable -Name $_.Name -ErrorAction SilentlyContinue
+
+                    if ($null -ne $Parameter)
+                    {
+                        Write-Verbose "$($Parameter.Name): $($Parameter.Value)"
+                    }
+                }
+            }
+
             Write-Verbose "API Endpoint: $($ApiEndpoint)"
-            Write-Verbose "JobID: $($JobID)"
-            Write-Verbose "ArchivePath: $($ArchivePath)"
-            Write-Verbose "JobPriority: $($JobPriority)"
-            Write-Verbose "ScheduledStartTime: $($ScheduledStartTime)"
-            Write-Verbose "ExistingTargetDatabase: $($ExistingTargetDatabase)"
-            Write-Verbose "DatabaseServerID: $($DatabaseServerID)"
-            Write-Verbose "ResourcePoolID: $($ResourcePoolID)"
-            Write-Verbose "MatterID: $($MatterID)"
-            Write-Verbose "CacheLocationID: $($CacheLocationID)"
-            Write-Verbose "FileRepositoryID: $($FileRepositoryID)"
-            Write-Verbose "StructuredAnalyticsServerID: $($StructuredAnalyticsServerID)"
-            Write-Verbose "ConceptualAnalyticsServerID: $($ConceptualAnalyticsServerID)"
-            Write-Verbose "DtSearchLocationID: $($DtSearchLocationID)"
-            Write-Verbose "ReferenceFilesAsArchiveLinks: $($ReferenceFilesAsArchiveLinks)"
-            Write-Verbose "UpdateRepositoryFilePaths: $($UpdateRepositoryFilePaths)"
-            Write-Verbose "UpdateLinkedFilePaths: $($UpdateLinkedFilePaths)"
-            Write-Verbose "AutoMapUsers: $($AutoMapUsers)"
-            Write-Verbose "UserMappings $($UserMappings | ConvertTo-Json)"
-            Write-Verbose "AutoMapGroups: $($AutoMapGroups)"
-            Write-Verbose "GroupMappings: $($GroupMappings | ConvertTo-Json)"
-            Write-Verbose "Applications: $($Applications | ConvertTo-Json)"
-            Write-Verbose "NotifyJobCreator: $($NotifyJobCreator)"
-            Write-Verbose "NotifyJobExecutor: $($NotifyJobExecutor)"
-            Write-Verbose "UiJobActionsLocked: $($UiJobActionsLocked)"
+
             throw
         }
     }

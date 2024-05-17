@@ -85,7 +85,14 @@ function Get-RelativityApiEndpoint
         [String[]] $Resources,
         [Parameter(Mandatory = $false, ValueFromPipelineByPropertyName = $true)]
         [ValidateScript({
-                $_ -match "^\?((\w|\d)*?=?(\w|\d)*?&?){1,}$"
+                if ($_ -eq "" -or $_ -match "^\?((\w|\d)*?=?(\w|\d)*?&?){1,}$")
+                {
+                    return $true
+                }
+                else
+                {
+                    return $false
+                }
             }
         )]
         [String] $QueryString

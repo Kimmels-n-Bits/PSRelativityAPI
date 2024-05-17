@@ -19,17 +19,26 @@ function Get-RelativityApiRequestHeader
     }
     Process
     {
-        $UserName = $script:RelativityCredential.UserName
-        $Password = $script.RelativtityCredential.GetNetworkCredential().Password
+        try
+        {
+            $UserName = $script:RelativityCredential.UserName
+            $Password = $script:RelativityCredential.GetNetworkCredential().Password
 
-        $RelativityApiAuthorization = [Convert]::ToBase64String(
-            [Text.Encoding]::ASCII.GetBytes("$($UserName):$($Password)")
-        )
+            $RelativityApiAuthorization = [Convert]::ToBase64String(
+                [Text.Encoding]::ASCII.GetBytes("$($UserName):$($Password)")
+            )
 
-        $RelativityApiRequestHeader = New-Object "System.Collections.Generic.Dictionary[[String], [String]]"
-        $RelativityApiRequestHeader.Add("X-CSRF-Header", "-")
-        $RelativityApiRequestHeader.Add("Content-Type", "application/json")
-        $RelativityApiRequestHeader.Add("Authorization", "Basic $($RelativityApiAuthorization)")
+            $RelativityApiRequestHeader = New-Object "System.Collections.Generic.Dictionary[[String], [String]]"
+            $RelativityApiRequestHeader.Add("X-CSRF-Header", "-")
+            $RelativityApiRequestHeader.Add("Content-Type", "application/json")
+            $RelativityApiRequestHeader.Add("Authorization", "Basic $($RelativityApiAuthorization)")
+        }
+        catch
+        {
+            Write-Error "An error occurred: $($_.Exception) type: $($_.GetType().FullName)"
+            Write-Verbose "Relativity UserName: $($UserName)"
+            $RelativityApiRequestHeader | ForEach-Object { Write-Verbose "Key:$($_.Key) Value:$($_.Value)." }
+        }
 
         return $RelativityApiRequestHeader
     }

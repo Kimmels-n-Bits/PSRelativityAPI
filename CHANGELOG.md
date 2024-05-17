@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.0] - 2024-04-30
+- Identity API : Get-RelativityClient
+
 ## [0.0.9] - 2023-11-21
 - ARM API : Get-RelativityArmJobLog
 - ARM API : Restart-RelativityArmJobTask
