@@ -108,16 +108,24 @@
         "$PSScriptRoot\Public\Identity\Get-RelativityUserAvailableTypes.ps1",
 
         ### Infrastructure
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedEnums.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SampleDetails.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedField.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedObjectType.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedRelativityObjectSlim.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedQueryResultSlim.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\RelativityInfrastructureResourcePoolResourceRequest.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1AnalyticsServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1CacheLocationServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourceServerModelsServerTypeResponse.ps1",
-
+        
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityAnalyticsServer.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityCacheLocation.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityFileRepository.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
+        "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePoolResource.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourceServerType.ps1",
 
         ### ObjectManager API
@@ -212,6 +220,7 @@
         "Get-RelativityCacheLocation",
         "Get-RelativityFileRepository",
         "Get-RelativityResourcePool",
+        "Get-RelativityResourcePoolResource",
         "Get-RelativityResourceServerType",
 
         ### ObjectManager API
