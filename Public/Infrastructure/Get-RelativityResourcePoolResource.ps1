@@ -25,7 +25,7 @@ function Get-RelativityResourcePoolResource
         Array Index for query return.
 
     .EXAMPLE
-        Get-RelativityResourcePoolResource -verbose -ArtifactID 1234567 -Start 1 -Length 10 -ResourceType "file-repositories"
+        Get-RelativityResourcePoolResource -ArtifactID 1234567 -Start 1 -Length 10 -ResourceType "file-repositories"
             This example will return a list of file repositories for Resource Pool ID 1234567.
             It will contain ('Name', 'URL') fields.
 
