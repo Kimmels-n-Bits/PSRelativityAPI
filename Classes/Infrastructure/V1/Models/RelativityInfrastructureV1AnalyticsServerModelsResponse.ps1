@@ -62,10 +62,11 @@ class RelativityInfrastructureV1AnalyticsServerModelsResponse : RelativityShared
     {
         $this.Actions = $ApiResponse.Actions
 
-        if ($ApiResponse.AnalyticsOperations -ne $null)
+        if ($ApiResponse.AnalyticsOperations -ne $null) # TODO Test this section, it was incomplete on original commit.
         {
+            $this.AnalyticsOperations = @()
             $ApiResponse.AnalyticsOperations | ForEach-Object {
-                [RelativitySharedV1ModelsDisplayableObjectIdentifier]::New($_)
+                $this.AnalyticsOperations.Add([RelativitySharedV1ModelsDisplayableObjectIdentifier]::New($_))
             }
         }
 
