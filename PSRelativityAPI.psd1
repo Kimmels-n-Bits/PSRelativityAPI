@@ -128,6 +128,7 @@
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePoolResource.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourceServerType.ps1",
+        "$PSScriptRoot\Public\Infrastructure\New-RelativityResourcePool.ps1",
 
         ### ObjectManager API
         "$PSScriptRoot\Classes\ObjectManager\Custom\RelativityObjectQueryConditionCombinationOperator.ps1",
@@ -224,6 +225,7 @@
         "Get-RelativityResourcePool",
         "Get-RelativityResourcePoolResource",
         "Get-RelativityResourceServerType",
+        "New-RelativityResourcePool",
 
         ### ObjectManager API
         "Get-RelativityObject",
