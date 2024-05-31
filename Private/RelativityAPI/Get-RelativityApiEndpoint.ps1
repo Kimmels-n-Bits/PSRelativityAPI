@@ -62,6 +62,7 @@ function Get-RelativityApiEndpoint
             "relativity-object-model",
             "relativity-processing",
             "relativity-productions",
+            "Relativity.ResourcePools",
             "relativity-search-terms-report",
             "relativity-review",
             "relativity.libraryapplications",

@@ -1,37 +1,33 @@
-function Get-RelativityResourcePoolResource
+function Add-RelativityResourcePoolResource
 {
     <#
-    .SYNOPSIS
-        Function to query resource pool resources using Relativity's REST API.
+        .SYNOPSIS
+            Function to add resource objects to a resource pool.
+        .DESCRIPTION
+            This function constructs the required request, calls Relativity's REST API, adds resources, and returns an HTTP Status Code.
 
-    .DESCRIPTION
-        This function constructs the required request, calls Relativity's REST API, and returns a QuerySlim Response.
+        .PARAMETER ArtifactID
+            ArtifactID for the Resource pool being added to.
+        .PARAMETER ResourceArtifactIDs
+            Comma Delimited list of artifact IDs to be added. These must be of the same resource type.
+        .PARAMETER ResourceType
+            Identifies 1 of 8 ResourceTypes that [ResourceArtifactIDs] will be added to.
+                "agent-worker-servers"
+                "analytics-servers"
+                "cache-location-servers"
+                "dt-search-index-locations"
+                "file-repositories"
+                "processing-source-locations"
+                "sql-servers"
+                "worker-manager-servers"
 
-    .PARAMETER ArtifactID
-        ArtifactID of the Resource Pool to query.
-    .PARAMETER Length
-        Array length for number of rows returned by query.
-    .PARAMETER ResourceType
-        Identifies 1 of 8 ResourceTypes that can be queried.
-            "agent-worker-servers"
-            "analytics-servers"
-            "cache-location-servers"
-            "dt-search-index-locations"
-            "file-repositories"
-            "processing-source-locations"
-            "sql-servers"
-            "worker-manager-servers"
-    .PARAMETER Start
-        Array Index for query return.
+        .EXAMPLE
+            Add-RelativityResourcePoolResource -ArtifactID 1234567 -ResourceType "file-repositories" -ResourceArtifactIDs 1058334, 1058335
+            Add-RelativityResourcePoolResource -ArtifactID 1234567 -ResourceType "file-repositories" -ResourceArtifactIDs @(1058334, 1058335)
+                This example will ADD list of file repositories resources to the Resource Pool ID 1234567.
 
-    .EXAMPLE
-        Get-RelativityResourcePoolResource -ArtifactID 1234567 -Start 1 -Length 10 -ResourceType "file-repositories"
-            This example will return a list of file repositories for Resource Pool ID 1234567.
-            It will contain ('Name', 'URL') fields.
-
-    .NOTES
-        At this time, returned [Fields] are statically defined in [RelativityInfrastructureResourcePoolResourceRequest].
-        They will have slight differences based on [ResourceType]
+        .NOTES
+            na
     #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     Param
@@ -42,10 +38,7 @@ function Get-RelativityResourcePoolResource
         [Int32] $ArtifactID,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateRange(1, [Int32]::MaxValue)]
-        [Int32] $Start,
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [ValidateRange(1, [Int32]::MaxValue)]
-        [Int32] $Length,
+        [Int32[]] $ResourceArtifactIDs,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [ValidateSet('file-repositories',
@@ -67,23 +60,27 @@ function Get-RelativityResourcePoolResource
     {
         try
         {
-            $Request = [RelativityInfrastructureResourcePoolResourceRequest]::New($ResourceType, $Start, $Length)
-            $RequestBody = $Request.ToHashTable()
+            [Hashtable]$RequestBody = @{
+                resources = @()
+            }
 
-            $Resources = @("workspaces", "-1", "resource-pools", $ArtifactID.ToString(), $ResourceType.ToString(), "query-associated")
+            foreach($resourceID in $ResourceArtifactIDs){
+                $RequestBody.resources += @{
+                    ArtifactID = $resourceID
+                }
+            }
+
+            $Resources = @("workspace", "-1", "resource-pools", $ArtifactID.ToString(), $ResourceType.ToString(), "add")
 
             $ApiEndpoint = Get-RelativityApiEndpoint `
-                -BusinessDomain "relativity-infrastructure" `
-                -Version "v1" `
+                -BusinessDomain "Relativity.ResourcePools" `
                 -Resources $Resources
 
             Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
 
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
-            $Response = [RelativityInfrastructureV1SharedQueryResultSlim]::New($ApiResponse)
-
-            return $Response
+            return $ApiResponse
         }
         catch
         {

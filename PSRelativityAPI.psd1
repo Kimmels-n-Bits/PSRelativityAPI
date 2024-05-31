@@ -120,7 +120,8 @@
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourceServerModelsServerTypeResponse.ps1",
-        
+
+        "$PSScriptRoot\Public\Infrastructure\Add-RelativityResourcePoolResource.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityAnalyticsServer.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityCacheLocation.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityFileRepository.ps1",
@@ -216,6 +217,7 @@
         "Get-RelativityUserAvailableTypes",
 
         ### Infrastructure
+        "Add-RelativityResourcePoolResource",
         "Get-RelativityAnalyticsServer",
         "Get-RelativityCacheLocation",
         "Get-RelativityFileRepository",
