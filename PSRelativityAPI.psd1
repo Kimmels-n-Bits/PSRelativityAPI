@@ -90,6 +90,7 @@
         "$PSScriptRoot\Classes\Environment\V1\RelativityEnvironmentV1MatterModelsResponse.ps1",
 
         "$PSScriptRoot\Public\Environment\Get-RelativityMatter.ps1",
+        "$PSScriptRoot\Public\Environment\New-RelativityMatter.ps1",
 
         ### Identity API
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedAction.ps1",
@@ -212,6 +213,7 @@
 
         ### Environment API
         "Get-RelativityMatter",
+        "New-RelativityMatter",
 
         ### Identity API
         "Get-RelativityClient",
