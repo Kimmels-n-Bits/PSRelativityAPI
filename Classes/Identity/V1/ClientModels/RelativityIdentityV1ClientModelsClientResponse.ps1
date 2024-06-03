@@ -9,6 +9,7 @@ class RelativityIdentityV1ClientModelsClientResponse : RelativityIdentityV1Share
             Gets the Artifact ID and name of the user who created the artifact.
         .PARAMETER CreatedOnDate
             Gets the date and time when the artifact was added to Relativity.
+            bug? Does not actaully return time
         .PARAMETER IsClientDomain
             Gets or sets the client's domain status.
         .PARAMETER Keywords
@@ -17,6 +18,7 @@ class RelativityIdentityV1ClientModelsClientResponse : RelativityIdentityV1Share
             Gets the Artifact ID and name of the user who recently updated the artifact.
         .PARAMETER LastModifiedOnDate
             Gets the date and time when the artifact was most recently updated.
+            bug? Does not actaully return time
         .PARAMETER Meta
             Gets a list of unsupported and read-only properties on the current artifact.
         .PARAMETER Name
@@ -74,6 +76,7 @@ class RelativityIdentityV1ClientModelsClientResponse : RelativityIdentityV1Share
             $ApiResponse.CreatedBy.Name
         )
 
+        Write-Debug $ApiResponse.CreatedOnDate
         $this.CreatedOnDate = $ApiResponse.CreatedOnDate
 
         $this.IsClientDomain = $ApiResponse.IsClientDomain
@@ -92,6 +95,7 @@ class RelativityIdentityV1ClientModelsClientResponse : RelativityIdentityV1Share
             $ApiResponse.LastModifiedBy.Name
         )
 
+        Write-Debug $ApiResponse.LastModifiedOnDate
         $this.LastModifiedOnDate = $ApiResponse.LastModifiedOnDate
 
         [Collections.Generic.List[String]] $MetaReadOnly = @()
