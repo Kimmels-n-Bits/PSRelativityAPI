@@ -106,6 +106,7 @@
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUser.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUserAvailableTypes.ps1",
+        "$PSScriptRoot\Public\Identity\New-RelativityClient.ps1",
 
         ### Infrastructure
         "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedEnums.ps1",
@@ -216,6 +217,7 @@
         "Get-RelativityClient",
         "Get-RelativityUser",
         "Get-RelativityUserAvailableTypes",
+        "New-RelativityClient",
 
         ### Infrastructure
         "Add-RelativityResourcePoolResource",
