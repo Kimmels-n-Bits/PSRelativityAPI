@@ -119,6 +119,7 @@
         "$PSScriptRoot\Classes\Infrastructure\V1\RelativityInfrastructureResourcePoolResourceRequest.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1AnalyticsServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1CacheLocationServerModelsResponse.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1CacheLocationServersNewResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryNewResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
@@ -131,6 +132,7 @@
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePoolResource.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourceServerType.ps1",
+        "$PSScriptRoot\Public\Infrastructure\New-RelativityCacheLocation.ps1",
         "$PSScriptRoot\Public\Infrastructure\New-RelativityFileRepository.ps1",
         "$PSScriptRoot\Public\Infrastructure\New-RelativityResourcePool.ps1",
 
@@ -231,6 +233,7 @@
         "Get-RelativityResourcePool",
         "Get-RelativityResourcePoolResource",
         "Get-RelativityResourceServerType",
+        "New-RelativityCacheLocation",
         "New-RelativityFileRepository",
         "New-RelativityResourcePool",
 
