@@ -40,8 +40,8 @@ function New-RelativityFileRepository
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [ValidateScript({
-            $_ -match '^\\\\[^\\\/]+(\\[^\\\/]+)*\\$'
-        })]
+                $_ -match '^\\\\[^\\\/]+(\\[^\\\/]+)*\\$'
+            })]
         [String] $UncPath
     )
 
@@ -53,15 +53,13 @@ function New-RelativityFileRepository
     {
         try
         {
-            $_path = [Management.Automation.WildcardPattern]::Escape($UncPath)
-
             [Hashtable]$RequestBody = @{
                 request = @{
                     IsVisible = $IsVisible.IsPresent
                     Keywords = $Keywords
                     Name = $Name
                     Notes = $Notes
-                    UncPath = $_path
+                    UncPath = [Management.Automation.WildcardPattern]::Escape($UncPath)
                 }
             }
 
