@@ -162,14 +162,14 @@
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1",
 
         ### ObjectModel API
-        "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ChoiceModelsColor.ps1",
+        "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsColor.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsEnums.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsFieldSource.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsPaneIcon.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1SharedModelsModifierKey.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1SharedModelsShortcut.ps1",
 
-        "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ChoiceModelsResponse.ps1",
+        "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsResponse.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsResponse.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ObjectTypeModelsResponse.ps1",
 
