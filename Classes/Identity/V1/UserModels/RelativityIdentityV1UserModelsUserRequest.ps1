@@ -1,26 +1,42 @@
 class RelativityIdentityV1UserModelsUserRequest
 {
-    <# TODO
-    .SYNOPSIS
-        Request body for Get-RelativityResourcePoolResource
+    <#
+        .SYNOPSIS
+           Represents a DTO used as a request for creating or updating a user.
 
-    .DESCRIPTION
-        This function constructs the required request and returns a valid body.
 
-    .PARAMETER Length
-        Array length for number of rows returned by query.
-    .PARAMETER ResourceType
-        Identifies 1 of 8 ResourceTypes that can be queried.
-            "agent-worker-servers"
-            "analytics-servers"
-            "cache-location-servers"
-            "dt-search-index-locations"
-            "file-repositories"
-            "processing-source-locations"
-            "sql-servers"
-            "worker-manager-servers"
-    .PARAMETER Start
-        Array Index for query return.
+        .PARAMETER AllowSettingsChange
+            Gets or sets a Boolean value indicating whether the user will be able to change a limited number of their settings.
+        .PARAMETER Client
+            Gets or sets the [RelativityIdentityV1SharedSecurable[T]] identifier for the client associated with the user
+        .PARAMETER DefaultFilterVisibility
+            Gets or sets a Boolean value indicating whether filters on all columns are visible by default.
+        .PARAMETER DisableOnDate
+            Gets or sets the date when the user's Relativity access will be auto-disabled.
+        .PARAMETER DocumentViewerProperties
+            Gets or sets user properties that are related to the document viewer.
+        .PARAMETER EmailAddress
+            Gets or sets the user's email address in the format name@domain.extension.
+        .PARAMETER EmailPreference
+            Gets or sets the user's preference for email notifications when adding or deleting Users or Groups.
+        .PARAMETER FirstName
+            Gets or sets the user's first name.
+        .PARAMETER ItemListPageLength
+            Gets or sets the default list length for all view in Relativity for the user.
+        .PARAMETER Keywords
+            Gets or sets any keywords associated with the user.
+        .PARAMETER LastName
+            Gets or sets the user's last name.
+        .PARAMETER Notes
+            Gets or sets an optional description or other information about the user.
+        .PARAMETER RelativityAccess
+            Gets or sets whether the user can to log in to Relativity and be considered for billing under your Relativity license.
+        .PARAMETER SavedSearchDefaultsToPublic
+            Gets or sets a Boolean value indicating whether saved searches are public or private by default.
+        .PARAMETER TrustedIPs
+            Gets or sets an IP address or addresses that are valid locations from which the user can log in from.
+        .PARAMETER Type
+            Gets or sets the user's type. Type is for reference purposes only and has no impact on access or billing.
     #>
     [Boolean] $AllowSettingsChange
     [RelativityIdentityV1SharedSecurable] $Client
@@ -59,7 +75,7 @@ class RelativityIdentityV1UserModelsUserRequest
         [String] $Notes,
         [Boolean] $RelativityAccess,
         [Boolean] $SavedSearchDefaultsToPublic,
-        [String] $TrustedIPs,
+        [Collections.Generic.List[String]] $TrustedIPs,
         [Nullable[Int32]] $Type)
     {
         $this.AllowSettingsChange = $AllowSettingsChange
@@ -104,16 +120,16 @@ class RelativityIdentityV1UserModelsUserRequest
         $this.Notes = $Notes
         $this.RelativityAccess = $RelativityAccess
         $this.SavedSearchDefaultsToPublic = $SavedSearchDefaultsToPublic
-        
-        if ($TrustedIPs -ne $null)
+
+        if ($TrustedIPs.Count -gt 0)
         {
             $this.TrustedIPs = [String]::Join("`r`n", $TrustedIPs)
+            Write-Debug $this.TrustedIPs.
         }
         else
         {
             $this.TrustedIPs = ""
         }
-        Write-Debug $this.TrustedIPs
 
         if ($Type -ne $null)
         {
@@ -125,9 +141,6 @@ class RelativityIdentityV1UserModelsUserRequest
         }
         
     }
-
-
-
 
 
     [Hashtable] ToHashTable()

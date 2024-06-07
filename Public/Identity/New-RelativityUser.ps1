@@ -1,65 +1,78 @@
 function New-RelativityUser
 {
-    <# TODO
+    <#
         .SYNOPSIS
-            Function creates a NEW Relativity cache-location.
+            Function creates a NEW Relativity user.
+            REQUIRED PARAMETERS: FName, LName, ClientID, TypeID, Email
         .DESCRIPTION
             This function constructs the required request, 
             calls Relativity's REST API, 
-            creates a cache-location, 
-            and returns a [RelativityInfrastructureV1CacheLocationServersNewResponse].
+            creates a user, 
+            and returns a [RelativityIdentityV1UserModelsUserResponse].
+
 
         .PARAMETER AllowSettingsChange
-            notes
+            Gets or sets a Boolean value indicating whether the user will be able to change a limited number of their settings.
         .PARAMETER ClientID
-            notes
+            Gets or sets the [RelativityIdentityV1SharedSecurable[T]] identifier for the client associated with the user
         .PARAMETER ClientSecured
-            notes
+            Sets Client Secured or not.
         .PARAMETER DV_DefaultFilterVisibility
-            notes
+            Gets or sets a Boolean value indicating whether filters on all columns are visible by default.
         .PARAMETER DV_AllowDocumentSkipPreferenceChange
-            notes
+            Gets or sets whether the user has the ability to change their preference to skip documents during review that no longer meet the original conditions of a view due to propagation.
         .PARAMETER DV_AllowDocumentViewerChange
-            notes
+            Gets or sets a Boolean value indicating whether the user will be able to change the document viewer modes.
         .PARAMETER DV_AllowKeyboardShortcuts
-            notes
+            Gets or sets a Boolean value indicating whether the user can see the keyboard shortcuts icon in the core reviewer interface.
         .PARAMETER DV_DefaultSelectedFileType
-            notes
+            Gets or sets the default viewer mode.
         .PARAMETER DV_DocumentViewer
-            notes
+            Gets or sets the which viewer the user can access when reviewing documents.
         .PARAMETER DV_SkipDefaultPreference
-            notes
+            Gets or sets a Boolean value indicating whether the user advances to the next document in the queue that matches the defined view conditions when the user clicks Save and Next.
         .PARAMETER DisableOnDate
-            notes
+            Gets or sets the date when the user's Relativity access will be auto-disabled.
         .PARAMETER Email
-            notes
+            Gets or sets the user's email address in the format name@domain.extension.
         .PARAMETER EmailPreference
-            notes
+            Gets or sets the user's preference for email notifications when adding or deleting Users or Groups.
         .PARAMETER FName
-            notes
+            Gets or sets the user's first name.
         .PARAMETER ItemListPageLength
-            notes
+            Gets or sets the default list length for all view in Relativity for the user.
         .PARAMETER Keywords
-            notes
+            Gets or sets any keywords associated with the user.
         .PARAMETER LName
-            notes
+            Gets or sets the user's last name.
         .PARAMETER Notes
-            notes
-        .PARAMETER RelativityAccess
-            notes
+            Gets or sets an optional description or other information about the user.
+        .PARAMETER RelativityAccessEnabled
+            Gets or sets whether the user can to log in to Relativity and be considered for billing under your Relativity license.
         .PARAMETER SavedSearchDefaultsToPublic
-            notes
+            Gets or sets a Boolean value indicating whether saved searches are public or private by default.
         .PARAMETER TrustedIPs
-            notes
+            Gets or sets an ARRAY of IP address or addresses that are valid locations from which the user can log in from.
         .PARAMETER TypeID
-            notes
+            Gets or sets the user's typeID. Type is for reference purposes only and has no impact on access or billing.
 
         .EXAMPLE
-            New-RelativityUser -verbose -Name "myCacheLoc" -UncPath "\\HOST-FS001\DevRepo\013\" -IsVisible
-                This example will CREATE a new cache-location named "myCacheLoc".
+            New-RelativityUser -Verbose `
+                -FName "joe" `
+                -LName "smith" `
+                -ClientID 1234567 `
+                -TypeID 1059571 `
+                -Email "j.smith@nowhere.com" `
+                -AllowSettingsChange `
+                -RelativityAccessEnabled `
+                -DV_AllowKeyboardShortcuts `
+                -DV_DefaultSelectedFileType "Default" `
+                -DV_DocumentViewer "HTML"
+
+                This example will CREATE a new user named "Joe Smith", with some options set.
 
         .NOTES
-            HTTP Response will be a [RelativityInfrastructureV1CacheLocationServersNewResponse] object.
+            HTTP Response will be a [RelativityIdentityV1UserModelsUserResponse] object.
     #>
     [CmdletBinding(SupportsShouldProcess = $true)]
     Param
@@ -74,13 +87,13 @@ function New-RelativityUser
         [Switch] $DV_AllowDocumentViewerChange,
         [Switch] $DV_AllowKeyboardShortcuts,
         [String] $DV_DefaultSelectedFileType = "Default",
-        [String] $DV_DocumentViewer,
+        [String] $DV_DocumentViewer = "Default",
         [Switch] $DV_SkipDefaultPreference,
         [Nullable[DateTime]] $DisableOnDate = $null,
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [String] $Email,
-        [String] $EmailPreference,
+        [String] $EmailPreference = "Default",
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNull()]
         [String] $FName,
@@ -156,14 +169,11 @@ function New-RelativityUser
 
             $RequestBody = $Request.ToHashTable()
 
-            $Resources = @("users")
-
             $ApiEndpoint = Get-RelativityApiEndpoint `
                 -BusinessDomain "Relativity-Identity" `
                 -Version "v1" `
-                -Resources $Resources
+                -Resources @("users")
 
-            Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody.UserRequest)"
             Write-Debug "Preparing to invoke POST method at Relativity API endpoint '$($ApiEndpoint)' with RequestBody $($RequestBody | ConvertTo-Json -Depth 10)"
             Write-Verbose "Invoking POST method at Relativity API endpoint: $($ApiEndpoint)"
 
