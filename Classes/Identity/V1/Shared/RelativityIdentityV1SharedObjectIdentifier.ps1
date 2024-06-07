@@ -16,6 +16,14 @@ class RelativityIdentityV1SharedObjectIdentifier
     }
 
     RelativityIdentityV1SharedObjectIdentifier(
+        [Int32] $ArtifactID
+    )
+    {
+        $this.ArtifactID = $ArtifactID
+        $this.Guids = $null
+    }
+
+    RelativityIdentityV1SharedObjectIdentifier(
         [Int32] $ArtifactID,
         [Collections.Generic.List[Guid]] $Guids
     )

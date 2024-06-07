@@ -97,17 +97,20 @@
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedMeta.ps1",
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedObjectIdentifier.ps1",
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedDisplayableObjectIdentifier.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedSecurable.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsEnums.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsDocumentViewerProperties.ps1",
 
         "$PSScriptRoot\Classes\Identity\V1\ClientModels\RelativityIdentityV1ClientModelsClientResponse.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserAvailableTypesResponse.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserRequest.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserResponse.ps1",
         
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUser.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUserAvailableTypes.ps1",
         "$PSScriptRoot\Public\Identity\New-RelativityClient.ps1",
+        "$PSScriptRoot\Public\Identity\New-RelativityUser.ps1",
 
         ### Infrastructure
         "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedEnums.ps1",
@@ -224,6 +227,7 @@
         "Get-RelativityUser",
         "Get-RelativityUserAvailableTypes",
         "New-RelativityClient",
+        "New-RelativityUser",
 
         ### Infrastructure
         "Add-RelativityResourcePoolResource",
