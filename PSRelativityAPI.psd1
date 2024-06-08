@@ -169,13 +169,15 @@
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1SharedModelsModifierKey.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1SharedModelsShortcut.ps1",
 
+        "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsRequest.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsResponse.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsResponse.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ObjectTypeModelsResponse.ps1",
 
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityChoice.ps1",
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityField.ps1",
-        "$PSScriptRoot\Public\ObjectModel\Get-RelativityParentObjectType.ps1"        
+        "$PSScriptRoot\Public\ObjectModel\Get-RelativityParentObjectType.ps1",
+        "$PSScriptRoot\Public\ObjectModel\New-RelativityChoice.ps1"
     )
     FunctionsToExport = @(
         ### General
@@ -250,7 +252,8 @@
         ### ObjectModel API
         "Get-RelativityChoice",
         "Get-RelativityParentObjectType",
-        "Get-RelativityField"
+        "Get-RelativityField",
+        "New-RelativityChoice"
     )
     CmdletsToExport = @()
     VariablesToExport = @()
