@@ -155,6 +155,7 @@
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSort.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsQueryRequest.ps1",
         "$PSScriptRoot\Private\ObjectManager\Get-RelativityObjectReadRequest.ps1",
+
         "$PSScriptRoot\Public\ObjectManager\Get-RelativityObject.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySampleParameterSet.ps1",
@@ -177,7 +178,19 @@
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityChoice.ps1",
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityField.ps1",
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityParentObjectType.ps1",
-        "$PSScriptRoot\Public\ObjectModel\New-RelativityChoice.ps1"
+        "$PSScriptRoot\Public\ObjectModel\New-RelativityChoice.ps1",
+
+        ### Services API
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsEnums.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsField.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsFieldValuePair.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsObjectType.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObjectRef.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsSampleDetails.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObject.ps1",
+
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsQueryResult.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsQuerySlimResult.ps1"
     )
     FunctionsToExport = @(
         ### General

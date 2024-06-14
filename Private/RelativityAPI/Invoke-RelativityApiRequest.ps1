@@ -166,6 +166,7 @@ function Invoke-RelativityApiRequest
 
         try
         {
+            Write-Verbose "Converting $($Response.Content.Length) Json Characters to [PSObject]."
             $ApiResponse = $Response.Content | ConvertFrom-Json
         }
         catch
