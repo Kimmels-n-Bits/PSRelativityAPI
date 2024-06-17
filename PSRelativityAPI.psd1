@@ -188,6 +188,7 @@
         "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObjectRef.ps1",
         "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsSampleDetails.ps1",
         "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObject.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObjectSlim.ps1",
 
         "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsQueryResult.ps1",
         "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsQuerySlimResult.ps1"

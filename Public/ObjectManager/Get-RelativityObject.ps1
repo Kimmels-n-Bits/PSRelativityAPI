@@ -1,6 +1,6 @@
 function Get-RelativityObject
 {
-    <# TODO
+    <#
         .SYNOPSIS
             Returns a [RelativityServicesObjectsDataContractsQueryResult] or [RelativityServicesObjectsDataContractsQuerySlimResult] response object.
             This is based on the presense of the -Full Parameter.
@@ -33,32 +33,23 @@ function Get-RelativityObject
             (Required)
 
         .EXAMPLE
-            This will return a [RelativityServicesObjectsDataContractsQuerySlimResult] object. It will contain 5 results, starting at index 11.
-
-        .EXAMPLE
-            This will return a [RelativityServicesObjectsDataContractsQueryResult] object (Notice -Full Flag). It will contain 5 results, starting at index 11.
+            This will return a [RelativityServicesObjectsDataContractsQuerySlimResult] object.
+            It will contain 10 (default) results, starting at index 0 (default).
             Get-RelativityObject `
-                -ActiveArtifactID  `
-                -Condition `
-                -ExecutingSavedSearchID `
-                -ExecutingViewID `
-                -Fields `
-                -Full `
                 -IncludeIDWindow `
                 -IncludeNameInQueryResult `
                 -IsAdhocQuery `
-                -Length 5`
-                -LongTextBehavior `
-                -MaxCharactersForLongTextValues `
                 -ObjectType 8 `
-                -QueryHint `
-                -RankSortOrder `
-                -RelationalField `
-                -RowCondition `
-                -SampleParameterSet `
-                -SearchProviderCondition `
-                -Sorts `
-                -Start 11`
+                -WorkspaceID -1
+
+        .EXAMPLE
+            This will return a [RelativityServicesObjectsDataContractsQueryResult] object (Notice -Full Flag).
+            It will contain 5 results, starting at index 11.
+            Get-RelativityObject `
+                -Full `
+                -Length 5 `
+                -ObjectType 8 `
+                -Start 11 `
                 -WorkspaceID -1
     #>
     [CmdletBinding()]
@@ -115,7 +106,7 @@ function Get-RelativityObject
         [Switch] $IsAdhocQuery,
         [Parameter(Mandatory = $false)]
         [ValidateRange(0, [Int32]::MaxValue)]
-        [Int32] $Length = 0,
+        [Int32] $Length = 10,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior = 0,
