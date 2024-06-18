@@ -90,35 +90,54 @@
         "$PSScriptRoot\Classes\Environment\V1\RelativityEnvironmentV1MatterModelsResponse.ps1",
 
         "$PSScriptRoot\Public\Environment\Get-RelativityMatter.ps1",
+        "$PSScriptRoot\Public\Environment\New-RelativityMatter.ps1",
 
         ### Identity API
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedAction.ps1",
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedMeta.ps1",
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedObjectIdentifier.ps1",
         "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedDisplayableObjectIdentifier.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\Shared\RelativityIdentityV1SharedSecurable.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsEnums.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsDocumentViewerProperties.ps1",
 
         "$PSScriptRoot\Classes\Identity\V1\ClientModels\RelativityIdentityV1ClientModelsClientResponse.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserAvailableTypesResponse.ps1",
+        "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserRequest.ps1",
         "$PSScriptRoot\Classes\Identity\V1\UserModels\RelativityIdentityV1UserModelsUserResponse.ps1",
         
         "$PSScriptRoot\Public\Identity\Get-RelativityClient.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUser.ps1",
         "$PSScriptRoot\Public\Identity\Get-RelativityUserAvailableTypes.ps1",
+        "$PSScriptRoot\Public\Identity\New-RelativityClient.ps1",
+        "$PSScriptRoot\Public\Identity\New-RelativityUser.ps1",
 
         ### Infrastructure
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedEnums.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SampleDetails.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedField.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedObjectType.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedRelativityObjectSlim.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Shared\RelativityInfrastructureV1SharedQueryResultSlim.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\RelativityInfrastructureResourcePoolResourceRequest.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1AnalyticsServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1CacheLocationServerModelsResponse.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1CacheLocationServersNewResponse.ps1",
+        "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryNewResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1FileRespositoryServerModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourcePoolModelsResponse.ps1",
         "$PSScriptRoot\Classes\Infrastructure\V1\Models\RelativityInfrastructureV1ResourceServerModelsServerTypeResponse.ps1",
 
+        "$PSScriptRoot\Public\Infrastructure\Add-RelativityResourcePoolResource.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityAnalyticsServer.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityCacheLocation.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityFileRepository.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePool.ps1",
+        "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourcePoolResource.ps1",
         "$PSScriptRoot\Public\Infrastructure\Get-RelativityResourceServerType.ps1",
+        "$PSScriptRoot\Public\Infrastructure\New-RelativityCacheLocation.ps1",
+        "$PSScriptRoot\Public\Infrastructure\New-RelativityFileRepository.ps1",
+        "$PSScriptRoot\Public\Infrastructure\New-RelativityResourcePool.ps1",
 
         ### ObjectManager API
         "$PSScriptRoot\Classes\ObjectManager\Custom\RelativityObjectQueryConditionCombinationOperator.ps1",
@@ -136,6 +155,7 @@
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsSort.ps1",
         "$PSScriptRoot\Classes\ObjectManager\V1\Models\RelativityObjectManagerV1ModelsQueryRequest.ps1",
         "$PSScriptRoot\Private\ObjectManager\Get-RelativityObjectReadRequest.ps1",
+
         "$PSScriptRoot\Public\ObjectManager\Get-RelativityObject.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQueryCondition.ps1",
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySampleParameterSet.ps1",
@@ -143,20 +163,35 @@
         "$PSScriptRoot\Public\ObjectManager\New-RelativityObjectQuerySort.ps1",
 
         ### ObjectModel API
-        "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ChoiceModelsColor.ps1",
+        "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsColor.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsEnums.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsFieldSource.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsPaneIcon.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1SharedModelsModifierKey.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1SharedModelsShortcut.ps1",
 
-        "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ChoiceModelsResponse.ps1",
+        "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsRequest.ps1",
+        "$PSScriptRoot\Classes\ObjectModel\V1\ChoiceModels\RelativityObjectModelV1ChoiceModelsResponse.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1FieldModelsResponse.ps1",
         "$PSScriptRoot\Classes\ObjectModel\V1\Models\RelativityObjectModelV1ObjectTypeModelsResponse.ps1",
 
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityChoice.ps1",
         "$PSScriptRoot\Public\ObjectModel\Get-RelativityField.ps1",
-        "$PSScriptRoot\Public\ObjectModel\Get-RelativityParentObjectType.ps1"        
+        "$PSScriptRoot\Public\ObjectModel\Get-RelativityParentObjectType.ps1",
+        "$PSScriptRoot\Public\ObjectModel\New-RelativityChoice.ps1",
+
+        ### Services API
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsEnums.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsField.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsFieldValuePair.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsObjectType.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObjectRef.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsSampleDetails.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObject.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsRelativityObjectSlim.ps1",
+
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsQueryResult.ps1",
+        "$PSScriptRoot\Classes\Services\RelativityServicesObjectsDataContractsQuerySlimResult.ps1"
     )
     FunctionsToExport = @(
         ### General
@@ -201,18 +236,26 @@
 
         ### Environment API
         "Get-RelativityMatter",
+        "New-RelativityMatter",
 
         ### Identity API
         "Get-RelativityClient",
         "Get-RelativityUser",
         "Get-RelativityUserAvailableTypes",
+        "New-RelativityClient",
+        "New-RelativityUser",
 
         ### Infrastructure
+        "Add-RelativityResourcePoolResource",
         "Get-RelativityAnalyticsServer",
         "Get-RelativityCacheLocation",
         "Get-RelativityFileRepository",
         "Get-RelativityResourcePool",
+        "Get-RelativityResourcePoolResource",
         "Get-RelativityResourceServerType",
+        "New-RelativityCacheLocation",
+        "New-RelativityFileRepository",
+        "New-RelativityResourcePool",
 
         ### ObjectManager API
         "Get-RelativityObject",
@@ -223,7 +266,8 @@
         ### ObjectModel API
         "Get-RelativityChoice",
         "Get-RelativityParentObjectType",
-        "Get-RelativityField"
+        "Get-RelativityField",
+        "New-RelativityChoice"
     )
     CmdletsToExport = @()
     VariablesToExport = @()

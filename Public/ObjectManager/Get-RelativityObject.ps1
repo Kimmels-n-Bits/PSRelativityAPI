@@ -1,5 +1,57 @@
 function Get-RelativityObject
 {
+    <#
+        .SYNOPSIS
+            Returns a [RelativityServicesObjectsDataContractsQueryResult] or [RelativityServicesObjectsDataContractsQuerySlimResult] response object.
+            This is based on the presense of the -Full Parameter.
+
+        .PARAMETER ActiveArtifactID
+        .PARAMETER Condition
+        .PARAMETER ExecutingSavedSearchID
+        .PARAMETER ExecutingViewID
+        .PARAMETER Fields
+        .PARAMETER Full
+            When present, returns [RelativityServicesObjectsDataContractsQueryResult]
+            If not present, returns [RelativityServicesObjectsDataContractsQuerySlimResult]
+        .PARAMETER IncludeIDWindow
+        .PARAMETER IncludeNameInQueryResult
+        .PARAMETER IsAdhocQuery
+        .PARAMETER Length
+        .PARAMETER LongTextBehavior
+        .PARAMETER MaxCharactersForLongTextValues
+        .PARAMETER ObjectType
+            (Required)
+        .PARAMETER QueryHint
+        .PARAMETER RankSortOrder
+        .PARAMETER RelationalField
+        .PARAMETER RowCondition
+        .PARAMETER SampleParameterSet
+        .PARAMETER SearchProviderCondition
+        .PARAMETER Sorts
+        .PARAMETER Start
+        .PARAMETER WorkspaceID
+            (Required)
+
+        .EXAMPLE
+            This will return a [RelativityServicesObjectsDataContractsQuerySlimResult] object.
+            It will contain 10 (default) results, starting at index 0 (default).
+            Get-RelativityObject `
+                -IncludeIDWindow `
+                -IncludeNameInQueryResult `
+                -IsAdhocQuery `
+                -ObjectType 8 `
+                -WorkspaceID -1
+
+        .EXAMPLE
+            This will return a [RelativityServicesObjectsDataContractsQueryResult] object (Notice -Full Flag).
+            It will contain 5 results, starting at index 11.
+            Get-RelativityObject `
+                -Full `
+                -Length 5 `
+                -ObjectType 8 `
+                -Start 11 `
+                -WorkspaceID -1
+    #>
     [CmdletBinding()]
     Param
     (
@@ -54,7 +106,7 @@ function Get-RelativityObject
         [Switch] $IsAdhocQuery,
         [Parameter(Mandatory = $false)]
         [ValidateRange(0, [Int32]::MaxValue)]
-        [Int32] $Length = 0,
+        [Int32] $Length = 10,
         [Parameter(Mandatory = $false)]
         [ValidateNotNull()]
         [RelativityObjectManagerV1ModelsLongTextBehavior] $LongTextBehavior = 0,
@@ -154,8 +206,8 @@ function Get-RelativityObject
             })]
         [Object] $Sorts,
         [Parameter(Mandatory = $false)]
-        [ValidateRange(1, [Int32]::MaxValue)]
-        [Int32] $Start = 1,
+        [ValidateRange(0, [Int32]::MaxValue)]
+        [Int32] $Start = 0,
         [Parameter(Mandatory = $true)]
         [ValidateScript({
                 $IsValidValue = $false
@@ -176,7 +228,7 @@ function Get-RelativityObject
 
     Begin
     {
-        Write-Verbose "Starting Get-RelativityObject"
+        Write-Verbose "Starting $($MyInvocation.MyCommand.Name)"
 
         # Since we accept [Object] type in the parameters above for $ObjectType and $RelationalField we want to
         # validate that passed values in the ValidateScript() block are of the types we're expecting to work with.
@@ -231,7 +283,14 @@ function Get-RelativityObject
             
             $ApiResponse = Invoke-RelativityApiRequest -ApiEndpoint $ApiEndpoint -HttpMethod "Post" -RequestBody $RequestBody
 
-            $Response = $ApiResponse #TODO: Create a response object and parse the response into that.
+            if ($Full)
+            { 
+                $Response = [RelativityServicesObjectsDataContractsQueryResult]::New($ApiResponse)
+            }
+            else
+            {
+                $Response = [RelativityServicesObjectsDataContractsQuerySlimResult]::New($ApiResponse)
+            }
 
             Write-Verbose "Objects retrieved successfully"
 
@@ -260,6 +319,6 @@ function Get-RelativityObject
     }
     End
     {
-        Write-Verbose "Completed Get-RelativityObject"
+        Write-Verbose "Completed $($MyInvocation.MyCommand.Name)"
     }
 }

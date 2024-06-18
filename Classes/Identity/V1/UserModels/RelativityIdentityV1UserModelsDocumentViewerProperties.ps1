@@ -45,6 +45,39 @@ class RelativityIdentityV1UserModelsDocumentViewerProperties
     }
 
     RelativityIdentityV1UserModelsDocumentViewerProperties(
+        [Boolean] $AllowDocumentSkipPreferenceChange,
+        [Boolean] $AllowDocumentViewerChange,
+        [Boolean] $AllowKeyboardShortcuts,
+        [String] $DefaultSelectedFileType,
+        [String] $DocumentViewer,
+        [Boolean] $SkipDefaultPreference
+    )
+    {
+        $this.AllowDocumentSkipPreferenceChange = $AllowDocumentSkipPreferenceChange
+        $this.AllowDocumentViewerChange = $AllowDocumentViewerChange
+        $this.AllowKeyboardShortcuts = $AllowKeyboardShortcuts
+        if ([Enum]::IsDefined([RelativityIdentityV1UserModelsDocumentViewerFileType], $DefaultSelectedFileType))
+        {
+            $this.DefaultSelectedFileType = [Enum]::Parse([RelativityIdentityV1UserModelsDocumentViewerFileType], $DefaultSelectedFileType)
+        }
+        else
+        {
+            throw "Invalid enum [RelativityIdentityV1UserModelsDocumentViewerFileType] = $($DefaultSelectedFileType)"
+        }
+
+        if ([Enum]::IsDefined([RelativityIdentityV1UserModelsDocumentViewer], $DocumentViewer))
+        {
+            $this.DocumentViewer = [Enum]::Parse([RelativityIdentityV1UserModelsDocumentViewer], $DocumentViewer)
+        }
+        else
+        {
+            throw "Invalid enum [RelativityIdentityV1UserModelsDocumentViewer] = $($DocumentViewer)"
+        }
+
+        $this.SkipDefaultPreference = $SkipDefaultPreference
+    }
+
+    RelativityIdentityV1UserModelsDocumentViewerProperties(
         [PSCustomObject] $ApiResponse
     )
     {
